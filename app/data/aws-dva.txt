@@ -1,0 +1,30 @@
+# 01 AWSアプリ開発 / Lambda
+環境変数|Lambdaのデプロイコードを変更せず環境固有の非機密設定値を渡したい。|環境変数を関数の設定として管理できる。機密値は専用サービスも検討する。
+Lambda Layers|複数Lambdaで共通のライブラリを別パッケージとして管理・共有したい。|Layerに共通コードや依存関係をパッケージ化できる。
+Lambdaバージョン|Lambdaのコードと設定の特定時点の変更不能なスナップショットを発行したい。|発行済みバージョンは不変。$LATESTとは異なる。
+Lambdaエイリアス|固定の名前prodを特定Lambdaバージョンへ割り当て、後から切り替えたい。|エイリアスはバージョンへの可変ポインターで重み付きルーティングにも使える。
+# 01 AWSアプリ開発 / DynamoDB
+ConditionExpression|在庫数が1以上のときだけDynamoDBで減算し、同時処理による負数を防ぎたい。|条件付き書き込みで更新可否を原子的に評価する。
+UpdateExpression|DynamoDBのアイテム全体を置き換えず特定属性だけ追加・変更・削除したい。|UpdateItemのSET、ADD、REMOVE等で更新対象を指定できる。
+ProjectionExpression|GetItem等で返却するDynamoDB属性だけを指定したい。|必要な属性を返す。ただし読み取り容量は項目の読み取りサイズに基づく。
+FilterExpression|DynamoDB Queryが取得した候補アイテムに非キー属性の条件を適用したい。|キー条件による取得後にフィルターされる。読み取り容量削減にはならない。
+# 01 AWSアプリ開発 / APIとイベント
+API Gateway Lambda proxy integration|API GatewayがHTTPリクエスト情報をほぼそのままLambdaイベントへ渡し、関数がHTTP応答形式を返す統合方式は？|プロキシ統合ではLambda側でリクエスト・レスポンスを扱う。
+EventBridgeイベントパターン|イベントのsourceやdetailの値で配送対象を条件選択したい。|ルールのイベントパターンがイベント構造を照合する。
+SQS Visibility Timeout|ワーカーが受信したメッセージを処理完了まで一時的に他から見えなくしたい。|時間内に削除されないと再取得されうる。
+Step Functions Retry|ステートマシン内の一時エラーに対しバックオフ付き再試行を宣言的に設定したい。|Retryで対象エラー、間隔、回数、バックオフ等を設定する。
+# 02 セキュリティ / AWS認証
+IAM実行ロール|Lambda関数の実行中にSDKからDynamoDBへアクセスするためのAWS権限は何に付与する？|Lambdaの実行ロールに権限を設定する。呼び出し権限とは別。
+Cognito User Pool|アプリの利用者登録とログイン、JWT発行を実装したい。|ユーザー認証サービスを提供する。
+Cognito Identity Pool|認証済み利用者がSDKでS3へアクセスできる一時AWS認証情報を取得したい。|認証結果をロールの一時認証情報へ交換する。
+Secrets Manager|DBの認証情報を保存しローテーションを構成したい。|秘密情報の保管・取得・ローテーションを支援する。
+# 03 デプロイ / CI/CD
+AWS SAM|LambdaやAPI Gateway等を簡潔なCloudFormation拡張構文で定義し、ローカル実行も行いたい。|Serverless Application Modelはサーバーレス向けIaCとCLIを提供する。
+CodeBuild|リポジトリのソースからビルド・テストをマネージド実行したい。|ビルド環境とbuildspecによる処理を提供する。
+CodeDeploy|Lambdaの新バージョンへ段階的にトラフィックを移行し、アラーム時にロールバックしたい。|カナリアやリニアなどのデプロイ設定を利用できる。
+CodePipeline|ソース取得、ビルド、承認、デプロイの各段階をパイプラインとして統合したい。|CI/CDの各アクションをオーケストレーションする。
+# 04 トラブルシューティング / 可観測性
+AWS X-Ray|分散APIの呼び出し経路でどのサービスが遅いかトレースしたい。|リクエストのセグメント等を用いて分散トレースを解析する。
+CloudWatch Logs Insights|Lambdaの構造化ログから特定エラーを検索し回数を集計したい。|ログに対するクエリ・集計を提供する。
+CloudWatch Alarm|LambdaのErrorsメトリクスが指定閾値を超えたらSNS通知したい。|メトリクスの評価条件とアクションを設定する。
+CloudTrail|誰が関数の設定を変更するAWS APIを実行したか監査したい。|AWS API操作の主体や時刻などを記録する。

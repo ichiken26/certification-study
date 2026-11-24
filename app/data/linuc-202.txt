@@ -1,0 +1,51 @@
+# 2.07 ネットワーククライアント / DHCP・認証
+/etc/dhcp/dhcpd.conf|ISC DHCPサーバーで配布アドレス範囲などを設定する代表的ファイルは？|dhcpdのサブネット、range、option等を定義する。
+/etc/pam.d/|サービス別のPAM認証スタックを設定する代表的ディレクトリは？|PAMはauth、account、password、session等の認証処理を構成する。
+ldapsearch|LDAPサーバーのディレクトリ情報を検索するコマンドは？|LDAPの検索フィルターやベースDNなどを指定してエントリを照会する。
+slapd|OpenLDAPのLDAPサーバーデーモンは？|LDAPディレクトリを提供するサーバープロセス。
+# 2.08 DNS / レコード
+A|DNSでホスト名をIPv4アドレスへ対応付けるレコードは？|AレコードはIPv4アドレスを返す。
+AAAA|DNSでホスト名をIPv6アドレスへ対応付けるレコードは？|AAAAレコードはIPv6アドレスを返す。
+PTR|IPアドレスからホスト名を得る逆引きDNSレコードは？|in-addr.arpaやip6.arpaでPTRを利用する。
+MX|ドメインのメール配送先サーバーと優先度を指定するレコードは？|MXはメール交換ホストを指定する。
+SOA|ゾーンのプライマリサーバーやシリアル番号、リフレッシュ間隔を指定するレコードは？|Start of Authorityでゾーン管理の情報を記述する。
+# 2.08 DNS / BIND
+named-checkconf|BINDのnamed.confの構文を検証したい。|BIND設定ファイルの構文を確認する。
+named-checkzone example.com zone.db|BINDのexample.comゾーンファイルzone.dbの構文と整合性を確認したい。|ゾーン名とファイルを指定して検証する。
+rndc reload|BINDの稼働中デーモンに設定・ゾーンの再読込を指示したい。|rndcはnamedを制御するコマンド。
+dig @192.0.2.53 example.com A|特定のDNSサーバー192.0.2.53にAレコードを直接問い合わせたい。|digの@で問い合わせ先DNSサーバーを指定する。
+# 2.09 HTTPとプロキシ / 設定
+VirtualHost|Apache HTTP Serverで複数ドメインごとにDocumentRoot等を切り替えるための設定ブロックは？|名前ベースやIPベースの仮想ホストを定義する。
+DocumentRoot|ApacheでWeb公開するファイル階層のルートを指定するディレクティブは？|URLとファイルシステムの対応の基準になる。
+proxy_pass|nginxで受けたHTTPリクエストをバックエンドHTTPサーバーへ転送するディレクティブは？|リバースプロキシの転送先を指定する。
+server_name|nginxでHTTPホスト名に基づく仮想サーバー名を指定するディレクティブは？|serverブロックの名前マッチングに利用する。
+# 2.09 HTTPとプロキシ / TLS・運用
+nginx -t|nginxの設定ファイルを反映前に構文検証したい。|-tは設定のテストを行う。
+apachectl configtest|Apacheの設定ファイルの構文を確認したい。|設定を解析してエラーを検出する。
+openssl x509 -in cert.pem -noout -dates|PEM形式TLS証明書の有効期間を確認したい。|x509の-datesでnotBeforeとnotAfterを表示する。
+openssl s_client -connect example.com:443 -servername example.com|HTTPSサーバーとTLS接続を試し、SNIを指定して証明書等を診断したい。|s_clientはTLSクライアントとして接続を診断する。
+# 2.10 メール / サービス
+Postfix|Linux上でSMTPのメール転送サービスを構成する代表的MTAは？|SMTPによるメールの受信と配送を担当する。
+Dovecot|メールボックスをIMAP/POP3でクライアントへ提供する代表的サーバーは？|メールアクセスサービスを提供する。
+postconf -n|Postfixで既定値から変更した有効な設定を表示したい。|-nは明示的に設定されたパラメータを表示する。
+postqueue -p|Postfixの配送待ちメールキューを表示したい。|キュー内のメッセージと状態を表示する。
+# 2.11 ファイル共有 / Samba・NFS
+/etc/samba/smb.conf|Sambaで共有名やパス、アクセス設定を記述する代表的ファイルは？|Sambaのグローバル設定や共有セクションを定義する。
+testparm|Sambaの設定ファイルを構文チェックしたい。|smb.confの設定を検証する。
+/etc/exports|NFSサーバーで共有するディレクトリと許可クライアントを定義するファイルは？|エクスポート設定を記述する。
+exportfs -ra|NFSのexports設定を再読み込みしてエクスポートを更新したい。|定義済みエクスポートを再同期する。
+# 2.12 セキュリティ / パケットフィルタ
+iptables -L -n|iptablesのfilterテーブルのルールを名前解決せず表示したい。|既定はfilterテーブル。-Lで一覧、-nで数値表示。
+iptablesのINPUTチェーン|Linuxホスト自身宛の受信パケットをfilterテーブルで制御するチェーンは？|ローカル宛パケットに適用される。中継はFORWARD。
+iptablesのFORWARDチェーン|Linuxをルーターとして経由するパケットをfilterテーブルで制御するチェーンは？|ホスト自身が送受信する通信ではなく中継通信を扱う。
+firewall-cmd --list-all|firewalldで既定ゾーンの有効なサービスやポート等を確認したい。|firewall-cmdはfirewalldの設定・状態を操作する。
+# 2.12 セキュリティ / OpenSSH
+PermitRootLogin no|OpenSSHサーバーへのrootの直接ログインを禁止したい。|rootによるSSH認証を拒否する。必要なら一般ユーザー経由でsudoを使う。
+PasswordAuthentication no|OpenSSHサーバーでパスワード認証方式を無効化したい。|パスワード認証を禁止する。キーボード対話型認証の設定も必要に応じ確認。
+sshd -t|sshdの設定と鍵を再起動前に検証したい。|-tは設定ファイルの妥当性と鍵の健全性を検査する。
+AllowUsers alice bob|SSHログインをaliceとbobに制限するsshd_configの設定は？|AllowUsersで許可するユーザーパターンを列挙する。
+# 2.13 アーキテクチャ / 可用性
+アクティブ・スタンバイ|平時は1台が処理し、障害時に待機ノードがサービスを引き継ぐ構成は？|通常は一方が稼働系で他方が待機系。
+アクティブ・アクティブ|複数ノードが平時から同時に本番処理を行い、障害時に残存ノードが処理を続ける構成は？|複数稼働系に処理を分散する。
+スケールアウト|同等のサーバー台数を増やして処理能力を向上させる方法は？|水平スケーリング。負荷分散や状態管理が必要。
+スケールアップ|単一サーバーのCPUやメモリを増強して処理能力を上げる方法は？|垂直スケーリング。物理・製品上限がある。
