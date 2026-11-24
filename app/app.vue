@@ -177,7 +177,7 @@ async function importProgress(event:Event){
           </UCard>
           <UCard>
             <div class="flex items-center justify-between gap-3">
-              <h2 class="font-bold">{{ exam.name }}</h2><UBadge color="neutral" variant="outline">{{ exam.id==='aws-saa' ? '基礎＋設計演習' : '初版・補強中' }}</UBadge>
+              <h2 class="font-bold">{{ exam.name }}</h2><UBadge color="neutral" variant="outline">未完成</UBadge>
             </div>
             <div class="grid grid-cols-3 gap-3 py-4 text-center">
               <div><div class="text-2xl font-bold tabular-nums">{{ seen }}/{{ exam.questions.length }}</div><div class="text-xs text-muted">回答済み</div></div>
@@ -185,6 +185,7 @@ async function importProgress(event:Event){
               <div><div class="text-2xl font-bold tabular-nums text-error">{{ wrong }}</div><div class="text-xs text-muted">要復習</div></div>
             </div>
             <UProgress :model-value="seen" :max="exam.questions.length||1" />
+            <p class="mt-2 text-xs text-muted">収録 {{ exam.questions.length }} / 暫定目標 {{ exam.targetQuestions }} 問（試験範囲の網羅・内容レビューは未完了）</p>
             <div class="mt-4 space-y-3">
               <label class="block text-sm font-medium">学習範囲
                 <select v-model="chapter" class="block w-full mt-1 rounded-lg border border-default bg-default p-3 text-default">
