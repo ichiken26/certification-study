@@ -1,0 +1,20 @@
+# 01 組織とネットワーク / 大規模設計
+Transit GatewayとDirect Connect Gateway|多数のVPCとオンプレミス拠点を専用接続で統合し、集約されたルーティングを構築したい。|DX GatewayとTransit Gatewayを連携し多数の接続を集約する。
+AWS Control TowerとOrganizations|複数の事業部アカウントを標準化し、一元的にセキュリティガードレールを適用したい。|ランディングゾーンと組織統制を管理する。
+共有サービスVPCとPrivateLink|複数アカウントに社内APIを提供するが、CIDR重複のためVPC全体の接続は避けたい。|サービス単位の接続をPrivateLinkで提供する。
+Route 53 ResolverのInbound/Outbound Endpoint|複数VPCとオンプレミス間で相互のプライベートDNS名前解決を中央管理したい。|Resolverエンドポイントとルールで条件付き転送を構成する。
+# 02 新規ソリューション / 複数リージョン
+DynamoDB Global Tables|各リージョンでローカル読み書きするキーバリューDBが必要で、対応するグローバルテーブル整合性を選べる。|マルチリージョン複製を管理する。
+Aurora Global Database|リレーショナルDBの別リージョンへのストレージベース複製とリージョンDRを設計したい。|クロスリージョン複製とフェイルオーバーを提供する。
+S3 CRRとReplication Time Control|コンプライアンス上、別リージョンに新規オブジェクトを継続複製し15分の複製SLAを利用したい。|CRRで別リージョン複製しRTCを設定する。
+Global Accelerator|複数リージョンのTCPサービスに固定のグローバルIPを提供し、正常なエンドポイントへ誘導したい。|Anycast IPとAWSバックボーンを利用する。
+# 03 継続的改善 / 組織運用
+CloudFormation StackSets|複数アカウント・複数リージョンへ同じCloudFormation構成を展開したい。|StackSetsでスタックを組織規模に展開できる。
+組織CloudTrail証跡|全メンバーアカウントのAWS操作を中央監査バケットへ集約したい。|組織証跡によってアカウント単位の監査設定のばらつきを抑える。
+AWS Config Aggregator|複数アカウント・リージョンのリソース構成とルール評価を中央で集約したい。|Configデータの集約ビューを提供する。
+Firewall Manager|組織全体でWAFや対応するネットワーク保護ポリシーを継続適用したい。|Organizationsと連携してポリシー適用を管理する。
+# 04 移行・モダナイゼーション / 移行
+Application Migration Service|多数の既存VMを大規模にリフトアンドシフトしてEC2へ移したい。|ブロックレベルのサーバー複製とカットオーバーを支援する。
+AWS DMS|DB移行で変更を継続複製し、切り替え時の停止時間を抑えたい。|フルロードとCDCを利用できる。
+AWS DataSync|大量のオンプレミスのファイルをS3/EFS等へオンラインで移行・同期したい。|対応ストレージ間のデータ転送を自動化する。
+AWS Transfer Family|既存取引先のSFTP接続方式を維持しつつファイル保存先をS3へ移行したい。|マネージドなファイル転送プロトコルのエンドポイントを提供する。
