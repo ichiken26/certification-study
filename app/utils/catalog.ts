@@ -18,4 +18,4 @@ export const catalog=[
   {id:'gcp-pde',family:'Google Cloud',name:'Professional Data Engineer',version:'PDE',source:'https://cloud.google.com/learn/certification/data-engineer'},
   {id:'ipa-fe',family:'情報処理技術者',name:'基本情報技術者',version:'FE・現行制度',source:'https://www.ipa.go.jp/shiken/kubun/fe.html'},
   {id:'ipa-ap',family:'情報処理技術者',name:'応用情報技術者',version:'AP・現行制度',source:'https://www.ipa.go.jp/shiken/kubun/ap.html'}
-].map(exam=>({...exam,questions:Object.entries(files).filter(([path])=>path.endsWith('/'+exam.id+'.txt')||path.includes('/'+exam.id+'--')).flatMap(([,raw])=>parseBank(raw,exam.id)).sort((a,b)=>a.chapter.localeCompare(b.chapter,'ja'))}))
+].map(exam=>({...exam,questions:Object.entries(files).filter(([path])=>path.endsWith('/'+exam.id+'.txt')||path.includes('/'+exam.id+'--')).sort(([a],[b])=>Number(a.includes('--'))-Number(b.includes('--')) || a.localeCompare(b)).flatMap(([,raw])=>parseBank(raw,exam.id)).sort((a,b)=>a.chapter.localeCompare(b.chapter,'ja'))}))

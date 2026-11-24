@@ -199,7 +199,7 @@ async function importProgress(event:Event){
               <UButton block size="lg" variant="soft" color="warning" :disabled="wrongCount===0" @click="begin('wrong')">間違えた問題を復習（{{ wrongCount }}問）</UButton>
               <UButton block size="lg" variant="outline" color="neutral" :disabled="!filtered.length" @click="begin('random')">ランダム演習</UButton>
             </div>
-            <p class="mt-4 text-xs text-muted">オリジナル学習問題。合格保証・公式模試ではありません。<a :href="exam.source" target="_blank" rel="noopener noreferrer" class="text-primary underline">公式出題範囲</a></p>
+            <p class="mt-4 text-xs text-muted">オリジナル学習問題。合格保証・公式模試ではありません。試験の全出題範囲や記述式は未網羅です。<a :href="exam.source" target="_blank" rel="noopener noreferrer" class="text-primary underline">公式出題範囲</a></p>
           </UCard>
           <UCard>
             <h2 class="font-bold mb-3">分野別の進捗</h2>
@@ -252,6 +252,7 @@ async function importProgress(event:Event){
               <div v-for="choice in session.choices.filter(c=>requiredChoices>1 || !c.correct)" :key="choice.label" class="border-t border-default pt-3">
                 <p class="text-sm font-semibold"><span :class="choice.correct?'text-success':'text-error'">{{ choice.correct?'✓':'×' }}</span> {{ choice.label }}</p><p class="text-sm leading-relaxed text-muted mt-1">{{ choice.explanation }}</p>
               </div>
+              <a :href="activeExam?.source" target="_blank" rel="noopener noreferrer" class="text-xs text-primary underline">公式の試験範囲を確認する</a>
             </div>
           </UCard>
           <div class="fixed inset-x-0 bottom-0 bg-default/95 backdrop-blur border-t border-default safe-bottom z-20">

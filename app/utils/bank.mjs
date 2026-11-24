@@ -42,7 +42,7 @@ export function shuffle(items,random=Math.random) {
 export function makeOptions(q,bank,random=Math.random) {
   const correct={label:q.answer,explanation:q.explanation,correct:true}
   if(q.explicit) return shuffle(q.explicit,random)
-  const candidates=[...shuffle(bank.filter(x=>x.chapter===q.chapter && x.topic===q.topic),random),...shuffle(bank.filter(x=>x.chapter===q.chapter),random),...shuffle(bank,random)]
+  const candidates=[...shuffle(bank.filter(x=>!x.explicit && x.chapter===q.chapter && x.topic===q.topic),random),...shuffle(bank.filter(x=>!x.explicit && x.chapter===q.chapter),random),...shuffle(bank.filter(x=>!x.explicit),random)]
   const options=[correct]
   for(const other of candidates) {
     if(options.some(x=>x.label===other.answer)) continue

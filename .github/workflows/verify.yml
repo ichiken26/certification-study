@@ -17,3 +17,5 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: test -f .output/public/sw.js && test -f .output/public/index.html && test -f .output/public/icon-512.png
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
