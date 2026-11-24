@@ -15,7 +15,8 @@ for(const [exam,bank] of banks) test(exam+' bank validation',()=>{
     const opts=makeOptions(q,bank)
     assert.equal(opts.length,4)
     assert.equal(new Set(opts.map(o=>o.label)).size,4)
-    assert.equal(opts.filter(o=>o.correct).length,1)
+    assert.equal(opts.filter(o=>o.correct).length,q.explicit?q.explicit.filter(o=>o.correct).length:1)
+    assert.ok(opts.filter(o=>o.correct).length>=1 && opts.filter(o=>o.correct).length<=3)
     assert.ok(opts.every(o=>o.explanation))
   }
   const first=bank[0]

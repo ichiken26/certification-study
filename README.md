@@ -23,3 +23,5 @@ app/data/<資格ID>.txt に UTF-8 で記述。章と話題は `# 章 / 話題`�
 - [LinuC 1](https://linuc.org/linuc1/range/)
 - [LinuC 2026年ベータ](https://linuc.org/linuc/beta-exam-202609.html)
 - [IPA 試験制度見直し](https://www.ipa.go.jp/shiken/minaoshi/index.html)
+
+複数選択式は `@multi|設問|総合解説|正答番号(例:1,3)|選択肢1|解説1|選択肢2|解説2|選択肢3|解説3|選択肢4|解説4` と記述する。選択肢は毎回シャッフルされる。正答の集合が一致した場合のみ正解と判定する。

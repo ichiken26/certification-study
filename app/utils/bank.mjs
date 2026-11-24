@@ -10,11 +10,22 @@ export function parseBank(raw, exam) {
       chapter=parts[0]; topic=parts[1] || chapter
       continue
     }
-    const [answer,stem,explanation,...extra]=line.split('|').map(s=>s.trim())
-    if(!chapter || !answer || !stem || !explanation || (extra.length && extra.length!==6)) throw new Error('Invalid bank row: '+exam+' '+line)
+    const [rawAnswer,stem,explanation,...extra]=line.split('|').map(s=>s.trim())
+    const multi=rawAnswer==='@multi'
+    if(!chapter || !rawAnswer || !stem || !explanation || (multi ? extra.length!==9 : extra.length!==0 && extra.length!==6)) throw new Error('Invalid bank row: '+exam+' '+line)
+    let answer=rawAnswer
+    let explicit=null
+    if(multi){
+      const keys=extra[0].split(',').map(Number)
+      if(new Set(keys).size!==keys.length || keys.length<2 || keys.length>3 || keys.some(n=>!Number.isInteger(n)||n<1||n>4)) throw new Error('Invalid multiple answers: '+stem)
+      explicit=Array.from({length:4},(_,i)=>({label:extra[i*2+1],explanation:extra[i*2+2],correct:keys.includes(i+1)}))
+      answer=explicit.filter(o=>o.correct).map(o=>o.label).join(' / ')
+    }else if(extra.length){
+      explicit=[{label:answer,explanation,correct:true},...Array.from({length:3},(_,i)=>({label:extra[i*2],explanation:extra[i*2+1],correct:false}))]
+    }
+    if(explicit && (new Set(explicit.map(o=>o.label)).size!==4 || explicit.some(o=>!o.label||!o.explanation))) throw new Error('Invalid explicit options: '+stem)
     let h=2166136261
     for(const c of chapter+'\n'+stem) h=Math.imul(h^c.charCodeAt(0),16777619)
-    const explicit=extra.length ? [{label:extra[0],explanation:extra[1]},{label:extra[2],explanation:extra[3]},{label:extra[4],explanation:extra[5]}] : null
     questions.push({id:exam+'-'+(h>>>0).toString(16),exam,chapter,topic,stem,answer,explanation,explicit})
   }
   const ids=new Set(questions.map(q=>q.id))
@@ -30,7 +41,7 @@ export function shuffle(items,random=Math.random) {
 }
 export function makeOptions(q,bank,random=Math.random) {
   const correct={label:q.answer,explanation:q.explanation,correct:true}
-  if(q.explicit) return shuffle([correct,...q.explicit.map(x=>({...x,correct:false}))],random)
+  if(q.explicit) return shuffle(q.explicit,random)
   const candidates=[...shuffle(bank.filter(x=>x.chapter===q.chapter && x.topic===q.topic),random),...shuffle(bank.filter(x=>x.chapter===q.chapter),random),...shuffle(bank,random)]
   const options=[correct]
   for(const other of candidates) {

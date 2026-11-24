@@ -1,5 +1,5 @@
 export interface Choice { label: string; explanation: string; correct: boolean }
-export interface Question { id: string; exam: string; chapter: string; topic: string; stem: string; answer: string; explanation: string; explicit: Omit<Choice,'correct'>[] | null }
+export interface Question { id: string; exam: string; chapter: string; topic: string; stem: string; answer: string; explanation: string; explicit: Choice[] | null }
 export interface Result { attempts: number; correct: number; streak: number; lastCorrect: boolean; updatedAt: string }
 export type History = Record<string,Result>
 export function parseBank(raw:string,exam:string):Question[]

@@ -3,7 +3,7 @@ import { catalog } from './utils/catalog'
 import { makeOptions, recordAnswer, selectSession } from './utils/bank.mjs'
 import type { Choice, History, Question } from './utils/bank.mjs'
 
-type Session = { exam:string; ids:string[]; index:number; choices:Choice[]; selected:number|null; answered:boolean; correct:number }
+type Session = { exam:string; ids:string[]; index:number; choices:Choice[]; selected:number[]; answered:boolean; correct:number }
 const STORAGE='cert-study-v1'
 const history=ref<History>({})
 const session=ref<Session|null>(null)
@@ -11,6 +11,9 @@ const examId=ref('aws-saa')
 const chapter=ref('')
 const count=ref(10)
 const ready=ref(false)
+const showHome=ref(false)
+const requiredChoices=computed(()=>session.value?.choices.filter(c=>c.correct).length||1)
+const answerCorrect=computed(()=>!!session.value && session.value.selected.length===requiredChoices.value && session.value.selected.every(i=>session.value?.choices[i]?.correct))
 const storageError=ref(false)
 const offline=ref(false)
 const offlineReady=ref(false)
@@ -46,7 +49,7 @@ onMounted(()=>{
       if(catalog.some(e=>e.id===data.examId)) examId.value=data.examId
       const s=data.session
       const bank=catalog.find(e=>e.id===s?.exam)?.questions
-      if(s && bank && Array.isArray(s.ids) && s.ids.length && Number.isInteger(s.index) && s.index>=0 && s.index<=s.ids.length && s.ids.every((id:string)=>bank.some(q=>q.id===id)) && Array.isArray(s.choices) && s.choices.length===4) session.value=s
+      if(s && bank && Array.isArray(s.ids) && s.ids.length && Number.isInteger(s.index) && s.index>=0 && s.index<=s.ids.length && s.ids.every((id:string)=>bank.some(q=>q.id===id)) && Array.isArray(s.choices) && s.choices.length===4) session.value={...s,selected:Array.isArray(s.selected)?s.selected.filter((n:number)=>Number.isInteger(n)&&n>=0&&n<4):Number.isInteger(s.selected)?[s.selected]:[]}
     }
   } catch { storageError.value=true }
   ready.value=true
@@ -71,14 +74,21 @@ function begin(mode:string) {
   const items=selectSession(exam.value.questions,history.value,mode,count.value,chapter.value)
   if(!items.length) return
   const first=items[0]!
-  session.value={exam:examId.value,ids:items.map(q=>q.id),index:0,choices:makeOptions(first,exam.value.questions),selected:null,answered:false,correct:0}
+  session.value={exam:examId.value,ids:items.map(q=>q.id),index:0,choices:makeOptions(first,exam.value.questions),selected:[],answered:false,correct:0}
+  showHome.value=false
   scrollTop()
 }
-function choose(i:number) { if(session.value && !session.value.answered) session.value.selected=i }
+function choose(i:number) {
+  const s=session.value
+  if(!s||s.answered) return
+  if(requiredChoices.value===1) s.selected=[i]
+  else if(s.selected.includes(i)) s.selected=s.selected.filter(n=>n!==i)
+  else if(s.selected.length<requiredChoices.value) s.selected=[...s.selected,i]
+}
 function submit() {
   const s=session.value,q=current.value
-  if(!s || !q || s.answered || s.selected===null) return
-  const correct=s.choices[s.selected]?.correct===true
+  if(!s || !q || s.answered || s.selected.length!==requiredChoices.value) return
+  const correct=answerCorrect.value
   s.answered=true
   s.correct+=Number(correct)
   history.value=recordAnswer(history.value,q.id,correct)
@@ -89,11 +99,12 @@ function next() {
   if(!s||!s.answered) return
   const index=s.index+1
   const q=activeExam.value?.questions.find(q=>q.id===s.ids[index])
-  session.value={...s,index,selected:null,answered:false,choices:q?makeOptions(q,activeExam.value!.questions):s.choices}
+  session.value={...s,index,selected:[],answered:false,choices:q?makeOptions(q,activeExam.value!.questions):s.choices}
   scrollTop()
 }
 function scrollTop(){ nextTick(()=>window.scrollTo({top:0,behavior:'instant'})) }
-function home(){ session.value=null; scrollTop() }
+function home(){ if(finished.value)session.value=null; showHome.value=true; scrollTop() }
+function resume(){ showHome.value=false; scrollTop() }
 function applyUpdate(){
   if(!registration?.waiting) return
   navigator.serviceWorker.addEventListener('controllerchange',()=>location.reload(),{once:true})
@@ -131,7 +142,7 @@ async function importProgress(event:Event){
         <div class="max-w-3xl mx-auto flex items-center justify-between px-4 py-3 gap-3">
           <div>
             <p class="text-xs font-semibold tracking-widest text-primary">CERTIFICATION STUDY</p>
-            <p class="text-sm text-muted">{{ session ? activeExam?.version : '通勤時間を、資格の勉強時間に。' }}</p>
+            <p class="text-sm text-muted">{{ session && !showHome ? activeExam?.version : '通勤時間を、資格の勉強時間に。' }}</p>
           </div>
           <div class="flex gap-2 items-center">
             <UBadge v-if="offline" color="neutral" variant="soft">オフライン</UBadge>
@@ -146,28 +157,27 @@ async function importProgress(event:Event){
           <template #description><UButton size="sm" @click="applyUpdate">更新する</UButton></template>
         </UAlert>
         <div v-if="!ready" class="text-muted py-10 text-center">読み込み中…</div>
-        <template v-else-if="!session">
+        <template v-else-if="!session || showHome">
           <div>
             <h1 class="text-2xl font-bold">今日の学習</h1>
             <p class="text-sm text-muted mt-1">資格を選んで、未回答から順番に進めよう。</p>
           </div>
-          <div class="space-y-3">
-            <div v-for="family in families" :key="family">
-              <p class="text-xs text-muted font-semibold mb-2">{{ family }}</p>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <UButton v-for="item in catalog.filter(e=>e.family===family)" :key="item.id"
-                  :color="examId===item.id?'primary':'neutral'" :variant="examId===item.id?'soft':'outline'"
-                  :disabled="!item.questions.length" class="justify-between text-left py-3 whitespace-normal"
-                  @click="examId=item.id">
-                  <span>{{ item.name }}<small class="block opacity-80">{{ item.version }}</small></span>
-                  <UBadge color="neutral" variant="subtle">{{ item.questions.length ? item.questions.length+'問' : '準備中' }}</UBadge>
-                </UButton>
-              </div>
+          <label class="block text-sm font-medium">学習する資格
+            <select v-model="examId" class="block w-full mt-1 rounded-lg border border-default bg-default p-3 text-default">
+              <optgroup v-for="family in families" :key="family" :label="family">
+                <option v-for="item in catalog.filter(e=>e.family===family)" :key="item.id" :value="item.id" :disabled="!item.questions.length">{{ item.name }} · {{ item.version }}（{{ item.questions.length ? item.questions.length+'問' : '準備中' }}）</option>
+              </optgroup>
+            </select>
+          </label>
+          <UCard v-if="session && !finished">
+            <div class="flex items-center justify-between gap-3">
+              <div><p class="font-semibold">中断した学習</p><p class="text-sm text-muted">{{ activeExam?.name }} · {{ session.index+1 }}/{{ session.ids.length }}問</p></div>
+              <UButton @click="resume">再開</UButton>
             </div>
-          </div>
+          </UCard>
           <UCard>
             <div class="flex items-center justify-between gap-3">
-              <h2 class="font-bold">{{ exam.name }}</h2><UBadge color="neutral" variant="outline">初版・補強中</UBadge>
+              <h2 class="font-bold">{{ exam.name }}</h2><UBadge color="neutral" variant="outline">{{ exam.id==='aws-saa' ? '基礎＋設計演習' : '初版・補強中' }}</UBadge>
             </div>
             <div class="grid grid-cols-3 gap-3 py-4 text-center">
               <div><div class="text-2xl font-bold tabular-nums">{{ seen }}/{{ exam.questions.length }}</div><div class="text-xs text-muted">回答済み</div></div>
@@ -219,35 +229,35 @@ async function importProgress(event:Event){
           <div class="flex items-center justify-between gap-3"><UBadge color="neutral" variant="soft">{{ current.chapter }}</UBadge><span class="text-sm text-muted tabular-nums">{{ session.index+1 }} / {{ session.ids.length }}</span></div>
           <UProgress :model-value="session.index+(session.answered?1:0)" :max="session.ids.length" />
           <UCard>
-            <p class="text-xs text-muted mb-2">{{ current.topic }}</p>
+            <p class="text-xs text-muted mb-2">{{ current.topic }} · {{ requiredChoices===1 ? '1つ選択' : requiredChoices+'つ選択' }}</p>
             <h1 class="font-semibold text-lg leading-relaxed whitespace-pre-line">{{ current.stem }}</h1>
           </UCard>
           <div class="space-y-3">
-            <button v-for="(choice,i) in session.choices" :key="i" type="button" :disabled="session.answered" :aria-pressed="session.selected===i"
+            <button v-for="(choice,i) in session.choices" :key="i" type="button" :disabled="session.answered" :aria-pressed="session.selected.includes(i)"
               class="answer-button w-full flex items-center gap-3 border rounded-xl px-4 py-4 bg-default transition-colors"
-              :class="session.answered ? (choice.correct?'border-success bg-success/10':session.selected===i?'border-error bg-error/10':'border-default') : session.selected===i?'border-primary ring-2 ring-primary/30 bg-primary/5':'border-default hover:bg-elevated'"
+              :class="session.answered ? (choice.correct?'border-success bg-success/10':session.selected.includes(i)?'border-error bg-error/10':'border-default') : session.selected.includes(i)?'border-primary ring-2 ring-primary/30 bg-primary/5':'border-default hover:bg-elevated'"
               @click="choose(i)">
               <span class="shrink-0 text-sm font-bold rounded-full border border-default size-8 flex items-center justify-center">{{ ['A','B','C','D'][i] }}</span>
               <span class="flex-1 text-sm leading-relaxed font-medium">{{ choice.label }}</span>
               <span v-if="session.answered && choice.correct" class="text-success font-bold">✓</span>
-              <span v-else-if="session.answered && session.selected===i" class="text-error font-bold">×</span>
+              <span v-else-if="session.answered && session.selected.includes(i)" class="text-error font-bold">×</span>
             </button>
           </div>
           <UCard v-if="session.answered" id="explanation" class="scroll-mt-24">
             <div class="space-y-4">
-              <div><UBadge :color="session.choices[session.selected ?? 0]?.correct?'success':'error'" variant="soft">{{ session.choices[session.selected ?? 0]?.correct?'正解！':'不正解' }}</UBadge>
+              <div><UBadge :color="answerCorrect?'success':'error'" variant="soft">{{ answerCorrect?'正解！':'不正解' }}</UBadge>
                 <h2 class="mt-2 font-bold text-lg">{{ current.answer }}</h2>
                 <p class="leading-relaxed mt-2">{{ current.explanation }}</p>
               </div>
-              <div v-for="choice in session.choices.filter(c=>!c.correct)" :key="choice.label" class="border-t border-default pt-3">
-                <p class="text-sm font-semibold">{{ choice.label }}</p><p class="text-sm leading-relaxed text-muted mt-1">{{ choice.explanation }}</p>
+              <div v-for="choice in session.choices.filter(c=>requiredChoices>1 || !c.correct)" :key="choice.label" class="border-t border-default pt-3">
+                <p class="text-sm font-semibold"><span :class="choice.correct?'text-success':'text-error'">{{ choice.correct?'✓':'×' }}</span> {{ choice.label }}</p><p class="text-sm leading-relaxed text-muted mt-1">{{ choice.explanation }}</p>
               </div>
             </div>
           </UCard>
           <div class="fixed inset-x-0 bottom-0 bg-default/95 backdrop-blur border-t border-default safe-bottom z-20">
             <div class="max-w-3xl mx-auto px-4 pt-3 flex gap-2 items-center">
-              <UButton color="neutral" variant="ghost" @click="home">終了</UButton>
-              <UButton v-if="!session.answered" class="flex-1 justify-center" size="xl" :disabled="session.selected===null" @click="submit">回答する</UButton>
+              <UButton color="neutral" variant="ghost" @click="home">中断</UButton>
+              <UButton v-if="!session.answered" class="flex-1 justify-center" size="xl" :disabled="session.selected.length!==requiredChoices" @click="submit">回答する{{ requiredChoices>1?'（'+session.selected.length+'/'+requiredChoices+'）':'' }}</UButton>
               <UButton v-else class="flex-1 justify-center" size="xl" @click="next">{{ session.index+1===session.ids.length?'結果を見る':'次の問題' }}</UButton>
             </div>
           </div>
