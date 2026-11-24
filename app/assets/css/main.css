@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+:root { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans JP", sans-serif; }
+body { min-height: 100dvh; }
+.safe-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+.answer-button { min-height: 60px; white-space: normal; text-align: left; overflow-wrap: anywhere; }
