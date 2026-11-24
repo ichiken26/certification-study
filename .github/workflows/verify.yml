@@ -1,0 +1,19 @@
+name: Verify
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install
+      - run: npm test
+      - run: npm run build
+      - run: test -f .output/public/sw.js && test -f .output/public/index.html && test -f .output/public/icon-512.png
