@@ -1,0 +1,4 @@
+# DOP-C02 追加演習02
+100問。公式ガイド https://docs.aws.amazon.com/ja_jp/aws-certification/latest/devops-engineer-professional-02/devops-engineer-professional-02.html の6分野を確認。CI/CD、IaC、レジリエンス、監視、障害対応、セキュリティの演習。独立した個別検証は未完了。
+
+照合対象: https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html ; https://docs.aws.amazon.com/codebuild/latest/userguide/welcome.html ; https://docs.aws.amazon.com/codedeploy/latest/userguide/welcome.html ; https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html ; https://docs.aws.amazon.com/systems-manager/latest/userguide/what-is-systems-manager.html ; https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html ; https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html ; https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
