@@ -1,0 +1,2 @@
+# PCA 追加演習02
+100問。現行資格ページ https://cloud.google.com/learn/certification/cloud-architect の関連領域を対象に独自シナリオを作成。個別仕様の独立照合は未完了。照合対象: https://cloud.google.com/architecture/framework ; https://cloud.google.com/architecture/disaster-recovery ; https://cloud.google.com/iam/docs ; https://cloud.google.com/vpc-service-controls/docs ; https://cloud.google.com/kms/docs ; https://cloud.google.com/architecture/migration-to-google-cloud ; https://cloud.google.com/vertex-ai/docs ; https://cloud.google.com/billing/docs ; https://sre.google/workbook/alerting-on-slos/
