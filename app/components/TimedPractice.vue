@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { timedItemCorrect } from '../utils/bank.mjs'
 import type { TimedSession, Question } from '../utils/bank.mjs'
-const props=defineProps<{session:TimedSession;bank:Question[];clock:number}>()
+const props=defineProps<{session:TimedSession;bank:Question[];clock:number;mockName?:string}>()
 const emit=defineEmits<{update:[TimedSession];finish:[];leave:[]}>()
 const item=computed(()=>props.session.items[props.session.index])
 const question=computed(()=>props.bank.find(q=>q.id===item.value?.id))
@@ -35,10 +35,10 @@ function requestFinish(){confirm.value=true;nextTick(()=>window.scrollTo({top:do
   <div class="space-y-4">
     <template v-if="session.completed">
       <UCard class="text-center">
-        <p class="text-sm text-muted">時間制限付き演習の結果</p>
+        <p class="text-sm text-muted">{{ mockName ? mockName+'の結果' : '時間制限付き演習の結果' }}</p>
         <h1 class="text-4xl font-bold my-4 tabular-nums">{{ session.correct }} / {{ session.items.length }}</h1>
         <p>正答率 {{ Math.round((session.correct||0)/session.items.length*100) }}%</p>
-        <p class="text-sm text-muted mt-2">未回答は不正解として記録。通常問題集から出題する演習であり、公式の換算スコアではありません。</p>
+        <p class="text-sm text-muted mt-2">未回答は不正解として記録。{{ mockName ? '独立したオリジナル問題セットです。' : '通常問題集から出題する演習です。' }} 公式の換算スコアではありません。</p>
         <UButton block class="mt-4" @click="emit('leave')">学習トップへ</UButton>
       </UCard>
       <label class="flex items-center gap-2 text-sm"><input type="checkbox" v-model="reviewIncorrect"> 不正解・未回答のみ表示</label>

@@ -9,7 +9,7 @@ export function selectSession(bank:Question[],history:History,mode:string,count:
 export function recordAnswer(history:History,id:string,correct:boolean):History
 
 export interface TimedItem { id:string; choices:Choice[]; selected:number[]; flagged:boolean }
-export interface TimedSession { exam:string; index:number; deadline:number; completed:boolean; items:TimedItem[]; correct?:number }
+export interface TimedSession { exam:string; mockId?:string; index:number; deadline:number; completed:boolean; items:TimedItem[]; correct?:number }
 export function createTimedSession(bank:Question[],exam:string,count:number,minutes:number,now?:number,random?:()=>number):TimedSession
 export function timedItemCorrect(item:TimedItem):boolean
 export function scoreTimedSession(session:TimedSession,history:History):{session:TimedSession;history:History}

@@ -18,6 +18,8 @@ const timedMinutes=ref(30)
 const clock=ref(Date.now())
 let clockId:ReturnType<typeof setInterval>|undefined
 const timedExam=computed(()=>catalog.find(e=>e.id===timed.value?.exam))
+const timedMock=computed(()=>timedExam.value?.mocks.find(m=>m.id===timed.value?.mockId))
+const timedBank=computed(()=>timed.value?.mockId?timedMock.value?.questions||[]:timedExam.value?.questions||[])
 const timedPool=computed(()=>filtered.value.filter(q=>q.kind==='choice'))
 
 const requiredChoices=computed(()=>session.value?.choices.filter(c=>c.correct).length||1)
@@ -58,7 +60,8 @@ onMounted(()=>{
       if(data.history && typeof data.history==='object') history.value=data.history
       if(catalog.some(e=>e.id===data.examId)) examId.value=data.examId
       const savedTimed=data.timed
-      const timedBank=catalog.find(e=>e.id===savedTimed?.exam)?.questions
+      const savedExam=catalog.find(e=>e.id===savedTimed?.exam)
+      const timedBank=savedTimed?.mockId?savedExam?.mocks.find(m=>m.id===savedTimed.mockId)?.questions:savedExam?.questions
       if(savedTimed && timedBank && Array.isArray(savedTimed.items) && savedTimed.items.length && Number.isFinite(savedTimed.deadline) && Number.isInteger(savedTimed.index) && savedTimed.index>=0 && savedTimed.index<savedTimed.items.length && savedTimed.items.every((i:any)=>timedBank.some(q=>q.id===i.id&&q.kind==='choice')&&Array.isArray(i.choices)&&i.choices.length>=4&&i.choices.length<=6&&Array.isArray(i.selected)&&i.selected.every((n:number)=>Number.isInteger(n)&&n>=0&&n<i.choices.length))) {
         timed.value=savedTimed
         timedActive.value=!!data.timedActive
@@ -100,6 +103,18 @@ function beginTimed(){
   timed.value=createTimedSession(timedPool.value,examId.value,count.value,timedMinutes.value,clock.value)
   timedActive.value=true
   scrollTop()
+}
+function beginMock(id:string){
+  const mock=exam.value.mocks.find(m=>m.id===id)
+  if(!mock||(timed.value&&!timed.value.completed))return
+  clock.value=Date.now()
+  timed.value={...createTimedSession(mock.questions,examId.value,mock.questions.length,mock.minutes,clock.value),mockId:id}
+  timedActive.value=true
+  scrollTop()
+}
+function mockSeen(id:string){
+  const mock=exam.value.mocks.find(m=>m.id===id)
+  return mock?.questions.filter(q=>history.value[q.id]).length||0
 }
 function finishTimed(){
   if(!timed.value||timed.value.completed)return
@@ -178,7 +193,7 @@ async function importProgress(event:Event){
   const file=input.files?.[0];if(!file)return
   try {
     const data=JSON.parse(await file.text())
-    const validIds=new Set(catalog.flatMap(e=>e.questions.map(q=>q.id)))
+    const validIds=new Set(catalog.flatMap(e=>[...e.questions,...e.mocks.flatMap(m=>m.questions)].map(q=>q.id)))
     const imported:History={}
     for(const [id,value] of Object.entries(data.history||{})){
       const r=value as History[string]
@@ -215,7 +230,7 @@ async function importProgress(event:Event){
           <template #description><UButton size="sm" @click="applyUpdate">更新する</UButton></template>
         </UAlert>
         <div v-if="!ready" class="text-muted py-10 text-center">読み込み中…</div>
-        <TimedPractice v-else-if="timedActive && timed && timedExam" :session="timed" :bank="timedExam.questions" :clock="clock" @update="timed=$event" @finish="finishTimed" @leave="leaveTimed" />
+        <TimedPractice v-else-if="timedActive && timed && timedExam" :session="timed" :bank="timedBank" :clock="clock" :mock-name="timedMock?.name" @update="timed=$event" @finish="finishTimed" @leave="leaveTimed" />
         <template v-else-if="!session || showHome">
           <div>
             <h1 class="text-2xl font-bold">今日の学習</h1>
@@ -272,6 +287,15 @@ async function importProgress(event:Event){
               </div>
             </div>
             <p class="mt-4 text-xs text-muted">オリジナル学習問題。合格保証・公式模試ではありません。試験の全出題範囲や記述式は未網羅です。<a :href="exam.source" target="_blank" rel="noopener noreferrer" class="text-primary underline">公式出題範囲</a></p>
+          </UCard>
+          <UCard v-if="exam.mocks.length">
+            <h2 class="font-bold mb-2">独立模擬試験</h2>
+            <p class="text-xs text-muted mb-3">通常の演習と別の問題セットです。初回のみ未受験として実力確認に使えます。公式問題・公式換算スコアではありません。問題内容の独立レビューは未完了です。</p>
+            <div v-for="mock in exam.mocks" :key="mock.id" class="border-t border-default py-3 space-y-2">
+              <div class="flex items-center justify-between gap-3"><p class="font-medium">{{ mock.name }}</p><UBadge :color="mockSeen(mock.id)?'neutral':'primary'" variant="soft">{{ mockSeen(mock.id)?'受験済み':'未受験' }}</UBadge></div>
+              <p class="text-sm text-muted">{{ mock.questions.length }}問 · {{ mock.minutes }}分</p>
+              <UButton block variant="outline" :disabled="!!(timed&&!timed.completed)" @click="beginMock(mock.id)">{{ mockSeen(mock.id)?'再受験':'独立模擬試験を開始' }}</UButton>
+            </div>
           </UCard>
           <UCard>
             <h2 class="font-bold mb-3">分野別の進捗</h2>

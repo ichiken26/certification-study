@@ -56,3 +56,21 @@ test('timed practice preserves choices, scores once, treats skipped as wrong',()
   assert.equal(result.history[session.items[1].id].lastCorrect,false)
   assert.deepEqual(scoreTimedSession(result.session,result.history),result)
 })
+
+
+test('independent SAA mock set is separate and has the intended domain distribution',async()=>{
+  const raw=await readFile(new URL('../app/mock-data/aws-saa--01.txt',import.meta.url),'utf8')
+  const mock=parseBank(raw,'aws-saa--01-mock')
+  assert.equal(mock.length,65)
+  const normal=banks.get('aws-saa')
+  const normalIds=new Set(normal.map(q=>q.id)),normalStems=new Set(normal.map(q=>q.stem.normalize('NFKC').replace(/\s+/g,'')))
+  assert.equal(new Set(mock.map(q=>q.id)).size,65)
+  const counts={}
+  for(const q of mock){
+    assert.equal(q.kind,'choice');assert.ok(q.explicit);assert.ok(!normalIds.has(q.id));assert.ok(!normalStems.has(q.stem.normalize('NFKC').replace(/\s+/g,'')))
+    const domain=q.chapter.slice(0,2);counts[domain]=(counts[domain]||0)+1
+    const opts=makeOptions(q,mock);assert.ok(opts.length>=4);assert.equal(new Set(opts.map(o=>o.label)).size,opts.length);assert.ok(opts.every(o=>o.explanation));assert.ok(opts.some(o=>o.correct)&&opts.some(o=>!o.correct))
+  }
+  assert.deepEqual(counts,{'01':20,'02':17,'03':15,'04':13})
+  assert.equal(createTimedSession(mock,'aws-saa',65,130,1000).items.length,65)
+})
