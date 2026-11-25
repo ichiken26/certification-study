@@ -49,11 +49,22 @@ const files=(await walk(dir)).sort()
 const hash=createHash('sha256')
 for(const file of files) { hash.update(file); hash.update(await readFile(join(dir,file))) }
 const version='cert-study-'+hash.digest('hex').slice(0,16)
-const urls=['/',...files.map(f=>'/'+f)]
+const urls=[...new Set(['/',...files.map(f=>'/'+f.split('/').map(encodeURIComponent).join('/'))])]
 const sw=`const CACHE = ${JSON.stringify(version)};
 const PRECACHE = ${JSON.stringify(urls)};
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(PRECACHE)));
+  event.waitUntil((async()=>{
+    const cache=await caches.open(CACHE);
+    try {
+      for(let i=0;i<PRECACHE.length;i+=8){
+        await Promise.all(PRECACHE.slice(i,i+8).map(async path=>{
+          const response=await fetch(path,{cache:'reload'});
+          if(!response.ok) throw new Error('Precache '+path+' failed: '+response.status);
+          await cache.put(path,response);
+        }));
+      }
+    }catch(error){await caches.delete(CACHE);console.error(error);throw error;}
+  })());
 });
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k.startsWith('cert-study-') && k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));

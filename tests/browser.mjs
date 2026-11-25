@@ -26,6 +26,7 @@ try {
   page.setDefaultTimeout(20000)
   const errors=[]
   page.on('pageerror',e=>errors.push(e.message))
+  page.on('console',m=>{if(m.type()==='error')console.error('Browser:',m.text())})
   const url='http://127.0.0.1:'+server.address().port
   await page.goto(url)
   await page.getByRole('button',{name:/ロードマップ順に学習/}).waitFor()
@@ -37,8 +38,9 @@ try {
   await page.getByRole('button',{name:/回答する/}).click()
   await page.locator('#explanation').waitFor()
   assert.ok((await page.locator('#explanation').innerText()).length>20)
-  await page.waitForFunction(()=>!!navigator.serviceWorker.controller,{},{timeout:30000})
-  await page.waitForFunction(()=>!!navigator.serviceWorker.controller)
+  try{await page.waitForFunction(()=>!!navigator.serviceWorker.controller,{},{timeout:45000})}catch(error){
+    console.error('Service worker diagnostics',await page.evaluate(async()=>{const r=await navigator.serviceWorker.getRegistration();return {secure:isSecureContext,registration:r?.scope,installing:r?.installing?.state,waiting:r?.waiting?.state,active:r?.active?.state,caches:await caches.keys()}}));throw error
+  }
   await page.reload()
   await page.locator('#explanation').waitFor()
   assert.equal(await page.locator('h1').innerText(),stem)

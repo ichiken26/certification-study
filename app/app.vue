@@ -18,6 +18,7 @@ const answerCorrect=computed(()=>isWritten.value?session.value?.writtenCorrect==
 const storageError=ref(false)
 const offline=ref(false)
 const offlineReady=ref(false)
+const offlineError=ref(false)
 const updateReady=ref(false)
 let registration:ServiceWorkerRegistration|undefined
 const families=[...new Set(catalog.map(e=>e.family))]
@@ -57,7 +58,7 @@ onMounted(()=>{
   offline.value=!navigator.onLine
   window.addEventListener('online',()=>offline.value=false)
   window.addEventListener('offline',()=>offline.value=true)
-  if('serviceWorker' in navigator && import.meta.prod) {
+  if('serviceWorker' in navigator && !import.meta.dev) {
     navigator.serviceWorker.register('/sw.js').then(reg=>{
       registration=reg
       updateReady.value=!!reg.waiting
@@ -66,7 +67,7 @@ onMounted(()=>{
         worker?.addEventListener('statechange',()=>{if(worker.state==='installed' && navigator.serviceWorker.controller) updateReady.value=true})
       })
       return navigator.serviceWorker.ready
-    }).then(()=>offlineReady.value=true).catch(()=>{})
+    }).then(()=>offlineReady.value=true).catch(error=>{offlineError.value=true;console.error('Service worker registration failed',error)})
   }
 })
 watch([history,session,examId],save,{deep:true,flush:'sync'})
@@ -167,6 +168,7 @@ async function importProgress(event:Event){
       </header>
       <main class="max-w-3xl mx-auto px-4 py-5 space-y-5 pb-32">
         <UAlert v-if="storageError" color="warning" title="端末に履歴を保存できません" description="ストレージ設定を確認してください。" />
+        <UAlert v-if="offlineError" color="warning" title="オフライン準備に失敗しました" description="オンラインで再読み込みしてください。" />
         <UAlert v-if="updateReady" color="info" title="新しい問題集があります">
           <template #description><UButton size="sm" @click="applyUpdate">更新する</UButton></template>
         </UAlert>
