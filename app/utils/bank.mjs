@@ -70,3 +70,24 @@ export function recordAnswer(history,id,correct) {
   const old=history[id]||{attempts:0,correct:0,streak:0}
   return {...history,[id]:{attempts:old.attempts+1,correct:old.correct+Number(correct),streak:correct?old.streak+1:0,lastCorrect:correct,updatedAt:new Date().toISOString()}}
 }
+
+export function createTimedSession(bank,exam,count,minutes,now=Date.now(),random=Math.random) {
+  const pool=bank.filter(q=>q.kind==='choice')
+  if(!pool.length || !Number.isInteger(count) || count<1 || !Number.isFinite(minutes) || minutes<=0) throw new Error('Invalid timed practice')
+  return {exam,index:0,deadline:now+minutes*60000,completed:false,items:shuffle(pool,random).slice(0,count).map(q=>({id:q.id,choices:makeOptions(q,bank,random),selected:[],flagged:false}))}
+}
+export function timedItemCorrect(item) {
+  const correct=item.choices.flatMap((o,i)=>o.correct?[i]:[])
+  return item.selected.length===correct.length && new Set(item.selected).size===correct.length && correct.every(i=>item.selected.includes(i))
+}
+export function scoreTimedSession(session,history) {
+  if(session.completed) return {session,history}
+  let correct=0, next={...history}
+  for(const item of session.items) {
+    const ok=timedItemCorrect(item)
+    correct+=Number(ok)
+    const old=next[item.id]||{attempts:0,correct:0,streak:0}
+    next[item.id]={attempts:old.attempts+1,correct:old.correct+Number(ok),streak:ok?old.streak+1:0,lastCorrect:ok,updatedAt:new Date().toISOString()}
+  }
+  return {session:{...session,completed:true,correct},history:next}
+}

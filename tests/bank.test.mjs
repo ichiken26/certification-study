@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFile,readdir } from 'node:fs/promises'
-import { parseBank,makeOptions,selectSession,recordAnswer } from '../app/utils/bank.mjs'
+import { parseBank,makeOptions,selectSession,recordAnswer,createTimedSession,timedItemCorrect,scoreTimedSession } from '../app/utils/bank.mjs'
 const names=(await readdir(new URL('../app/data/',import.meta.url))).filter(n=>n.endsWith('.txt'))
 const banks=new Map()
 for(const name of names){
@@ -39,4 +39,20 @@ test('five and six option multi-select',()=>{
     const q=parseBank('# Domain\n'+['@multi','Question','Summary','1,5',...options].join('|'),'test')[0]
     const choices=makeOptions(q,[q]);assert.equal(choices.length,n);assert.deepEqual(choices.filter(o=>o.correct).map(o=>o.label).sort(),['Option 1','Option 5'])
   }
+})
+
+test('timed practice preserves choices, scores once, treats skipped as wrong',()=>{
+  const bank=banks.get('aws-saa')
+  const session=createTimedSession(bank,'aws-saa',5,15,1000,()=>0.42)
+  assert.equal(session.items.length,5)
+  assert.equal(session.deadline,901000)
+  assert.equal(new Set(session.items.map(i=>i.id)).size,5)
+  session.items[0].selected=session.items[0].choices.flatMap((o,i)=>o.correct?[i]:[])
+  assert.equal(timedItemCorrect(session.items[0]),true)
+  const result=scoreTimedSession(session,{})
+  assert.equal(result.session.correct,1)
+  assert.equal(result.session.completed,true)
+  assert.equal(Object.keys(result.history).length,5)
+  assert.equal(result.history[session.items[1].id].lastCorrect,false)
+  assert.deepEqual(scoreTimedSession(result.session,result.history),result)
 })

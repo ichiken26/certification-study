@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { catalog } from './utils/catalog'
-import { makeOptions, recordAnswer, selectSession } from './utils/bank.mjs'
-import type { Choice, History, Question } from './utils/bank.mjs'
+import { makeOptions, recordAnswer, selectSession, createTimedSession, scoreTimedSession } from './utils/bank.mjs'
+import type { Choice, History, Question, TimedSession } from './utils/bank.mjs'
 
 type Session = { exam:string; ids:string[]; index:number; choices:Choice[]; selected:number[]; answered:boolean; correct:number; writtenInput?:string; revealed?:boolean; writtenCorrect?:boolean }
 const STORAGE='cert-study-v1'
@@ -12,6 +12,14 @@ const chapter=ref('')
 const count=ref(10)
 const ready=ref(false)
 const showHome=ref(false)
+const timed=ref<TimedSession|null>(null)
+const timedActive=ref(false)
+const timedMinutes=ref(30)
+const clock=ref(Date.now())
+let clockId:ReturnType<typeof setInterval>|undefined
+const timedExam=computed(()=>catalog.find(e=>e.id===timed.value?.exam))
+const timedPool=computed(()=>filtered.value.filter(q=>q.kind==='choice'))
+
 const requiredChoices=computed(()=>session.value?.choices.filter(c=>c.correct).length||1)
 const isWritten=computed(()=>current.value?.kind==='written')
 const answerCorrect=computed(()=>isWritten.value?session.value?.writtenCorrect===true:!!session.value && session.value.selected.length===requiredChoices.value && session.value.selected.every(i=>session.value?.choices[i]?.correct))
@@ -39,7 +47,7 @@ const chapterStats=computed(()=>chapters.value.map(name=>{
 }))
 const save=()=>{
   if(!ready.value) return
-  try { localStorage.setItem(STORAGE,JSON.stringify({history:history.value,session:session.value,examId:examId.value})); storageError.value=false }
+  try { localStorage.setItem(STORAGE,JSON.stringify({history:history.value,session:session.value,examId:examId.value,timed:timed.value,timedActive:timedActive.value})); storageError.value=false }
   catch { storageError.value=true }
 }
 onMounted(()=>{
@@ -49,12 +57,25 @@ onMounted(()=>{
       const data=JSON.parse(raw)
       if(data.history && typeof data.history==='object') history.value=data.history
       if(catalog.some(e=>e.id===data.examId)) examId.value=data.examId
+      const savedTimed=data.timed
+      const timedBank=catalog.find(e=>e.id===savedTimed?.exam)?.questions
+      if(savedTimed && timedBank && Array.isArray(savedTimed.items) && savedTimed.items.length && Number.isFinite(savedTimed.deadline) && Number.isInteger(savedTimed.index) && savedTimed.index>=0 && savedTimed.index<savedTimed.items.length && savedTimed.items.every((i:any)=>timedBank.some(q=>q.id===i.id&&q.kind==='choice')&&Array.isArray(i.choices)&&i.choices.length>=4&&i.choices.length<=6&&Array.isArray(i.selected)&&i.selected.every((n:number)=>Number.isInteger(n)&&n>=0&&n<i.choices.length))) {
+        timed.value=savedTimed
+        timedActive.value=!!data.timedActive
+        if(!timedActive.value) showHome.value=true
+      }
       const s=data.session
       const bank=catalog.find(e=>e.id===s?.exam)?.questions
       if(s && bank && Array.isArray(s.ids) && s.ids.length && Number.isInteger(s.index) && s.index>=0 && s.index<=s.ids.length && s.ids.every((id:string)=>bank.some(q=>q.id===id)) && Array.isArray(s.choices) && (s.index===s.ids.length || s.choices.length>=4&&s.choices.length<=6 || s.choices.length===0 && bank.find(q=>q.id===s.ids[s.index])?.kind==='written')) session.value={...s,selected:Array.isArray(s.selected)?s.selected.filter((n:number)=>Number.isInteger(n)&&n>=0&&n<s.choices.length):Number.isInteger(s.selected)?[s.selected]:[]}
     }
   } catch { storageError.value=true }
   ready.value=true
+  clock.value=Date.now()
+  if(timed.value&&!timed.value.completed&&clock.value>=timed.value.deadline) finishTimed()
+  clockId=setInterval(()=>{
+    clock.value=Date.now()
+    if(timed.value&&!timed.value.completed&&clock.value>=timed.value.deadline) finishTimed()
+  },1000)
   offline.value=!navigator.onLine
   window.addEventListener('online',()=>offline.value=false)
   window.addEventListener('offline',()=>offline.value=true)
@@ -70,8 +91,29 @@ onMounted(()=>{
     }).then(()=>offlineReady.value=true).catch(error=>{offlineError.value=true;console.error('Service worker registration failed',error)})
   }
 })
-watch([history,session,examId],save,{deep:true,flush:'sync'})
+onUnmounted(()=>{if(clockId!==undefined)clearInterval(clockId)})
+watch([history,session,examId,timed,timedActive],save,{deep:true,flush:'sync'})
 watch(examId,()=>chapter.value='')
+function beginTimed(){
+  if(!timedPool.value.length || (timed.value&&!timed.value.completed)) return
+  clock.value=Date.now()
+  timed.value=createTimedSession(timedPool.value,examId.value,count.value,timedMinutes.value,clock.value)
+  timedActive.value=true
+  scrollTop()
+}
+function finishTimed(){
+  if(!timed.value||timed.value.completed)return
+  const result=scoreTimedSession(timed.value,history.value)
+  timed.value=result.session
+  history.value=result.history
+  if(timedActive.value)scrollTop()
+}
+function leaveTimed(){
+  timedActive.value=false
+  showHome.value=true
+  scrollTop()
+}
+function resumeTimed(){timedActive.value=true;scrollTop()}
 function begin(mode:string) {
   const items=selectSession(exam.value.questions,history.value,mode,count.value,chapter.value)
   if(!items.length) return
@@ -157,7 +199,7 @@ async function importProgress(event:Event){
         <div class="max-w-3xl mx-auto flex items-center justify-between px-4 py-3 gap-3">
           <div>
             <p class="text-xs font-semibold tracking-widest text-primary">CERTIFICATION STUDY</p>
-            <p class="text-sm text-muted">{{ session && !showHome ? activeExam?.version : '通勤時間を、資格の勉強時間に。' }}</p>
+            <p class="text-sm text-muted">{{ timedActive ? timedExam?.version : session && !showHome ? activeExam?.version : '通勤時間を、資格の勉強時間に。' }}</p>
           </div>
           <div class="flex gap-2 items-center">
             <UBadge v-if="offline" color="neutral" variant="soft">オフライン</UBadge>
@@ -173,6 +215,7 @@ async function importProgress(event:Event){
           <template #description><UButton size="sm" @click="applyUpdate">更新する</UButton></template>
         </UAlert>
         <div v-if="!ready" class="text-muted py-10 text-center">読み込み中…</div>
+        <TimedPractice v-else-if="timedActive && timed && timedExam" :session="timed" :bank="timedExam.questions" :clock="clock" @update="timed=$event" @finish="finishTimed" @leave="leaveTimed" />
         <template v-else-if="!session || showHome">
           <div>
             <h1 class="text-2xl font-bold">今日の学習</h1>
@@ -185,6 +228,12 @@ async function importProgress(event:Event){
               </optgroup>
             </select>
           </label>
+          <UCard v-if="timed">
+            <div class="flex items-center justify-between gap-3">
+              <div><p class="font-semibold">{{ timed.completed?'直近の時間制限付き演習':'中断した時間制限付き演習' }}</p><p class="text-sm text-muted">{{ timedExam?.name }} · {{ timed.completed?(timed.correct||0)+' / '+timed.items.length:'時間制限は継続中' }}</p></div>
+              <UButton @click="resumeTimed">{{ timed.completed?'結果を見る':'演習を再開' }}</UButton>
+            </div>
+          </UCard>
           <UCard v-if="session && !finished">
             <div class="flex items-center justify-between gap-3">
               <div><p class="font-semibold">中断した学習</p><p class="text-sm text-muted">{{ activeExam?.name }} · {{ session.index+1 }}/{{ session.ids.length }}問</p></div>
@@ -215,6 +264,12 @@ async function importProgress(event:Event){
               <UButton block size="xl" :disabled="newCount===0" @click="begin('new')">ロードマップ順に学習（残り{{ newCount }}問）</UButton>
               <UButton block size="lg" variant="soft" color="warning" :disabled="wrongCount===0" @click="begin('wrong')">間違えた問題を復習（{{ wrongCount }}問）</UButton>
               <UButton block size="lg" variant="outline" color="neutral" :disabled="!filtered.length" @click="begin('random')">ランダム演習</UButton>
+              <div class="border-t border-default pt-3">
+                <p class="text-sm font-medium">時間制限付き演習</p>
+                <p class="text-xs text-muted mt-1 mb-2">選択式のみ。終了まで正解を表示しません。通常問題集から出題します。</p>
+                <div class="flex gap-2 flex-wrap mb-2"><UButton v-for="m in [15,30,60,90,130,180]" :key="m" size="sm" :variant="timedMinutes===m?'solid':'outline'" :color="timedMinutes===m?'primary':'neutral'" @click="timedMinutes=m">{{ m }}分</UButton></div>
+                <UButton block variant="soft" :disabled="!timedPool.length||!!(timed&&!timed.completed)" @click="beginTimed">{{ Math.min(count,timedPool.length) }}問の時間制限付き演習を開始</UButton>
+              </div>
             </div>
             <p class="mt-4 text-xs text-muted">オリジナル学習問題。合格保証・公式模試ではありません。試験の全出題範囲や記述式は未網羅です。<a :href="exam.source" target="_blank" rel="noopener noreferrer" class="text-primary underline">公式出題範囲</a></p>
           </UCard>
