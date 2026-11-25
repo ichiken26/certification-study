@@ -3,7 +3,7 @@ import { catalog } from './utils/catalog'
 import { makeOptions, recordAnswer, selectSession } from './utils/bank.mjs'
 import type { Choice, History, Question } from './utils/bank.mjs'
 
-type Session = { exam:string; ids:string[]; index:number; choices:Choice[]; selected:number[]; answered:boolean; correct:number }
+type Session = { exam:string; ids:string[]; index:number; choices:Choice[]; selected:number[]; answered:boolean; correct:number; writtenInput?:string; revealed?:boolean; writtenCorrect?:boolean }
 const STORAGE='cert-study-v1'
 const history=ref<History>({})
 const session=ref<Session|null>(null)
@@ -13,7 +13,8 @@ const count=ref(10)
 const ready=ref(false)
 const showHome=ref(false)
 const requiredChoices=computed(()=>session.value?.choices.filter(c=>c.correct).length||1)
-const answerCorrect=computed(()=>!!session.value && session.value.selected.length===requiredChoices.value && session.value.selected.every(i=>session.value?.choices[i]?.correct))
+const isWritten=computed(()=>current.value?.kind==='written')
+const answerCorrect=computed(()=>isWritten.value?session.value?.writtenCorrect===true:!!session.value && session.value.selected.length===requiredChoices.value && session.value.selected.every(i=>session.value?.choices[i]?.correct))
 const storageError=ref(false)
 const offline=ref(false)
 const offlineReady=ref(false)
@@ -49,7 +50,7 @@ onMounted(()=>{
       if(catalog.some(e=>e.id===data.examId)) examId.value=data.examId
       const s=data.session
       const bank=catalog.find(e=>e.id===s?.exam)?.questions
-      if(s && bank && Array.isArray(s.ids) && s.ids.length && Number.isInteger(s.index) && s.index>=0 && s.index<=s.ids.length && s.ids.every((id:string)=>bank.some(q=>q.id===id)) && Array.isArray(s.choices) && s.choices.length===4) session.value={...s,selected:Array.isArray(s.selected)?s.selected.filter((n:number)=>Number.isInteger(n)&&n>=0&&n<4):Number.isInteger(s.selected)?[s.selected]:[]}
+      if(s && bank && Array.isArray(s.ids) && s.ids.length && Number.isInteger(s.index) && s.index>=0 && s.index<=s.ids.length && s.ids.every((id:string)=>bank.some(q=>q.id===id)) && Array.isArray(s.choices) && (s.choices.length===4||s.choices.length===0 && bank.find(q=>q.id===s.ids[s.index])?.kind==='written')) session.value={...s,selected:Array.isArray(s.selected)?s.selected.filter((n:number)=>Number.isInteger(n)&&n>=0&&n<4):Number.isInteger(s.selected)?[s.selected]:[]}
     }
   } catch { storageError.value=true }
   ready.value=true
@@ -85,9 +86,22 @@ function choose(i:number) {
   else if(s.selected.includes(i)) s.selected=s.selected.filter(n=>n!==i)
   else if(s.selected.length<requiredChoices.value) s.selected=[...s.selected,i]
 }
+function revealWritten(){
+  const s=session.value
+  if(!s||!isWritten.value||s.answered||!s.writtenInput?.trim()) return
+  s.revealed=true
+  nextTick(()=>document.getElementById('written-rubric')?.scrollIntoView({behavior:'smooth',block:'start'}))
+}
+function gradeWritten(correct:boolean){
+  const s=session.value,q=current.value
+  if(!s||!q||q.kind!=='written'||!s.revealed||s.answered)return
+  s.writtenCorrect=correct;s.answered=true;s.correct+=Number(correct)
+  history.value=recordAnswer(history.value,q.id,correct)
+  nextTick(()=>document.getElementById('explanation')?.scrollIntoView({behavior:'smooth',block:'start'}))
+}
 function submit() {
   const s=session.value,q=current.value
-  if(!s || !q || s.answered || s.selected.length!==requiredChoices.value) return
+  if(!s || !q || q.kind==='written' || s.answered || s.selected.length!==requiredChoices.value) return
   const correct=answerCorrect.value
   s.answered=true
   s.correct+=Number(correct)
@@ -99,7 +113,7 @@ function next() {
   if(!s||!s.answered) return
   const index=s.index+1
   const q=activeExam.value?.questions.find(q=>q.id===s.ids[index])
-  session.value={...s,index,selected:[],answered:false,choices:q?makeOptions(q,activeExam.value!.questions):s.choices}
+  session.value={...s,index,selected:[],answered:false,writtenInput:'',revealed:false,writtenCorrect:undefined,choices:q?makeOptions(q,activeExam.value!.questions):s.choices}
   scrollTop()
 }
 function scrollTop(){ nextTick(()=>window.scrollTo({top:0,behavior:'instant'})) }
@@ -230,10 +244,21 @@ async function importProgress(event:Event){
           <div class="flex items-center justify-between gap-3"><UBadge color="neutral" variant="soft">{{ current.chapter }}</UBadge><span class="text-sm text-muted tabular-nums">{{ session.index+1 }} / {{ session.ids.length }}</span></div>
           <UProgress :model-value="session.index+(session.answered?1:0)" :max="session.ids.length" />
           <UCard>
-            <p class="text-xs text-muted mb-2">{{ current.topic }} · {{ requiredChoices===1 ? '1つ選択' : requiredChoices+'つ選択' }}</p>
-            <h1 class="font-semibold text-lg leading-relaxed whitespace-pre-line">{{ current.stem }}</h1>
+            <p class="text-xs text-muted mb-2">{{ current.topic }} · {{ isWritten ? '記述式・自己採点' : requiredChoices===1 ? '1つ選択' : requiredChoices+'つ選択' }}</p>
+            <h1 class="font-semibold text-lg leading-relaxed whitespace-pre-wrap break-words">{{ current.stem }}</h1>
           </UCard>
-          <div class="space-y-3">
+          <UCard v-if="isWritten">
+            <label for="written-answer" class="block text-sm font-semibold mb-2">あなたの回答</label>
+            <textarea id="written-answer" v-model="session.writtenInput" :readonly="session.revealed||session.answered" rows="5" class="w-full rounded-lg border border-default bg-default p-3" placeholder="根拠を含めて記述してください" />
+            <p class="text-xs text-muted mt-1">{{ (session.writtenInput||'').length }}文字 · 自己採点方式</p>
+          </UCard>
+          <UCard v-if="isWritten && session.revealed && !session.answered" id="written-rubric" class="scroll-mt-24">
+            <h2 class="font-bold">模範解答</h2><p class="mt-2 whitespace-pre-wrap">{{ current.answer }}</p>
+            <h3 class="font-bold mt-4">採点基準・解説</h3><p class="mt-2 whitespace-pre-wrap">{{ current.explanation }}</p>
+            <p class="text-sm text-muted mt-3">表現が異なっても、必要な論点を満たしていれば正解として記録してください。</p>
+            <div class="flex gap-2 mt-4"><UButton class="flex-1 justify-center" color="success" @click="gradeWritten(true)">正解として記録</UButton><UButton class="flex-1 justify-center" color="error" variant="soft" @click="gradeWritten(false)">要復習として記録</UButton></div>
+          </UCard>
+          <div v-if="!isWritten" class="space-y-3">
             <button v-for="(choice,i) in session.choices" :key="i" type="button" :disabled="session.answered" :aria-pressed="session.selected.includes(i)"
               class="answer-button w-full flex items-center gap-3 border rounded-xl px-4 py-4 bg-default transition-colors"
               :class="session.answered ? (choice.correct?'border-success bg-success/10':session.selected.includes(i)?'border-error bg-error/10':'border-default') : session.selected.includes(i)?'border-primary ring-2 ring-primary/30 bg-primary/5':'border-default hover:bg-elevated'"
@@ -248,7 +273,7 @@ async function importProgress(event:Event){
             <div class="space-y-4">
               <div><UBadge :color="answerCorrect?'success':'error'" variant="soft">{{ answerCorrect?'正解！':'不正解' }}</UBadge>
                 <h2 class="mt-2 font-bold text-lg">{{ current.answer }}</h2>
-                <p class="leading-relaxed mt-2">{{ current.explanation }}</p>
+                <p class="leading-relaxed mt-2 whitespace-pre-wrap">{{ current.explanation }}</p>
               </div>
               <div v-for="choice in session.choices.filter(c=>requiredChoices>1 || !c.correct)" :key="choice.label" class="border-t border-default pt-3">
                 <p class="text-sm font-semibold"><span :class="choice.correct?'text-success':'text-error'">{{ choice.correct?'✓':'×' }}</span> {{ choice.label }}</p><p class="text-sm leading-relaxed text-muted mt-1">{{ choice.explanation }}</p>
@@ -259,7 +284,8 @@ async function importProgress(event:Event){
           <div class="fixed inset-x-0 bottom-0 bg-default/95 backdrop-blur border-t border-default safe-bottom z-20">
             <div class="max-w-3xl mx-auto px-4 pt-3 flex gap-2 items-center">
               <UButton color="neutral" variant="ghost" @click="home">中断</UButton>
-              <UButton v-if="!session.answered" class="flex-1 justify-center" size="xl" :disabled="session.selected.length!==requiredChoices" @click="submit">回答する{{ requiredChoices>1?'（'+session.selected.length+'/'+requiredChoices+'）':'' }}</UButton>
+              <UButton v-if="isWritten && !session.answered" class="flex-1 justify-center" size="xl" :disabled="!session.writtenInput?.trim()||session.revealed" @click="revealWritten">{{ session.revealed?'上の採点基準から自己採点':'模範解答を見る' }}</UButton>
+              <UButton v-else-if="!session.answered" class="flex-1 justify-center" size="xl" :disabled="session.selected.length!==requiredChoices" @click="submit">回答する{{ requiredChoices>1?'（'+session.selected.length+'/'+requiredChoices+'）':'' }}</UButton>
               <UButton v-else class="flex-1 justify-center" size="xl" @click="next">{{ session.index+1===session.ids.length?'結果を見る':'次の問題' }}</UButton>
             </div>
           </div>

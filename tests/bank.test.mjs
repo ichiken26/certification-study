@@ -13,6 +13,7 @@ for(const [exam,bank] of banks) test(exam+' bank validation',()=>{
   assert.equal(new Set(bank.map(q=>q.id)).size,bank.length)
   for(const q of bank){
     const opts=makeOptions(q,bank)
+    if(q.kind==='written'){assert.equal(opts.length,0);assert.ok(q.answer&&q.explanation);continue}
     assert.equal(opts.length,4)
     assert.equal(new Set(opts.map(o=>o.label)).size,4)
     assert.equal(opts.filter(o=>o.correct).length,q.explicit?q.explicit.filter(o=>o.correct).length:1)
@@ -24,4 +25,10 @@ for(const [exam,bank] of banks) test(exam+' bank validation',()=>{
   assert.equal(selectSession(bank,history,'wrong',10)[0].id,first.id)
   assert.ok(!selectSession(bank,history,'new',10).some(q=>q.id===first.id))
   assert.equal(recordAnswer(history,first.id,true)[first.id].streak,1)
+})
+
+test('written and multiline cases',()=>{
+  const q=parseBank('# Written / case\n@written|状況\\n問い|基準\\n詳細|模範解答','test')[0]
+  assert.equal(q.kind,'written');assert.equal(q.stem,'状況\n問い');assert.equal(q.explanation,'基準\n詳細');assert.equal(q.answer,'模範解答');assert.deepEqual(makeOptions(q,[q]),[])
+  assert.throws(()=>parseBank('# Written\n@written|問い|基準','test'))
 })
