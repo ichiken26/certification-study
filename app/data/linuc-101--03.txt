@@ -1,0 +1,200 @@
+# 1.01 インストール・仮想化 / 1.01.1 ログイン
+tty|現在のシェルの端末デバイス名を表示する。|標準入力の端末名を表示。|whoami|実効UIDに対応する名前を表示。 この設問ではttyを選ぶ。|loginctl list-sessions|登録セッションを表示。 この設問ではttyを選ぶ。|hostname|ホスト名を表示。 この設問ではttyを選ぶ。
+whoami|現在の実効ユーザー名を取得する。|実効UIDに対応する名前を表示。|tty|標準入力の端末名を表示。 この設問ではwhoamiを選ぶ。|loginctl list-sessions|登録セッションを表示。 この設問ではwhoamiを選ぶ。|hostname|ホスト名を表示。 この設問ではwhoamiを選ぶ。
+loginctl list-sessions|systemd-logindが管理するセッションを一覧化する。|登録セッションを表示。|tty|標準入力の端末名を表示。 この設問ではloginctl list-sessionsを選ぶ。|whoami|実効UIDに対応する名前を表示。 この設問ではloginctl list-sessionsを選ぶ。|hostname|ホスト名を表示。 この設問ではloginctl list-sessionsを選ぶ。
+hostname|現在のホスト名を確認する。|ホスト名を表示。|tty|標準入力の端末名を表示。 この設問ではhostnameを選ぶ。|whoami|実効UIDに対応する名前を表示。 この設問ではhostnameを選ぶ。|loginctl list-sessions|登録セッションを表示。 この設問ではhostnameを選ぶ。
+# 1.01 インストール・仮想化 / 1.01.1 電源操作
+systemctl poweroff|systemd環境を停止し電源を切る。|電源切断を要求。|systemctl suspend|サスペンドを要求。 この設問ではsystemctl poweroffを選ぶ。|systemctl hibernate|ハイバネーションを要求。 この設問ではsystemctl poweroffを選ぶ。|systemctl rescue|rescue.targetへ切り替える。 この設問ではsystemctl poweroffを選ぶ。
+systemctl suspend|作業状態を主にRAMに保持して省電力状態へ移行する。|サスペンドを要求。|systemctl poweroff|電源切断を要求。 この設問ではsystemctl suspendを選ぶ。|systemctl hibernate|ハイバネーションを要求。 この設問ではsystemctl suspendを選ぶ。|systemctl rescue|rescue.targetへ切り替える。 この設問ではsystemctl suspendを選ぶ。
+systemctl hibernate|対応環境で作業状態をディスクに退避して電源を切る。|ハイバネーションを要求。|systemctl poweroff|電源切断を要求。 この設問ではsystemctl hibernateを選ぶ。|systemctl suspend|サスペンドを要求。 この設問ではsystemctl hibernateを選ぶ。|systemctl rescue|rescue.targetへ切り替える。 この設問ではsystemctl hibernateを選ぶ。
+systemctl rescue|保守用のrescueモードに移行する。|rescue.targetへ切り替える。|systemctl poweroff|電源切断を要求。 この設問ではsystemctl rescueを選ぶ。|systemctl suspend|サスペンドを要求。 この設問ではsystemctl rescueを選ぶ。|systemctl hibernate|ハイバネーションを要求。 この設問ではsystemctl rescueを選ぶ。
+# 1.01 インストール・仮想化 / 1.01.2 Docker
+docker run --rm alpine echo OK|一時コンテナでechoを実行し、終了後自動削除する。|--rmは終了後コンテナを除去。|docker ps|既定で実行中のものを表示。 この設問ではdocker run --rm alpine echo OKを選ぶ。|docker rm app|コンテナ削除。 この設問ではdocker run --rm alpine echo OKを選ぶ。|docker rmi alpine|イメージ参照等を削除。 この設問ではdocker run --rm alpine echo OKを選ぶ。
+docker ps|稼働中コンテナだけ一覧化する。|既定で実行中のものを表示。|docker run --rm alpine echo OK|--rmは終了後コンテナを除去。 この設問ではdocker psを選ぶ。|docker rm app|コンテナ削除。 この設問ではdocker psを選ぶ。|docker rmi alpine|イメージ参照等を削除。 この設問ではdocker psを選ぶ。
+docker rm app|停止済みコンテナappのみ削除する。|コンテナ削除。|docker run --rm alpine echo OK|--rmは終了後コンテナを除去。 この設問ではdocker rm appを選ぶ。|docker ps|既定で実行中のものを表示。 この設問ではdocker rm appを選ぶ。|docker rmi alpine|イメージ参照等を削除。 この設問ではdocker rm appを選ぶ。
+docker rmi alpine|依存コンテナのないalpineイメージを削除する。|イメージ参照等を削除。|docker run --rm alpine echo OK|--rmは終了後コンテナを除去。 この設問ではdocker rmi alpineを選ぶ。|docker ps|既定で実行中のものを表示。 この設問ではdocker rmi alpineを選ぶ。|docker rm app|コンテナ削除。 この設問ではdocker rmi alpineを選ぶ。
+# 1.01 インストール・仮想化 / 1.01.2 仮想化資源
+virt-manager|libvirt管理VMをGUIで操作する。|VM管理GUI。|qcow2|スパース割当等に対応する形式。 この設問ではvirt-managerを選ぶ。|仮想NIC|仮想ネットワークインターフェース。 この設問ではvirt-managerを選ぶ。|vCPU|ホストCPU上の仮想プロセッサ。 この設問ではvirt-managerを選ぶ。
+qcow2|QEMUのコピーオンライト機能を備えた仮想ディスク形式は？|スパース割当等に対応する形式。|virt-manager|VM管理GUI。 この設問ではqcow2を選ぶ。|仮想NIC|仮想ネットワークインターフェース。 この設問ではqcow2を選ぶ。|vCPU|ホストCPU上の仮想プロセッサ。 この設問ではqcow2を選ぶ。
+仮想NIC|ゲストOSがネットワーク接続に使う仮想ハードウェアは？|仮想ネットワークインターフェース。|virt-manager|VM管理GUI。 この設問では仮想NICを選ぶ。|qcow2|スパース割当等に対応する形式。 この設問では仮想NICを選ぶ。|vCPU|ホストCPU上の仮想プロセッサ。 この設問では仮想NICを選ぶ。
+vCPU|ゲストに割り当てる論理的なCPU資源は？|ホストCPU上の仮想プロセッサ。|virt-manager|VM管理GUI。 この設問ではvCPUを選ぶ。|qcow2|スパース割当等に対応する形式。 この設問ではvCPUを選ぶ。|仮想NIC|仮想ネットワークインターフェース。 この設問ではvCPUを選ぶ。
+# 1.01 インストール・仮想化 / 1.01.3 systemd状態
+systemctl is-active nginx|nginxの現在の稼働状態を終了コードで調べる。|activeか判定。|systemctl is-enabled nginx|ユニットの有効化状態を確認。 この設問ではsystemctl is-active nginxを選ぶ。|systemctl list-units --type=service|ロード済みユニットを列挙。 この設問ではsystemctl is-active nginxを選ぶ。|systemctl list-unit-files --type=service|ユニットファイルの状態を列挙。 この設問ではsystemctl is-active nginxを選ぶ。
+systemctl is-enabled nginx|nginxの自動起動設定を調べる。|ユニットの有効化状態を確認。|systemctl is-active nginx|activeか判定。 この設問ではsystemctl is-enabled nginxを選ぶ。|systemctl list-units --type=service|ロード済みユニットを列挙。 この設問ではsystemctl is-enabled nginxを選ぶ。|systemctl list-unit-files --type=service|ユニットファイルの状態を列挙。 この設問ではsystemctl is-enabled nginxを選ぶ。
+systemctl list-units --type=service|ロード済みサービスの状態を一覧化する。|ロード済みユニットを列挙。|systemctl is-active nginx|activeか判定。 この設問ではsystemctl list-units --type=serviceを選ぶ。|systemctl is-enabled nginx|ユニットの有効化状態を確認。 この設問ではsystemctl list-units --type=serviceを選ぶ。|systemctl list-unit-files --type=service|ユニットファイルの状態を列挙。 この設問ではsystemctl list-units --type=serviceを選ぶ。
+systemctl list-unit-files --type=service|インストール済みサービス定義のenable等を一覧化する。|ユニットファイルの状態を列挙。|systemctl is-active nginx|activeか判定。 この設問ではsystemctl list-unit-files --type=serviceを選ぶ。|systemctl is-enabled nginx|ユニットの有効化状態を確認。 この設問ではsystemctl list-unit-files --type=serviceを選ぶ。|systemctl list-units --type=service|ロード済みユニットを列挙。 この設問ではsystemctl list-unit-files --type=serviceを選ぶ。
+# 1.01 インストール・仮想化 / 1.01.3 起動情報
+systemctl get-default|次回起動の既定systemdターゲットを確認する。|default.targetの参照先を表示。|journalctl -k|カーネルログに絞る。 この設問ではsystemctl get-defaultを選ぶ。|/proc/cmdline|カーネルコマンドラインを公開。 この設問ではsystemctl get-defaultを選ぶ。|/boot/grub/grub.cfg|GRUBの起動設定ファイル。 この設問ではsystemctl get-defaultを選ぶ。
+journalctl -k|journal内のカーネルメッセージを確認する。|カーネルログに絞る。|systemctl get-default|default.targetの参照先を表示。 この設問ではjournalctl -kを選ぶ。|/proc/cmdline|カーネルコマンドラインを公開。 この設問ではjournalctl -kを選ぶ。|/boot/grub/grub.cfg|GRUBの起動設定ファイル。 この設問ではjournalctl -kを選ぶ。
+/proc/cmdline|稼働中カーネルの起動引数を読むファイルは？|カーネルコマンドラインを公開。|systemctl get-default|default.targetの参照先を表示。 この設問では/proc/cmdlineを選ぶ。|journalctl -k|カーネルログに絞る。 この設問では/proc/cmdlineを選ぶ。|/boot/grub/grub.cfg|GRUBの起動設定ファイル。 この設問では/proc/cmdlineを選ぶ。
+/boot/grub/grub.cfg|Debian系などの生成済みGRUB2設定の代表的パスは？|GRUBの起動設定ファイル。|systemctl get-default|default.targetの参照先を表示。 この設問では/boot/grub/grub.cfgを選ぶ。|journalctl -k|カーネルログに絞る。 この設問では/boot/grub/grub.cfgを選ぶ。|/proc/cmdline|カーネルコマンドラインを公開。 この設問では/boot/grub/grub.cfgを選ぶ。
+# 1.01 インストール・仮想化 / 1.01.4 プロセス情報
+ps -eo pid,ppid,comm|全プロセスのPID、親PID、コマンド名を表示する。|-eと-oで対象と項目指定。|pstree -p|プロセス階層とPIDを表示。 この設問ではps -eo pid,ppid,commを選ぶ。|pidof nginx|名前に対応するPIDを検索。 この設問ではps -eo pid,ppid,commを選ぶ。|ps -p 1234 -o etime|経過時間フィールドを指定。 この設問ではps -eo pid,ppid,commを選ぶ。
+pstree -p|親子関係をツリーで表示しPIDも確認する。|プロセス階層とPIDを表示。|ps -eo pid,ppid,comm|-eと-oで対象と項目指定。 この設問ではpstree -pを選ぶ。|pidof nginx|名前に対応するPIDを検索。 この設問ではpstree -pを選ぶ。|ps -p 1234 -o etime|経過時間フィールドを指定。 この設問ではpstree -pを選ぶ。
+pidof nginx|実行中のnginxプログラムのPIDを取得する。|名前に対応するPIDを検索。|ps -eo pid,ppid,comm|-eと-oで対象と項目指定。 この設問ではpidof nginxを選ぶ。|pstree -p|プロセス階層とPIDを表示。 この設問ではpidof nginxを選ぶ。|ps -p 1234 -o etime|経過時間フィールドを指定。 この設問ではpidof nginxを選ぶ。
+ps -p 1234 -o etime|PID1234の起動からの経過時間を確認する。|経過時間フィールドを指定。|ps -eo pid,ppid,comm|-eと-oで対象と項目指定。 この設問ではps -p 1234 -o etimeを選ぶ。|pstree -p|プロセス階層とPIDを表示。 この設問ではps -p 1234 -o etimeを選ぶ。|pidof nginx|名前に対応するPIDを検索。 この設問ではps -p 1234 -o etimeを選ぶ。
+# 1.01 インストール・仮想化 / 1.01.4 プロセス状態
+R|psのSTATで実行中または実行可能の記号は？|実行中・実行待ち。|S|イベント待ち等の割込み可能状態。 この設問ではRを選ぶ。|D|典型的にはI/O等の割込み不能待機。 この設問ではRを選ぶ。|Z|ゾンビ。 この設問ではRを選ぶ。
+S|psのSTATで割込み可能スリープの記号は？|イベント待ち等の割込み可能状態。|R|実行中・実行待ち。 この設問ではSを選ぶ。|D|典型的にはI/O等の割込み不能待機。 この設問ではSを選ぶ。|Z|ゾンビ。 この設問ではSを選ぶ。
+D|psのSTATで割込み不能スリープの記号は？|典型的にはI/O等の割込み不能待機。|R|実行中・実行待ち。 この設問ではDを選ぶ。|S|イベント待ち等の割込み可能状態。 この設問ではDを選ぶ。|Z|ゾンビ。 この設問ではDを選ぶ。
+Z|終了済みの子の状態が親に未回収である記号は？|ゾンビ。|R|実行中・実行待ち。 この設問ではZを選ぶ。|S|イベント待ち等の割込み可能状態。 この設問ではZを選ぶ。|D|典型的にはI/O等の割込み不能待機。 この設問ではZを選ぶ。
+# 1.01 インストール・仮想化 / 1.01.4 ジョブ操作
+Ctrl+Z|フォアグラウンドジョブを一時停止する。|通常SIGTSTPを送る。|Ctrl+C|通常SIGINTを送る。 この設問ではCtrl+Zを選ぶ。|Ctrl+D|端末のEOF操作。 この設問ではCtrl+Zを選ぶ。|Ctrl+L|画面クリア操作。 この設問ではCtrl+Zを選ぶ。
+Ctrl+C|フォアグラウンドジョブに割込みを送る。|通常SIGINTを送る。|Ctrl+Z|通常SIGTSTPを送る。 この設問ではCtrl+Cを選ぶ。|Ctrl+D|端末のEOF操作。 この設問ではCtrl+Cを選ぶ。|Ctrl+L|画面クリア操作。 この設問ではCtrl+Cを選ぶ。
+Ctrl+D|空行の対話シェルにEOFを伝える。|端末のEOF操作。|Ctrl+Z|通常SIGTSTPを送る。 この設問ではCtrl+Dを選ぶ。|Ctrl+C|通常SIGINTを送る。 この設問ではCtrl+Dを選ぶ。|Ctrl+L|画面クリア操作。 この設問ではCtrl+Dを選ぶ。
+Ctrl+L|Readlineで編集中の画面を消して再描画する。|画面クリア操作。|Ctrl+Z|通常SIGTSTPを送る。 この設問ではCtrl+Lを選ぶ。|Ctrl+C|通常SIGINTを送る。 この設問ではCtrl+Lを選ぶ。|Ctrl+D|端末のEOF操作。 この設問ではCtrl+Lを選ぶ。
+# 1.01 インストール・仮想化 / 1.01.5 デスクトップ
+DISPLAY|X11クライアントの接続先ディスプレイを示す環境変数は？|Xサーバーの表示先を指定。|XDG_CURRENT_DESKTOP|デスクトップセッション情報。 この設問ではDISPLAYを選ぶ。|GNOME|デスクトップ環境。 この設問ではDISPLAYを選ぶ。|GDM|ディスプレイマネージャー。 この設問ではDISPLAYを選ぶ。
+XDG_CURRENT_DESKTOP|現在のデスクトップ環境を識別する代表的環境変数は？|デスクトップセッション情報。|DISPLAY|Xサーバーの表示先を指定。 この設問ではXDG_CURRENT_DESKTOPを選ぶ。|GNOME|デスクトップ環境。 この設問ではXDG_CURRENT_DESKTOPを選ぶ。|GDM|ディスプレイマネージャー。 この設問ではXDG_CURRENT_DESKTOPを選ぶ。
+GNOME|GNOME Shell等を提供する統合デスクトップ環境は？|デスクトップ環境。|DISPLAY|Xサーバーの表示先を指定。 この設問ではGNOMEを選ぶ。|XDG_CURRENT_DESKTOP|デスクトップセッション情報。 この設問ではGNOMEを選ぶ。|GDM|ディスプレイマネージャー。 この設問ではGNOMEを選ぶ。
+GDM|GNOME系のグラフィカルログインを提供するものは？|ディスプレイマネージャー。|DISPLAY|Xサーバーの表示先を指定。 この設問ではGDMを選ぶ。|XDG_CURRENT_DESKTOP|デスクトップセッション情報。 この設問ではGDMを選ぶ。|GNOME|デスクトップ環境。 この設問ではGDMを選ぶ。
+# 1.02 ファイル管理 / 1.02.1 umask計算
+0644|通常ファイルの生成モード0666にumask022を適用した結果は？|0666から022のビットを除く。|0750|グループ書込とその他全権限を除く。 この設問では0644を選ぶ。|0600|所有者rwだけ残る。 この設問では0644を選ぶ。|0775|その他の書込を除く。 この設問では0644を選ぶ。
+0750|ディレクトリ0777にumask027を適用した結果は？|グループ書込とその他全権限を除く。|0644|0666から022のビットを除く。 この設問では0750を選ぶ。|0600|所有者rwだけ残る。 この設問では0750を選ぶ。|0775|その他の書込を除く。 この設問では0750を選ぶ。
+0600|通常ファイル0666にumask077を適用した結果は？|所有者rwだけ残る。|0644|0666から022のビットを除く。 この設問では0600を選ぶ。|0750|グループ書込とその他全権限を除く。 この設問では0600を選ぶ。|0775|その他の書込を除く。 この設問では0600を選ぶ。
+0775|ディレクトリ0777にumask002を適用した結果は？|その他の書込を除く。|0644|0666から022のビットを除く。 この設問では0775を選ぶ。|0750|グループ書込とその他全権限を除く。 この設問では0775を選ぶ。|0600|所有者rwだけ残る。 この設問では0775を選ぶ。
+# 1.02 ファイル管理 / 1.02.1 特殊権限
+chmod g-s dir|ディレクトリのsetgidを除去する。|グループの特殊ビット除去。|chmod o-t dir|sticky bit除去。 この設問ではchmod g-s dirを選ぶ。|chmod u-s program|所有者の特殊ビット除去。 この設問ではchmod g-s dirを選ぶ。|chmod --reference=ref file|参照ファイルのモードを利用。 この設問ではchmod g-s dirを選ぶ。
+chmod o-t dir|sticky bitを除去する。|sticky bit除去。|chmod g-s dir|グループの特殊ビット除去。 この設問ではchmod o-t dirを選ぶ。|chmod u-s program|所有者の特殊ビット除去。 この設問ではchmod o-t dirを選ぶ。|chmod --reference=ref file|参照ファイルのモードを利用。 この設問ではchmod o-t dirを選ぶ。
+chmod u-s program|setuidを除去する。|所有者の特殊ビット除去。|chmod g-s dir|グループの特殊ビット除去。 この設問ではchmod u-s programを選ぶ。|chmod o-t dir|sticky bit除去。 この設問ではchmod u-s programを選ぶ。|chmod --reference=ref file|参照ファイルのモードを利用。 この設問ではchmod u-s programを選ぶ。
+chmod --reference=ref file|refと同じモードをfileへ適用する。|参照ファイルのモードを利用。|chmod g-s dir|グループの特殊ビット除去。 この設問ではchmod --reference=ref fileを選ぶ。|chmod o-t dir|sticky bit除去。 この設問ではchmod --reference=ref fileを選ぶ。|chmod u-s program|所有者の特殊ビット除去。 この設問ではchmod --reference=ref fileを選ぶ。
+# 1.02 ファイル管理 / 1.02.1 診断
+stat file|モード、inode、時刻、UIDなどを詳しく確認する。|ファイルのメタデータを表示。|namei -l /a/b/file|各パス構成要素の権限を表示。 この設問ではstat fileを選ぶ。|ls -ld dir|-dで自身を対象。 この設問ではstat fileを選ぶ。|getfacl file|アクセス制御リスト表示。 この設問ではstat fileを選ぶ。
+namei -l /a/b/file|パスのどの親ディレクトリに通過権限がないか調べる。|各パス構成要素の権限を表示。|stat file|ファイルのメタデータを表示。 この設問ではnamei -l /a/b/fileを選ぶ。|ls -ld dir|-dで自身を対象。 この設問ではnamei -l /a/b/fileを選ぶ。|getfacl file|アクセス制御リスト表示。 この設問ではnamei -l /a/b/fileを選ぶ。
+ls -ld dir|ディレクトリ自身の所有者と権限を表示する。|-dで自身を対象。|stat file|ファイルのメタデータを表示。 この設問ではls -ld dirを選ぶ。|namei -l /a/b/file|各パス構成要素の権限を表示。 この設問ではls -ld dirを選ぶ。|getfacl file|アクセス制御リスト表示。 この設問ではls -ld dirを選ぶ。
+getfacl file|通常のrwビット以外のACLを確認する。|アクセス制御リスト表示。|stat file|ファイルのメタデータを表示。 この設問ではgetfacl fileを選ぶ。|namei -l /a/b/file|各パス構成要素の権限を表示。 この設問ではgetfacl fileを選ぶ。|ls -ld dir|-dで自身を対象。 この設問ではgetfacl fileを選ぶ。
+# 1.02 ファイル管理 / 1.02.2 ls
+ls -lt|更新時刻の新しい順に詳細表示する。|-tで時刻順。|ls -lh|-hで人間向け単位。 この設問ではls -ltを選ぶ。|ls -lS|-Sでサイズ順。 この設問ではls -ltを選ぶ。|ls -R|-Rで再帰表示。 この設問ではls -ltを選ぶ。
+ls -lh|サイズを読みやすい単位で詳細表示する。|-hで人間向け単位。|ls -lt|-tで時刻順。 この設問ではls -lhを選ぶ。|ls -lS|-Sでサイズ順。 この設問ではls -lhを選ぶ。|ls -R|-Rで再帰表示。 この設問ではls -lhを選ぶ。
+ls -lS|サイズの大きい順に詳細表示する。|-Sでサイズ順。|ls -lt|-tで時刻順。 この設問ではls -lSを選ぶ。|ls -lh|-hで人間向け単位。 この設問ではls -lSを選ぶ。|ls -R|-Rで再帰表示。 この設問ではls -lSを選ぶ。
+ls -R|ディレクトリを再帰的に一覧化する。|-Rで再帰表示。|ls -lt|-tで時刻順。 この設問ではls -Rを選ぶ。|ls -lh|-hで人間向け単位。 この設問ではls -Rを選ぶ。|ls -lS|-Sでサイズ順。 この設問ではls -Rを選ぶ。
+# 1.02 ファイル管理 / 1.02.2 コピー
+cp -p a b|ファイルをコピーし可能な限り所有者、時刻、モードを維持する。|-pで属性保持。|cp -u a b|-uで更新条件。 この設問ではcp -p a bを選ぶ。|mv -i a b|-iで対話確認。 この設問ではcp -p a bを選ぶ。|rm -i a|-iで対話確認。 この設問ではcp -p a bを選ぶ。
+cp -u a b|GNU cpで元が新しいか先が存在しない場合にコピーする。|-uで更新条件。|cp -p a b|-pで属性保持。 この設問ではcp -u a bを選ぶ。|mv -i a b|-iで対話確認。 この設問ではcp -u a bを選ぶ。|rm -i a|-iで対話確認。 この設問ではcp -u a bを選ぶ。
+mv -i a b|移動先の上書き前に確認する。|-iで対話確認。|cp -p a b|-pで属性保持。 この設問ではmv -i a bを選ぶ。|cp -u a b|-uで更新条件。 この設問ではmv -i a bを選ぶ。|rm -i a|-iで対話確認。 この設問ではmv -i a bを選ぶ。
+rm -i a|削除前に確認する。|-iで対話確認。|cp -p a b|-pで属性保持。 この設問ではrm -i aを選ぶ。|cp -u a b|-uで更新条件。 この設問ではrm -i aを選ぶ。|mv -i a b|-iで対話確認。 この設問ではrm -i aを選ぶ。
+# 1.02 ファイル管理 / 1.02.2 パス操作
+file data|拡張子不明のファイルの種類を推定する。|内容等から種別を推定。|basename /var/log/app.log|末尾要素を表示。 この設問ではfile dataを選ぶ。|dirname /var/log/app.log|末尾を除いたパスを表示。 この設問ではfile dataを選ぶ。|realpath ./dir/../file|パスを解決する。 この設問ではfile dataを選ぶ。
+basename /var/log/app.log|パスの最後の要素app.logを抽出する。|末尾要素を表示。|file data|内容等から種別を推定。 この設問ではbasename /var/log/app.logを選ぶ。|dirname /var/log/app.log|末尾を除いたパスを表示。 この設問ではbasename /var/log/app.logを選ぶ。|realpath ./dir/../file|パスを解決する。 この設問ではbasename /var/log/app.logを選ぶ。
+dirname /var/log/app.log|親パス/var/logを抽出する。|末尾を除いたパスを表示。|file data|内容等から種別を推定。 この設問ではdirname /var/log/app.logを選ぶ。|basename /var/log/app.log|末尾要素を表示。 この設問ではdirname /var/log/app.logを選ぶ。|realpath ./dir/../file|パスを解決する。 この設問ではdirname /var/log/app.logを選ぶ。
+realpath ./dir/../file|相対パス等を正規化した絶対パスを求める。|パスを解決する。|file data|内容等から種別を推定。 この設問ではrealpath ./dir/../fileを選ぶ。|basename /var/log/app.log|末尾要素を表示。 この設問ではrealpath ./dir/../fileを選ぶ。|dirname /var/log/app.log|末尾を除いたパスを表示。 この設問ではrealpath ./dir/../fileを選ぶ。
+# 1.02 ファイル管理 / 1.02.3 リンク
+別名のハードリンクが残る限りinodeは保持される|ハードリンク作成後に元の名前を削除してもデータを読める理由は？|リンク数が残るため。|リンク先不在になる|参照先パスを解決できなくなる。 この設問では別名のハードリンクが残る限りinodeは保持されるを選ぶ。|ハードリンクは通常ファイルシステムをまたげない|inodeはFSごとの管理単位。 この設問では別名のハードリンクが残る限りinodeは保持されるを選ぶ。|シンボリックリンクはディレクトリも参照できる|パスを参照するリンクを利用する。 この設問では別名のハードリンクが残る限りinodeは保持されるを選ぶ。
+リンク先不在になる|シンボリックリンクの参照先の名前を削除した場合は？|参照先パスを解決できなくなる。|別名のハードリンクが残る限りinodeは保持される|リンク数が残るため。 この設問ではリンク先不在になるを選ぶ。|ハードリンクは通常ファイルシステムをまたげない|inodeはFSごとの管理単位。 この設問ではリンク先不在になるを選ぶ。|シンボリックリンクはディレクトリも参照できる|パスを参照するリンクを利用する。 この設問ではリンク先不在になるを選ぶ。
+ハードリンクは通常ファイルシステムをまたげない|別FS上に同じinodeへのハードリンクを作れない理由は？|inodeはFSごとの管理単位。|別名のハードリンクが残る限りinodeは保持される|リンク数が残るため。 この設問ではハードリンクは通常ファイルシステムをまたげないを選ぶ。|リンク先不在になる|参照先パスを解決できなくなる。 この設問ではハードリンクは通常ファイルシステムをまたげないを選ぶ。|シンボリックリンクはディレクトリも参照できる|パスを参照するリンクを利用する。 この設問ではハードリンクは通常ファイルシステムをまたげないを選ぶ。
+シンボリックリンクはディレクトリも参照できる|ディレクトリの別名を作る際の通常の選択は？|パスを参照するリンクを利用する。|別名のハードリンクが残る限りinodeは保持される|リンク数が残るため。 この設問ではシンボリックリンクはディレクトリも参照できるを選ぶ。|リンク先不在になる|参照先パスを解決できなくなる。 この設問ではシンボリックリンクはディレクトリも参照できるを選ぶ。|ハードリンクは通常ファイルシステムをまたげない|inodeはFSごとの管理単位。 この設問ではシンボリックリンクはディレクトリも参照できるを選ぶ。
+# 1.02 ファイル管理 / 1.02.4 FHS
+/var/spool|印刷ジョブや配送待ちメール等の配置先は？|処理待ちデータ。|/var/cache|可変キャッシュデータ。 この設問では/var/spoolを選ぶ。|/opt|追加ソフト用階層。 この設問では/var/spoolを選ぶ。|/srv|サービス用データ領域。 この設問では/var/spoolを選ぶ。
+/var/cache|再生成可能なアプリキャッシュの配置先は？|可変キャッシュデータ。|/var/spool|処理待ちデータ。 この設問では/var/cacheを選ぶ。|/opt|追加ソフト用階層。 この設問では/var/cacheを選ぶ。|/srv|サービス用データ領域。 この設問では/var/cacheを選ぶ。
+/opt|追加のアプリケーションパッケージの配置先は？|追加ソフト用階層。|/var/spool|処理待ちデータ。 この設問では/optを選ぶ。|/var/cache|可変キャッシュデータ。 この設問では/optを選ぶ。|/srv|サービス用データ領域。 この設問では/optを選ぶ。
+/srv|システムが提供するサービスのデータの配置先は？|サービス用データ領域。|/var/spool|処理待ちデータ。 この設問では/srvを選ぶ。|/var/cache|可変キャッシュデータ。 この設問では/srvを選ぶ。|/opt|追加ソフト用階層。 この設問では/srvを選ぶ。
+# 1.02 ファイル管理 / 1.02.4 find
+find /var -type d -name cache|名前cacheのディレクトリだけ検索する。|-type dでディレクトリ選択。|find /srv -type l|-type lでリンク選択。 この設問ではfind /var -type d -name cacheを選ぶ。|find /srv -maxdepth 1 -type f|-maxdepthで深さ制限。 この設問ではfind /var -type d -name cacheを選ぶ。|find /var -type f -name '*.log' -print|-printでパス出力。 この設問ではfind /var -type d -name cacheを選ぶ。
+find /srv -type l|シンボリックリンクだけ検索する。|-type lでリンク選択。|find /var -type d -name cache|-type dでディレクトリ選択。 この設問ではfind /srv -type lを選ぶ。|find /srv -maxdepth 1 -type f|-maxdepthで深さ制限。 この設問ではfind /srv -type lを選ぶ。|find /var -type f -name '*.log' -print|-printでパス出力。 この設問ではfind /srv -type lを選ぶ。
+find /srv -maxdepth 1 -type f|直下の通常ファイルのみ検索する。|-maxdepthで深さ制限。|find /var -type d -name cache|-type dでディレクトリ選択。 この設問ではfind /srv -maxdepth 1 -type fを選ぶ。|find /srv -type l|-type lでリンク選択。 この設問ではfind /srv -maxdepth 1 -type fを選ぶ。|find /var -type f -name '*.log' -print|-printでパス出力。 この設問ではfind /srv -maxdepth 1 -type fを選ぶ。
+find /var -type f -name '*.log' -print|一致した通常ログファイルのパスを明示的に出力する。|-printでパス出力。|find /var -type d -name cache|-type dでディレクトリ選択。 この設問ではfind /var -type f -name '*.log' -printを選ぶ。|find /srv -type l|-type lでリンク選択。 この設問ではfind /var -type f -name '*.log' -printを選ぶ。|find /srv -maxdepth 1 -type f|-maxdepthで深さ制限。 この設問ではfind /var -type f -name '*.log' -printを選ぶ。
+# 1.03 GNU・Unix / 1.03.1 コマンド解決
+type cd|cdが組み込みか外部コマンドか確認する。|コマンド解決方法を表示。|command -v python3|コマンドの解決結果を表示。 この設問ではtype cdを選ぶ。|history|履歴一覧。 この設問ではtype cdを選ぶ。|man -k filesystem|apropos相当の検索。 この設問ではtype cdを選ぶ。
+command -v python3|シェルが解決するpython3の参照先を確認する。|コマンドの解決結果を表示。|type cd|コマンド解決方法を表示。 この設問ではcommand -v python3を選ぶ。|history|履歴一覧。 この設問ではcommand -v python3を選ぶ。|man -k filesystem|apropos相当の検索。 この設問ではcommand -v python3を選ぶ。
+history|対話シェルのコマンド履歴を表示する。|履歴一覧。|type cd|コマンド解決方法を表示。 この設問ではhistoryを選ぶ。|command -v python3|コマンドの解決結果を表示。 この設問ではhistoryを選ぶ。|man -k filesystem|apropos相当の検索。 この設問ではhistoryを選ぶ。
+man -k filesystem|filesystemに関連するマニュアルの見出しを検索する。|apropos相当の検索。|type cd|コマンド解決方法を表示。 この設問ではman -k filesystemを選ぶ。|command -v python3|コマンドの解決結果を表示。 この設問ではman -k filesystemを選ぶ。|history|履歴一覧。 この設問ではman -k filesystemを選ぶ。
+# 1.03 GNU・Unix / 1.03.1 グロブ
+*.txt|.txtで終わる非隠しファイルを展開する。|任意長の文字列に一致。|file?.txt|?は任意の1文字。 この設問では*.txtを選ぶ。|file[123].txt|文字集合指定。 この設問では*.txtを選ぶ。|file[!0-9].txt|否定文字集合。 この設問では*.txtを選ぶ。
+file?.txt|fileの後に1文字だけ続く名前を展開する。|?は任意の1文字。|*.txt|任意長の文字列に一致。 この設問ではfile?.txtを選ぶ。|file[123].txt|文字集合指定。 この設問ではfile?.txtを選ぶ。|file[!0-9].txt|否定文字集合。 この設問ではfile?.txtを選ぶ。
+file[123].txt|file1、file2、file3だけを展開する。|文字集合指定。|*.txt|任意長の文字列に一致。 この設問ではfile[123].txtを選ぶ。|file?.txt|?は任意の1文字。 この設問ではfile[123].txtを選ぶ。|file[!0-9].txt|否定文字集合。 この設問ではfile[123].txtを選ぶ。
+file[!0-9].txt|fileの後の1文字が数字以外のものを展開する。|否定文字集合。|*.txt|任意長の文字列に一致。 この設問ではfile[!0-9].txtを選ぶ。|file?.txt|?は任意の1文字。 この設問ではfile[!0-9].txtを選ぶ。|file[123].txt|文字集合指定。 この設問ではfile[!0-9].txtを選ぶ。
+# 1.03 GNU・Unix / 1.03.2 テキスト操作
+cut -c 1-5 file|ASCIIテキストの各行の先頭5文字を抽出する。|-cで文字位置指定。|paste a b|対応行を連結。 この設問ではcut -c 1-5 fileを選ぶ。|join a b|共通フィールドで結合。 この設問ではcut -c 1-5 fileを選ぶ。|comm -12 a b|片側だけにある行を抑止。 この設問ではcut -c 1-5 fileを選ぶ。
+paste a b|2ファイルの対応行を横に並べる。|対応行を連結。|cut -c 1-5 file|-cで文字位置指定。 この設問ではpaste a bを選ぶ。|join a b|共通フィールドで結合。 この設問ではpaste a bを選ぶ。|comm -12 a b|片側だけにある行を抑止。 この設問ではpaste a bを選ぶ。
+join a b|ソート済み2ファイルの共通キーで行を結合する。|共通フィールドで結合。|cut -c 1-5 file|-cで文字位置指定。 この設問ではjoin a bを選ぶ。|paste a b|対応行を連結。 この設問ではjoin a bを選ぶ。|comm -12 a b|片側だけにある行を抑止。 この設問ではjoin a bを選ぶ。
+comm -12 a b|ソート済み2ファイルの共通行のみ表示する。|片側だけにある行を抑止。|cut -c 1-5 file|-cで文字位置指定。 この設問ではcomm -12 a bを選ぶ。|paste a b|対応行を連結。 この設問ではcomm -12 a bを選ぶ。|join a b|共通フィールドで結合。 この設問ではcomm -12 a bを選ぶ。
+# 1.03 GNU・Unix / 1.03.2 整列
+sort -t ':' -k 3,3n /etc/passwd|passwdのUID列を数値順に並べる。|区切りと数値キー指定。|uniq -d|-dで繰り返し行。 この設問ではsort -t ':' -k 3,3n /etc/passwdを選ぶ。|uniq -u|-uで重複しない行。 この設問ではsort -t ':' -k 3,3n /etc/passwdを選ぶ。|sort -f file|-fでケース同一視。 この設問ではsort -t ':' -k 3,3n /etc/passwdを選ぶ。
+uniq -d|整列済み入力の重複行だけ1回ずつ表示する。|-dで繰り返し行。|sort -t ':' -k 3,3n /etc/passwd|区切りと数値キー指定。 この設問ではuniq -dを選ぶ。|uniq -u|-uで重複しない行。 この設問ではuniq -dを選ぶ。|sort -f file|-fでケース同一視。 この設問ではuniq -dを選ぶ。
+uniq -u|整列済み入力の単独行だけ表示する。|-uで重複しない行。|sort -t ':' -k 3,3n /etc/passwd|区切りと数値キー指定。 この設問ではuniq -uを選ぶ。|uniq -d|-dで繰り返し行。 この設問ではuniq -uを選ぶ。|sort -f file|-fでケース同一視。 この設問ではuniq -uを選ぶ。
+sort -f file|大小文字を無視してソートする。|-fでケース同一視。|sort -t ':' -k 3,3n /etc/passwd|区切りと数値キー指定。 この設問ではsort -f fileを選ぶ。|uniq -d|-dで繰り返し行。 この設問ではsort -f fileを選ぶ。|uniq -u|-uで重複しない行。 この設問ではsort -f fileを選ぶ。
+# 1.03 GNU・Unix / 1.03.2 sedとawk
+sed -n '5p' file|5行目だけ表示する。|-nとpで対象行だけ出力。|sed '/^#/d' file|一致行にdを適用。 この設問ではsed -n '5p' fileを選ぶ。|awk -F ':' '{print $1}' /etc/passwd|-Fで区切り指定。 この設問ではsed -n '5p' fileを選ぶ。|awk '{sum+=$1} END {print sum}' file|累計してENDで表示。 この設問ではsed -n '5p' fileを選ぶ。
+sed '/^#/d' file|#から始まるコメント行を出力から除く。|一致行にdを適用。|sed -n '5p' file|-nとpで対象行だけ出力。 この設問ではsed '/^#/d' fileを選ぶ。|awk -F ':' '{print $1}' /etc/passwd|-Fで区切り指定。 この設問ではsed '/^#/d' fileを選ぶ。|awk '{sum+=$1} END {print sum}' file|累計してENDで表示。 この設問ではsed '/^#/d' fileを選ぶ。
+awk -F ':' '{print $1}' /etc/passwd|区切りをコロンにして第1列を出力する。|-Fで区切り指定。|sed -n '5p' file|-nとpで対象行だけ出力。 この設問ではawk -F ':' '{print $1}' /etc/passwdを選ぶ。|sed '/^#/d' file|一致行にdを適用。 この設問ではawk -F ':' '{print $1}' /etc/passwdを選ぶ。|awk '{sum+=$1} END {print sum}' file|累計してENDで表示。 この設問ではawk -F ':' '{print $1}' /etc/passwdを選ぶ。
+awk '{sum+=$1} END {print sum}' file|各行第1列の数値の合計を最後に表示する。|累計してENDで表示。|sed -n '5p' file|-nとpで対象行だけ出力。 この設問ではawk '{sum+=$1} END {print sum}' fileを選ぶ。|sed '/^#/d' file|一致行にdを適用。 この設問ではawk '{sum+=$1} END {print sum}' fileを選ぶ。|awk -F ':' '{print $1}' /etc/passwd|-Fで区切り指定。 この設問ではawk '{sum+=$1} END {print sum}' fileを選ぶ。
+# 1.03 GNU・Unix / 1.03.2 文字変換
+tr -d '0-9'|入力からASCII数字を削除する。|-dで文字削除。|tr -s ' '|-sで連続を縮約。 この設問ではtr -d '0-9'を選ぶ。|expand file|タブ位置に応じ展開。 この設問ではtr -d '0-9'を選ぶ。|unexpand file|空白をタブへ置換。 この設問ではtr -d '0-9'を選ぶ。
+tr -s ' '|連続空白を1個に圧縮する。|-sで連続を縮約。|tr -d '0-9'|-dで文字削除。 この設問ではtr -s ' 'を選ぶ。|expand file|タブ位置に応じ展開。 この設問ではtr -s ' 'を選ぶ。|unexpand file|空白をタブへ置換。 この設問ではtr -s ' 'を選ぶ。
+expand file|タブを空白へ変換する。|タブ位置に応じ展開。|tr -d '0-9'|-dで文字削除。 この設問ではexpand fileを選ぶ。|tr -s ' '|-sで連続を縮約。 この設問ではexpand fileを選ぶ。|unexpand file|空白をタブへ置換。 この設問ではexpand fileを選ぶ。
+unexpand file|対応する連続空白をタブに変換する。|空白をタブへ置換。|tr -d '0-9'|-dで文字削除。 この設問ではunexpand fileを選ぶ。|tr -s ' '|-sで連続を縮約。 この設問ではunexpand fileを選ぶ。|expand file|タブ位置に応じ展開。 この設問ではunexpand fileを選ぶ。
+# 1.03 GNU・Unix / 1.03.3 FD
+command 2>> err.log|標準エラーを既存err.logへ追記する。|FD2を追記モードで変更。|command > /dev/null|FD1をヌルデバイスへ。 この設問ではcommand 2>> err.logを選ぶ。|command 2>&1 > out|左から順にFD2複製後FD1変更。 この設問ではcommand 2>> err.logを選ぶ。|tee -a out|-aで追記。 この設問ではcommand 2>> err.logを選ぶ。
+command > /dev/null|標準出力だけ破棄する。|FD1をヌルデバイスへ。|command 2>> err.log|FD2を追記モードで変更。 この設問ではcommand > /dev/nullを選ぶ。|command 2>&1 > out|左から順にFD2複製後FD1変更。 この設問ではcommand > /dev/nullを選ぶ。|tee -a out|-aで追記。 この設問ではcommand > /dev/nullを選ぶ。
+command 2>&1 > out|標準エラーを元の標準出力先に残して標準出力だけoutへ送る。|左から順にFD2複製後FD1変更。|command 2>> err.log|FD2を追記モードで変更。 この設問ではcommand 2>&1 > outを選ぶ。|command > /dev/null|FD1をヌルデバイスへ。 この設問ではcommand 2>&1 > outを選ぶ。|tee -a out|-aで追記。 この設問ではcommand 2>&1 > outを選ぶ。
+tee -a out|入力を画面へ出力しながらoutへ追記する。|-aで追記。|command 2>> err.log|FD2を追記モードで変更。 この設問ではtee -a outを選ぶ。|command > /dev/null|FD1をヌルデバイスへ。 この設問ではtee -a outを選ぶ。|command 2>&1 > out|左から順にFD2複製後FD1変更。 この設問ではtee -a outを選ぶ。
+# 1.03 GNU・Unix / 1.03.3 コマンド連携
+grep ERROR app.log && echo FOUND|grep成功時だけFOUNDを表示する。|&&は左が成功した場合のみ実行。|grep ERROR app.log; echo DONE|セミコロンは順次実行。 この設問ではgrep ERROR app.log && echo FOUNDを選ぶ。|find . -type f -print0|-print0でNUL区切り。 この設問ではgrep ERROR app.log && echo FOUNDを選ぶ。|xargs -0|-0でNULを解釈。 この設問ではgrep ERROR app.log && echo FOUNDを選ぶ。
+grep ERROR app.log; echo DONE|grepの終了状態によらずDONEを表示する。|セミコロンは順次実行。|grep ERROR app.log && echo FOUND|&&は左が成功した場合のみ実行。 この設問ではgrep ERROR app.log; echo DONEを選ぶ。|find . -type f -print0|-print0でNUL区切り。 この設問ではgrep ERROR app.log; echo DONEを選ぶ。|xargs -0|-0でNULを解釈。 この設問ではgrep ERROR app.log; echo DONEを選ぶ。
+find . -type f -print0|空白等を含むファイル名をNUL区切りで出力する。|-print0でNUL区切り。|grep ERROR app.log && echo FOUND|&&は左が成功した場合のみ実行。 この設問ではfind . -type f -print0を選ぶ。|grep ERROR app.log; echo DONE|セミコロンは順次実行。 この設問ではfind . -type f -print0を選ぶ。|xargs -0|-0でNULを解釈。 この設問ではfind . -type f -print0を選ぶ。
+xargs -0|NUL区切り入力を引数へ変換する。|-0でNULを解釈。|grep ERROR app.log && echo FOUND|&&は左が成功した場合のみ実行。 この設問ではxargs -0を選ぶ。|grep ERROR app.log; echo DONE|セミコロンは順次実行。 この設問ではxargs -0を選ぶ。|find . -type f -print0|-print0でNUL区切り。 この設問ではxargs -0を選ぶ。
+# 1.03 GNU・Unix / 1.03.4 正規表現
+^a.*z$|aで始まりzで終わる行全体に一致する。|両端アンカーと任意文字反復。|^[0-9]+$|数字集合1回以上と両端アンカー。 この設問では^a.*z$を選ぶ。|^a?b$|aの0回または1回。 この設問では^a.*z$を選ぶ。|^[A-Za-z]{3}$|文字集合を3回反復。 この設問では^a.*z$を選ぶ。
+^[0-9]+$|EREで1文字以上の数字だけの行に一致する。|数字集合1回以上と両端アンカー。|^a.*z$|両端アンカーと任意文字反復。 この設問では^[0-9]+$を選ぶ。|^a?b$|aの0回または1回。 この設問では^[0-9]+$を選ぶ。|^[A-Za-z]{3}$|文字集合を3回反復。 この設問では^[0-9]+$を選ぶ。
+^a?b$|EREでabまたはbだけに一致する。|aの0回または1回。|^a.*z$|両端アンカーと任意文字反復。 この設問では^a?b$を選ぶ。|^[0-9]+$|数字集合1回以上と両端アンカー。 この設問では^a?b$を選ぶ。|^[A-Za-z]{3}$|文字集合を3回反復。 この設問では^a?b$を選ぶ。
+^[A-Za-z]{3}$|EREでASCII英字3文字だけの行に一致する。|文字集合を3回反復。|^a.*z$|両端アンカーと任意文字反復。 この設問では^[A-Za-z]{3}$を選ぶ。|^[0-9]+$|数字集合1回以上と両端アンカー。 この設問では^[A-Za-z]{3}$を選ぶ。|^a?b$|aの0回または1回。 この設問では^[A-Za-z]{3}$を選ぶ。
+# 1.03 GNU・Unix / 1.03.4 grep
+grep -q pattern file|一致有無を終了コードで調べ、出力を抑止する。|-qで通常出力なし。|grep -l pattern *.txt|-lで名前表示。 この設問ではgrep -q pattern fileを選ぶ。|grep -w word file|-wで単語境界。 この設問ではgrep -q pattern fileを選ぶ。|grep -A 2 ERROR file|-Aで後続文脈。 この設問ではgrep -q pattern fileを選ぶ。
+grep -l pattern *.txt|一致したファイル名だけ出力する。|-lで名前表示。|grep -q pattern file|-qで通常出力なし。 この設問ではgrep -l pattern *.txtを選ぶ。|grep -w word file|-wで単語境界。 この設問ではgrep -l pattern *.txtを選ぶ。|grep -A 2 ERROR file|-Aで後続文脈。 この設問ではgrep -l pattern *.txtを選ぶ。
+grep -w word file|wordを単語単位で検索する。|-wで単語境界。|grep -q pattern file|-qで通常出力なし。 この設問ではgrep -w word fileを選ぶ。|grep -l pattern *.txt|-lで名前表示。 この設問ではgrep -w word fileを選ぶ。|grep -A 2 ERROR file|-Aで後続文脈。 この設問ではgrep -w word fileを選ぶ。
+grep -A 2 ERROR file|一致行とその後2行を表示する。|-Aで後続文脈。|grep -q pattern file|-qで通常出力なし。 この設問ではgrep -A 2 ERROR fileを選ぶ。|grep -l pattern *.txt|-lで名前表示。 この設問ではgrep -A 2 ERROR fileを選ぶ。|grep -w word file|-wで単語境界。 この設問ではgrep -A 2 ERROR fileを選ぶ。
+# 1.03 GNU・Unix / 1.03.5 vi
+a|カーソル直後から挿入する。|カーソルの後ろで挿入。|o|下に行を開く。 この設問ではaを選ぶ。|x|1文字削除。 この設問ではaを選ぶ。|r|次の入力で1文字置換。 この設問ではaを選ぶ。
+o|現在行の下に新規行を作り挿入する。|下に行を開く。|a|カーソルの後ろで挿入。 この設問ではoを選ぶ。|x|1文字削除。 この設問ではoを選ぶ。|r|次の入力で1文字置換。 この設問ではoを選ぶ。
+x|カーソル位置の1文字を削除する。|1文字削除。|a|カーソルの後ろで挿入。 この設問ではxを選ぶ。|o|下に行を開く。 この設問ではxを選ぶ。|r|次の入力で1文字置換。 この設問ではxを選ぶ。
+r|カーソル位置の1文字を置換する。|次の入力で1文字置換。|a|カーソルの後ろで挿入。 この設問ではrを選ぶ。|o|下に行を開く。 この設問ではrを選ぶ。|x|1文字削除。 この設問ではrを選ぶ。
+# 1.03 GNU・Unix / 1.03.5 vi移動
+gg|Vimで先頭行へ移動する。|先頭行への移動。|0|行の最初の桁。 この設問ではggを選ぶ。|$|行末へ移動。 この設問ではggを選ぶ。|n|同方向に検索反復。 この設問ではggを選ぶ。
+0|viで現在行の行頭へ移動する。|行の最初の桁。|gg|先頭行への移動。 この設問では0を選ぶ。|$|行末へ移動。 この設問では0を選ぶ。|n|同方向に検索反復。 この設問では0を選ぶ。
+$|viで現在行の行末へ移動する。|行末へ移動。|gg|先頭行への移動。 この設問では$を選ぶ。|0|行の最初の桁。 この設問では$を選ぶ。|n|同方向に検索反復。 この設問では$を選ぶ。
+n|viで直前検索と同方向に次の一致へ移動する。|同方向に検索反復。|gg|先頭行への移動。 この設問ではnを選ぶ。|0|行の最初の桁。 この設問ではnを選ぶ。|$|行末へ移動。 この設問ではnを選ぶ。
+# 1.04 パッケージ / 1.04.1 apt
+apt list --installed|導入済みパッケージを一覧化する。|導入済み一覧。|apt remove nginx|通常削除。 この設問ではapt list --installedを選ぶ。|apt install --reinstall nginx|再インストール。 この設問ではapt list --installedを選ぶ。|apt full-upgrade|依存解決で削除を許容。 この設問ではapt list --installedを選ぶ。
+apt remove nginx|パッケージを通常削除し設定を原則残す。|通常削除。|apt list --installed|導入済み一覧。 この設問ではapt remove nginxを選ぶ。|apt install --reinstall nginx|再インストール。 この設問ではapt remove nginxを選ぶ。|apt full-upgrade|依存解決で削除を許容。 この設問ではapt remove nginxを選ぶ。
+apt install --reinstall nginx|既存パッケージを再導入する。|再インストール。|apt list --installed|導入済み一覧。 この設問ではapt install --reinstall nginxを選ぶ。|apt remove nginx|通常削除。 この設問ではapt install --reinstall nginxを選ぶ。|apt full-upgrade|依存解決で削除を許容。 この設問ではapt install --reinstall nginxを選ぶ。
+apt full-upgrade|必要なら既存パッケージ削除も許容して更新する。|依存解決で削除を許容。|apt list --installed|導入済み一覧。 この設問ではapt full-upgradeを選ぶ。|apt remove nginx|通常削除。 この設問ではapt full-upgradeを選ぶ。|apt install --reinstall nginx|再インストール。 この設問ではapt full-upgradeを選ぶ。
+# 1.04 パッケージ / 1.04.2 dpkg
+dpkg -r nginx|Debianパッケージを通常削除する。|-rは通常削除。|dpkg -P nginx|-Pはpurge。 この設問ではdpkg -r nginxを選ぶ。|dpkg -s nginx|-sで状態表示。 この設問ではdpkg -r nginxを選ぶ。|dpkg-deb -c pkg.deb|アーカイブ内容一覧。 この設問ではdpkg -r nginxを選ぶ。
+dpkg -P nginx|管理される設定ファイルも削除する。|-Pはpurge。|dpkg -r nginx|-rは通常削除。 この設問ではdpkg -P nginxを選ぶ。|dpkg -s nginx|-sで状態表示。 この設問ではdpkg -P nginxを選ぶ。|dpkg-deb -c pkg.deb|アーカイブ内容一覧。 この設問ではdpkg -P nginxを選ぶ。
+dpkg -s nginx|導入済みパッケージの詳細状態を確認する。|-sで状態表示。|dpkg -r nginx|-rは通常削除。 この設問ではdpkg -s nginxを選ぶ。|dpkg -P nginx|-Pはpurge。 この設問ではdpkg -s nginxを選ぶ。|dpkg-deb -c pkg.deb|アーカイブ内容一覧。 この設問ではdpkg -s nginxを選ぶ。
+dpkg-deb -c pkg.deb|未導入debアーカイブの収録ファイルを確認する。|アーカイブ内容一覧。|dpkg -r nginx|-rは通常削除。 この設問ではdpkg-deb -c pkg.debを選ぶ。|dpkg -P nginx|-Pはpurge。 この設問ではdpkg-deb -c pkg.debを選ぶ。|dpkg -s nginx|-sで状態表示。 この設問ではdpkg-deb -c pkg.debを選ぶ。
+# 1.04 パッケージ / 1.04.3 dnf
+dnf search nginx|リポジトリから関連パッケージを検索する。|名前・説明等を検索。|dnf info nginx|詳細情報表示。 この設問ではdnf search nginxを選ぶ。|dnf upgrade|依存解決して更新。 この設問ではdnf search nginxを選ぶ。|dnf remove nginx|指定パッケージ削除。 この設問ではdnf search nginxを選ぶ。
+dnf info nginx|パッケージのバージョン等を表示する。|詳細情報表示。|dnf search nginx|名前・説明等を検索。 この設問ではdnf info nginxを選ぶ。|dnf upgrade|依存解決して更新。 この設問ではdnf info nginxを選ぶ。|dnf remove nginx|指定パッケージ削除。 この設問ではdnf info nginxを選ぶ。
+dnf upgrade|導入済みパッケージを更新する。|依存解決して更新。|dnf search nginx|名前・説明等を検索。 この設問ではdnf upgradeを選ぶ。|dnf info nginx|詳細情報表示。 この設問ではdnf upgradeを選ぶ。|dnf remove nginx|指定パッケージ削除。 この設問ではdnf upgradeを選ぶ。
+dnf remove nginx|依存関係を考慮してパッケージを削除する。|指定パッケージ削除。|dnf search nginx|名前・説明等を検索。 この設問ではdnf remove nginxを選ぶ。|dnf info nginx|詳細情報表示。 この設問ではdnf remove nginxを選ぶ。|dnf upgrade|依存解決して更新。 この設問ではdnf remove nginxを選ぶ。
+# 1.04 パッケージ / 1.04.4 rpm
+rpm -qa|導入済み全RPMパッケージの名前を表示する。|-qと-aで全問い合わせ。|rpm -qi nginx|-qiで詳細情報。 この設問ではrpm -qaを選ぶ。|rpm -qpl pkg.rpm|-pでパッケージファイル、-lで一覧。 この設問ではrpm -qaを選ぶ。|rpm -K pkg.rpm|-Kでダイジェスト・署名確認。 この設問ではrpm -qaを選ぶ。
+rpm -qi nginx|導入済みnginxの説明・バージョンを表示する。|-qiで詳細情報。|rpm -qa|-qと-aで全問い合わせ。 この設問ではrpm -qi nginxを選ぶ。|rpm -qpl pkg.rpm|-pでパッケージファイル、-lで一覧。 この設問ではrpm -qi nginxを選ぶ。|rpm -K pkg.rpm|-Kでダイジェスト・署名確認。 この設問ではrpm -qi nginxを選ぶ。
+rpm -qpl pkg.rpm|未導入RPMの収録ファイル一覧を表示する。|-pでパッケージファイル、-lで一覧。|rpm -qa|-qと-aで全問い合わせ。 この設問ではrpm -qpl pkg.rpmを選ぶ。|rpm -qi nginx|-qiで詳細情報。 この設問ではrpm -qpl pkg.rpmを選ぶ。|rpm -K pkg.rpm|-Kでダイジェスト・署名確認。 この設問ではrpm -qpl pkg.rpmを選ぶ。
+rpm -K pkg.rpm|RPMアーカイブの署名等を検査する。|-Kでダイジェスト・署名確認。|rpm -qa|-qと-aで全問い合わせ。 この設問ではrpm -K pkg.rpmを選ぶ。|rpm -qi nginx|-qiで詳細情報。 この設問ではrpm -K pkg.rpmを選ぶ。|rpm -qpl pkg.rpm|-pでパッケージファイル、-lで一覧。 この設問ではrpm -K pkg.rpmを選ぶ。
+# 1.05 ハードウェア・FS / 1.05.1 デバイス
+/dev/sda|SCSI/SATA等の先頭ディスクを表す代表的デバイス名は？|sd系ブロックデバイス。|/dev/nvme0n1|NVMe名前空間。 この設問では/dev/sdaを選ぶ。|/dev/tty|制御端末特殊デバイス。 この設問では/dev/sdaを選ぶ。|/dev/zero|ゼロを返す特殊デバイス。 この設問では/dev/sdaを選ぶ。
+/dev/nvme0n1|最初のNVMeコントローラーの名前空間1の代表名は？|NVMe名前空間。|/dev/sda|sd系ブロックデバイス。 この設問では/dev/nvme0n1を選ぶ。|/dev/tty|制御端末特殊デバイス。 この設問では/dev/nvme0n1を選ぶ。|/dev/zero|ゼロを返す特殊デバイス。 この設問では/dev/nvme0n1を選ぶ。
+/dev/tty|現在の制御端末への参照は？|制御端末特殊デバイス。|/dev/sda|sd系ブロックデバイス。 この設問では/dev/ttyを選ぶ。|/dev/nvme0n1|NVMe名前空間。 この設問では/dev/ttyを選ぶ。|/dev/zero|ゼロを返す特殊デバイス。 この設問では/dev/ttyを選ぶ。
+/dev/zero|読み出しでゼロのバイト列を供給するデバイスは？|ゼロを返す特殊デバイス。|/dev/sda|sd系ブロックデバイス。 この設問では/dev/zeroを選ぶ。|/dev/nvme0n1|NVMe名前空間。 この設問では/dev/zeroを選ぶ。|/dev/tty|制御端末特殊デバイス。 この設問では/dev/zeroを選ぶ。
+# 1.05 ハードウェア・FS / 1.05.1 資源情報
+lscpu|CPUアーキテクチャ、コア・ソケット数を確認する。|CPU構成表示。|free -m|メモリ統計表示。 この設問ではlscpuを選ぶ。|lsblk -o NAME,SIZE,TYPE|出力列を選択。 この設問ではlscpuを選ぶ。|uname -m|マシンアーキテクチャ表示。 この設問ではlscpuを選ぶ。
+free -m|RAM・スワップ使用量をMiBで確認する。|メモリ統計表示。|lscpu|CPU構成表示。 この設問ではfree -mを選ぶ。|lsblk -o NAME,SIZE,TYPE|出力列を選択。 この設問ではfree -mを選ぶ。|uname -m|マシンアーキテクチャ表示。 この設問ではfree -mを選ぶ。
+lsblk -o NAME,SIZE,TYPE|ブロックデバイスの指定3項目を一覧化する。|出力列を選択。|lscpu|CPU構成表示。 この設問ではlsblk -o NAME,SIZE,TYPEを選ぶ。|free -m|メモリ統計表示。 この設問ではlsblk -o NAME,SIZE,TYPEを選ぶ。|uname -m|マシンアーキテクチャ表示。 この設問ではlsblk -o NAME,SIZE,TYPEを選ぶ。
+uname -m|カーネルが報告するマシンハードウェア名を確認する。|マシンアーキテクチャ表示。|lscpu|CPU構成表示。 この設問ではuname -mを選ぶ。|free -m|メモリ統計表示。 この設問ではuname -mを選ぶ。|lsblk -o NAME,SIZE,TYPE|出力列を選択。 この設問ではuname -mを選ぶ。
+# 1.05 ハードウェア・FS / 1.05.2 パーティション
+parted -l|GNU partedで認識済みディスクの構成を一覧化する。|ディスク・パーティション表示。|fdisk /dev/sdb|パーティション管理。 この設問ではparted -lを選ぶ。|partprobe|変更を再認識させる。 この設問ではparted -lを選ぶ。|swapon --show|スワップ一覧。 この設問ではparted -lを選ぶ。
+fdisk /dev/sdb|対象ディスクのパーティションを対話編集する。|パーティション管理。|parted -l|ディスク・パーティション表示。 この設問ではfdisk /dev/sdbを選ぶ。|partprobe|変更を再認識させる。 この設問ではfdisk /dev/sdbを選ぶ。|swapon --show|スワップ一覧。 この設問ではfdisk /dev/sdbを選ぶ。
+partprobe|パーティションテーブル変更をカーネルへ通知する。|変更を再認識させる。|parted -l|ディスク・パーティション表示。 この設問ではpartprobeを選ぶ。|fdisk /dev/sdb|パーティション管理。 この設問ではpartprobeを選ぶ。|swapon --show|スワップ一覧。 この設問ではpartprobeを選ぶ。
+swapon --show|有効なスワップと利用状況を確認する。|スワップ一覧。|parted -l|ディスク・パーティション表示。 この設問ではswapon --showを選ぶ。|fdisk /dev/sdb|パーティション管理。 この設問ではswapon --showを選ぶ。|partprobe|変更を再認識させる。 この設問ではswapon --showを選ぶ。
+# 1.05 ハードウェア・FS / 1.05.3 FS種別
+ext4|ext系のジャーナリングFSは？|extファミリーのFS。|XFS|XFSはオンライン拡張対応。 この設問ではext4を選ぶ。|vfat|FATの長い名前等に対応。 この設問ではext4を選ぶ。|tmpfs|揮発性の仮想メモリベースFS。 この設問ではext4を選ぶ。
+XFS|xfs_growfsでオンライン拡張するFSは？|XFSはオンライン拡張対応。|ext4|extファミリーのFS。 この設問ではXFSを選ぶ。|vfat|FATの長い名前等に対応。 この設問ではXFSを選ぶ。|tmpfs|揮発性の仮想メモリベースFS。 この設問ではXFSを選ぶ。
+vfat|FAT系USBメモリをマウントするFSタイプは？|FATの長い名前等に対応。|ext4|extファミリーのFS。 この設問ではvfatを選ぶ。|XFS|XFSはオンライン拡張対応。 この設問ではvfatを選ぶ。|tmpfs|揮発性の仮想メモリベースFS。 この設問ではvfatを選ぶ。
+tmpfs|主にメモリを利用し再起動で内容を失う一時FSは？|揮発性の仮想メモリベースFS。|ext4|extファミリーのFS。 この設問ではtmpfsを選ぶ。|XFS|XFSはオンライン拡張対応。 この設問ではtmpfsを選ぶ。|vfat|FATの長い名前等に対応。 この設問ではtmpfsを選ぶ。
+# 1.05 ハードウェア・FS / 1.05.3 容量とマウント
+mount -a|fstabの自動マウント対象をマウントする。|noauto等を除いて処理。|findmnt /mnt|マウント情報検索。 この設問ではmount -aを選ぶ。|df -T|-Tで種別表示。 この設問ではmount -aを選ぶ。|du -h --max-depth=1 /var|深さ1まで集計。 この設問ではmount -aを選ぶ。
+findmnt /mnt|指定パスに対応するマウント情報を調べる。|マウント情報検索。|mount -a|noauto等を除いて処理。 この設問ではfindmnt /mntを選ぶ。|df -T|-Tで種別表示。 この設問ではfindmnt /mntを選ぶ。|du -h --max-depth=1 /var|深さ1まで集計。 この設問ではfindmnt /mntを選ぶ。
+df -T|容量とファイルシステム種別を確認する。|-Tで種別表示。|mount -a|noauto等を除いて処理。 この設問ではdf -Tを選ぶ。|findmnt /mnt|マウント情報検索。 この設問ではdf -Tを選ぶ。|du -h --max-depth=1 /var|深さ1まで集計。 この設問ではdf -Tを選ぶ。
+du -h --max-depth=1 /var|/var直下の各ディレクトリの使用量を概観する。|深さ1まで集計。|mount -a|noauto等を除いて処理。 この設問ではdu -h --max-depth=1 /varを選ぶ。|findmnt /mnt|マウント情報検索。 この設問ではdu -h --max-depth=1 /varを選ぶ。|df -T|-Tで種別表示。 この設問ではdu -h --max-depth=1 /varを選ぶ。
