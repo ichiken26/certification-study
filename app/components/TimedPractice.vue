@@ -29,6 +29,7 @@ function go(i:number){
 }
 function flag(){emit('update',{...props.session,items:props.session.items.map((v,j)=>j===props.session.index?{...v,flagged:!v.flagged}:v)})}
 function stem(id:string){return props.bank.find(q=>q.id===id)}
+function requestFinish(){confirm.value=true;nextTick(()=>window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}))}
 </script>
 <template>
   <div class="space-y-4">
@@ -78,7 +79,7 @@ function stem(id:string){return props.bank.find(q=>q.id===id)}
         <UButton color="neutral" variant="ghost" @click="emit('leave')">中断（時間は継続）</UButton>
         <UButton color="neutral" variant="outline" :disabled="session.index===0" @click="go(session.index-1)">前へ</UButton>
         <UButton variant="outline" :disabled="session.index+1===session.items.length" @click="go(session.index+1)">次へ</UButton>
-        <UButton @click="confirm=true;nextTick(()=>window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}))">終了</UButton>
+        <UButton @click="requestFinish">終了</UButton>
       </div>
     </template>
   </div>
