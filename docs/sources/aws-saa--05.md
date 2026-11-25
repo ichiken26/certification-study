@@ -1,0 +1,3 @@
+# SAA-C03 追加演習05
+120問。公式ガイド https://docs.aws.amazon.com/ja_jp/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html を確認。追加の構成・運用判断。既存の基礎問題から一部の概念を応用・具体化。個別仕様の独立レビュー、全技能の網羅確認は未完了。
+照合対象: https://docs.aws.amazon.com/whitepapers/latest/aws-overview/amazon-web-services-cloud-platform.html ; https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html ; https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html ; https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html ; https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html
