@@ -1,0 +1,180 @@
+# 1.06 シェル・スクリプト / 1.06.1 環境設定
+env NAME=test command|環境変数NAMEをtestにして指定コマンドだけを実行したい。|子プロセスの環境を設定して実行する。|printenv HOME|エクスポートされた環境変数を表示。 この設問ではenv NAME=test commandを選ぶ。|declare -p NAME|変数の宣言内容を表示。 この設問ではenv NAME=test commandを選ぶ。|unalias ll|指定エイリアスを解除。 この設問ではenv NAME=test commandを選ぶ。
+printenv HOME|現在の環境変数HOMEの値を表示したい。|エクスポートされた環境変数を表示。|env NAME=test command|子プロセスの環境を設定して実行する。 この設問ではprintenv HOMEを選ぶ。|declare -p NAME|変数の宣言内容を表示。 この設問ではprintenv HOMEを選ぶ。|unalias ll|指定エイリアスを解除。 この設問ではprintenv HOMEを選ぶ。
+declare -p NAME|Bashの変数NAMEの属性と現在値を確認したい。|変数の宣言内容を表示。|env NAME=test command|子プロセスの環境を設定して実行する。 この設問ではdeclare -p NAMEを選ぶ。|printenv HOME|エクスポートされた環境変数を表示。 この設問ではdeclare -p NAMEを選ぶ。|unalias ll|指定エイリアスを解除。 この設問ではdeclare -p NAMEを選ぶ。
+unalias ll|Bashで定義済みの別名llを取り除きたい。|指定エイリアスを解除。|env NAME=test command|子プロセスの環境を設定して実行する。 この設問ではunalias llを選ぶ。|printenv HOME|エクスポートされた環境変数を表示。 この設問ではunalias llを選ぶ。|declare -p NAME|変数の宣言内容を表示。 この設問ではunalias llを選ぶ。
+# 1.06 シェル・スクリプト / 1.06.1 環境の引継ぎ
+export APP_MODE|既存のシェル変数APP_MODEを子プロセスにも引き継がせたい。|変数にエクスポート属性を設定する。|env -i command|-iで空の環境から開始。 この設問ではexport APP_MODEを選ぶ。|readonly APP_MODE|変数を読み取り専用にする。 この設問ではexport APP_MODEを選ぶ。|set -u|nounsetオプションを設定。 この設問ではexport APP_MODEを選ぶ。
+env -i command|現在の環境変数を引き継がずコマンドを実行したい。|-iで空の環境から開始。|export APP_MODE|変数にエクスポート属性を設定する。 この設問ではenv -i commandを選ぶ。|readonly APP_MODE|変数を読み取り専用にする。 この設問ではenv -i commandを選ぶ。|set -u|nounsetオプションを設定。 この設問ではenv -i commandを選ぶ。
+readonly APP_MODE|現在のBash内でAPP_MODEの変更を禁止したい。|変数を読み取り専用にする。|export APP_MODE|変数にエクスポート属性を設定する。 この設問ではreadonly APP_MODEを選ぶ。|env -i command|-iで空の環境から開始。 この設問ではreadonly APP_MODEを選ぶ。|set -u|nounsetオプションを設定。 この設問ではreadonly APP_MODEを選ぶ。
+set -u|Bashスクリプトで未定義変数を展開した場合にエラーとしたい。|nounsetオプションを設定。|export APP_MODE|変数にエクスポート属性を設定する。 この設問ではset -uを選ぶ。|env -i command|-iで空の環境から開始。 この設問ではset -uを選ぶ。|readonly APP_MODE|変数を読み取り専用にする。 この設問ではset -uを選ぶ。
+# 1.06 シェル・スクリプト / 1.06.1 Bash起動設定
+/etc/bash.bashrc|Debian系で対話的な非ログインBashのシステム全体設定を置く代表的ファイルは？|システム全体のBash設定。ディストリビューション依存。|.bash_history|履歴保存先の既定名。 この設問では/etc/bash.bashrcを選ぶ。|.bash_login|ログイン設定の優先順で次に確認される。 この設問では/etc/bash.bashrcを選ぶ。|.profile|ログインシェル向け設定。 この設問では/etc/bash.bashrcを選ぶ。
+.bash_history|対話Bashのコマンド履歴を保存する代表的ファイル名は？|履歴保存先の既定名。|/etc/bash.bashrc|システム全体のBash設定。ディストリビューション依存。 この設問では.bash_historyを選ぶ。|.bash_login|ログイン設定の優先順で次に確認される。 この設問では.bash_historyを選ぶ。|.profile|ログインシェル向け設定。 この設問では.bash_historyを選ぶ。
+.bash_login|ログインBashで.bash_profileがない場合に探索される次のユーザー設定ファイル名は？|ログイン設定の優先順で次に確認される。|/etc/bash.bashrc|システム全体のBash設定。ディストリビューション依存。 この設問では.bash_loginを選ぶ。|.bash_history|履歴保存先の既定名。 この設問では.bash_loginを選ぶ。|.profile|ログインシェル向け設定。 この設問では.bash_loginを選ぶ。
+.profile|.bash_profileも.bash_loginも存在しないログインBashが探索する汎用設定ファイル名は？|ログインシェル向け設定。|/etc/bash.bashrc|システム全体のBash設定。ディストリビューション依存。 この設問では.profileを選ぶ。|.bash_history|履歴保存先の既定名。 この設問では.profileを選ぶ。|.bash_login|ログイン設定の優先順で次に確認される。 この設問では.profileを選ぶ。
+# 1.06 シェル・スクリプト / 1.06.2 パラメータ展開
+DEFAULT|変数xが未設定のとき、Bashでecho "${x:-DEFAULT}"に相当する既定値展開を行った結果は？|未設定または空なら既定値を使う。|abc|オフセット0から3文字。 この設問ではDEFAULTを選ぶ。|6|6文字の文字列。 この設問ではDEFAULTを選ぶ。|txt|最長の前方一致を除去すればtxt。 この設問ではDEFAULTを選ぶ。
+abc|x=abcdefで先頭3文字をBashの部分文字列展開により取り出すと？|オフセット0から3文字。|DEFAULT|未設定または空なら既定値を使う。 この設問ではabcを選ぶ。|6|6文字の文字列。 この設問ではabcを選ぶ。|txt|最長の前方一致を除去すればtxt。 この設問ではabcを選ぶ。
+6|x=abcdefで文字列長をBashの長さ展開により取得すると？|6文字の文字列。|DEFAULT|未設定または空なら既定値を使う。 この設問では6を選ぶ。|abc|オフセット0から3文字。 この設問では6を選ぶ。|txt|最長の前方一致を除去すればtxt。 この設問では6を選ぶ。
+txt|x=report.txtで最後のドット以前を除去して拡張子部分を取得した結果は？|最長の前方一致を除去すればtxt。|DEFAULT|未設定または空なら既定値を使う。 この設問ではtxtを選ぶ。|abc|オフセット0から3文字。 この設問ではtxtを選ぶ。|6|6文字の文字列。 この設問ではtxtを選ぶ。
+# 1.06 シェル・スクリプト / 1.06.2 引数と状態
+$0|シェルスクリプトの実行時にスクリプト名を取得する特殊パラメータは？|実行されたシェルまたはスクリプト名。|$!|最後の非同期ジョブのPID。 この設問では$0を選ぶ。|shift|$2を$1へ移す等の操作。 この設問では$0を選ぶ。|getopts|オプションと引数を順次解析する。 この設問では$0を選ぶ。
+$!|最後にバックグラウンドで起動したジョブのPIDを取得するには？|最後の非同期ジョブのPID。|$0|実行されたシェルまたはスクリプト名。 この設問では$!を選ぶ。|shift|$2を$1へ移す等の操作。 この設問では$!を選ぶ。|getopts|オプションと引数を順次解析する。 この設問では$!を選ぶ。
+shift|位置パラメータの先頭を取り除いて残りを繰り上げたい。|$2を$1へ移す等の操作。|$0|実行されたシェルまたはスクリプト名。 この設問ではshiftを選ぶ。|$!|最後の非同期ジョブのPID。 この設問ではshiftを選ぶ。|getopts|オプションと引数を順次解析する。 この設問ではshiftを選ぶ。
+getopts|シェルスクリプトの短いオプション-aや-fの解析に利用する組み込みは？|オプションと引数を順次解析する。|$0|実行されたシェルまたはスクリプト名。 この設問ではgetoptsを選ぶ。|$!|最後の非同期ジョブのPID。 この設問ではgetoptsを選ぶ。|shift|$2を$1へ移す等の操作。 この設問ではgetoptsを選ぶ。
+# 1.06 シェル・スクリプト / 1.06.2 入力と出力
+read -r line|入力1行をバックスラッシュの特別扱いなしで変数へ読む。|-rでバックスラッシュをそのまま扱う。|printf '%s' "$name"|固定の%s書式で文字列を出力。 この設問ではread -r lineを選ぶ。|read -s password|-sで端末の入力表示を抑える。 この設問ではread -r lineを選ぶ。|exit 2|exitに終了ステータスを指定する。 この設問ではread -r lineを選ぶ。
+printf '%s' "$name"|変数をフォーマット文字列として解釈せず、改行も追加せず出力したい。|固定の%s書式で文字列を出力。|read -r line|-rでバックスラッシュをそのまま扱う。 この設問ではprintf '%s' "$name"を選ぶ。|read -s password|-sで端末の入力表示を抑える。 この設問ではprintf '%s' "$name"を選ぶ。|exit 2|exitに終了ステータスを指定する。 この設問ではprintf '%s' "$name"を選ぶ。
+read -s password|端末入力中に文字をエコーせず読み込みたい。|-sで端末の入力表示を抑える。|read -r line|-rでバックスラッシュをそのまま扱う。 この設問ではread -s passwordを選ぶ。|printf '%s' "$name"|固定の%s書式で文字列を出力。 この設問ではread -s passwordを選ぶ。|exit 2|exitに終了ステータスを指定する。 この設問ではread -s passwordを選ぶ。
+exit 2|スクリプトを終了コード2で終えたい。|exitに終了ステータスを指定する。|read -r line|-rでバックスラッシュをそのまま扱う。 この設問ではexit 2を選ぶ。|printf '%s' "$name"|固定の%s書式で文字列を出力。 この設問ではexit 2を選ぶ。|read -s password|-sで端末の入力表示を抑える。 この設問ではexit 2を選ぶ。
+# 1.06 シェル・スクリプト / 1.06.2 ファイル判定
+test -e file|種類に関係なく指定パスが存在するか判定したい。|-eで存在判定。|test -r file|-rで読取可能性を検査。 この設問ではtest -e fileを選ぶ。|test -w file|-wで書込可能性を検査。 この設問ではtest -e fileを選ぶ。|test -s file|-sで非空ファイルを判定。 この設問ではtest -e fileを選ぶ。
+test -r file|現在の主体が指定ファイルを読み取れるか判定したい。|-rで読取可能性を検査。|test -e file|-eで存在判定。 この設問ではtest -r fileを選ぶ。|test -w file|-wで書込可能性を検査。 この設問ではtest -r fileを選ぶ。|test -s file|-sで非空ファイルを判定。 この設問ではtest -r fileを選ぶ。
+test -w file|指定ファイルが書き込み可能か判定したい。|-wで書込可能性を検査。|test -e file|-eで存在判定。 この設問ではtest -w fileを選ぶ。|test -r file|-rで読取可能性を検査。 この設問ではtest -w fileを選ぶ。|test -s file|-sで非空ファイルを判定。 この設問ではtest -w fileを選ぶ。
+test -s file|ファイルが存在しサイズが0より大きいか確認したい。|-sで非空ファイルを判定。|test -e file|-eで存在判定。 この設問ではtest -s fileを選ぶ。|test -r file|-rで読取可能性を検査。 この設問ではtest -s fileを選ぶ。|test -w file|-wで書込可能性を検査。 この設問ではtest -s fileを選ぶ。
+# 1.06 シェル・スクリプト / 1.06.2 ループ制御
+break|現在のループを途中で終了したい。|最内側等のループを抜ける。|continue|次の反復へ移る。 この設問ではbreakを選ぶ。|return|関数やsourceされたスクリプトから戻る。 この設問ではbreakを選ぶ。|trap|シグナルやEXITに対する処理を設定。 この設問ではbreakを選ぶ。
+continue|現在の反復の残りを省略し次の反復へ進みたい。|次の反復へ移る。|break|最内側等のループを抜ける。 この設問ではcontinueを選ぶ。|return|関数やsourceされたスクリプトから戻る。 この設問ではcontinueを選ぶ。|trap|シグナルやEXITに対する処理を設定。 この設問ではcontinueを選ぶ。
+return|シェル関数から呼び出し元へ終了状態を返したい。|関数やsourceされたスクリプトから戻る。|break|最内側等のループを抜ける。 この設問ではreturnを選ぶ。|continue|次の反復へ移る。 この設問ではreturnを選ぶ。|trap|シグナルやEXITに対する処理を設定。 この設問ではreturnを選ぶ。
+trap|スクリプト終了時等に一時ファイルを後処理する命令を登録したい。|シグナルやEXITに対する処理を設定。|break|最内側等のループを抜ける。 この設問ではtrapを選ぶ。|continue|次の反復へ移る。 この設問ではtrapを選ぶ。|return|関数やsourceされたスクリプトから戻る。 この設問ではtrapを選ぶ。
+# 1.06 シェル・スクリプト / 1.06.2 終了状態
+0|Bashでtrueを実行した直後の終了ステータスは？|trueは成功を返す。|1|falseは失敗を返す。 この設問では0を選ぶ。|127|コマンドが見つからない場合の値。 この設問では0を選ぶ。|126|見つかったが実行できない場合の値。 この設問では0を選ぶ。
+1|Bashでfalseを実行した直後の終了ステータスは？|falseは失敗を返す。|0|trueは成功を返す。 この設問では1を選ぶ。|127|コマンドが見つからない場合の値。 この設問では1を選ぶ。|126|見つかったが実行できない場合の値。 この設問では1を選ぶ。
+127|Bashで存在しないコマンドを呼び出した際の代表的終了ステータスは？|コマンドが見つからない場合の値。|0|trueは成功を返す。 この設問では127を選ぶ。|1|falseは失敗を返す。 この設問では127を選ぶ。|126|見つかったが実行できない場合の値。 この設問では127を選ぶ。
+126|Bashで発見したコマンドが実行不能である場合の代表的終了ステータスは？|見つかったが実行できない場合の値。|0|trueは成功を返す。 この設問では126を選ぶ。|1|falseは失敗を返す。 この設問では126を選ぶ。|127|コマンドが見つからない場合の値。 この設問では126を選ぶ。
+# 1.06 シェル・スクリプト / 1.06.2 算術処理
+12|Bash算術展開で3+3*3を評価した値は？|乗算が加算より先なので3+9。|2|14を4で割った余り。 この設問では12を選ぶ。|3|整数除算なので小数部分を切り捨てる。 この設問では12を選ぶ。|16|2の4乗。 この設問では12を選ぶ。
+2|Bash算術展開で整数14%4を評価した値は？|14を4で割った余り。|12|乗算が加算より先なので3+9。 この設問では2を選ぶ。|3|整数除算なので小数部分を切り捨てる。 この設問では2を選ぶ。|16|2の4乗。 この設問では2を選ぶ。
+3|Bash算術展開で整数14/4を評価した値は？|整数除算なので小数部分を切り捨てる。|12|乗算が加算より先なので3+9。 この設問では3を選ぶ。|2|14を4で割った余り。 この設問では3を選ぶ。|16|2の4乗。 この設問では3を選ぶ。
+16|Bash算術展開で2**4を評価した値は？|2の4乗。|12|乗算が加算より先なので3+9。 この設問では16を選ぶ。|2|14を4で割った余り。 この設問では16を選ぶ。|3|整数除算なので小数部分を切り捨てる。 この設問では16を選ぶ。
+# 1.07 ネットワーク / 1.07.1 IPv4範囲
+10.0.0.0/8|RFC1918のうち10で始まるプライベートIPv4範囲は？|10.0.0.0〜10.255.255.255。|172.16.0.0/12|172.16.0.0〜172.31.255.255。 この設問では10.0.0.0/8を選ぶ。|100.64.0.0/10|RFC6598の共有範囲。 この設問では10.0.0.0/8を選ぶ。|192.0.2.0/24|ドキュメントの例示用アドレス。 この設問では10.0.0.0/8を選ぶ。
+172.16.0.0/12|RFC1918のうち172.16〜172.31のプライベートIPv4範囲は？|172.16.0.0〜172.31.255.255。|10.0.0.0/8|10.0.0.0〜10.255.255.255。 この設問では172.16.0.0/12を選ぶ。|100.64.0.0/10|RFC6598の共有範囲。 この設問では172.16.0.0/12を選ぶ。|192.0.2.0/24|ドキュメントの例示用アドレス。 この設問では172.16.0.0/12を選ぶ。
+100.64.0.0/10|キャリアグレードNAT等のための共有アドレス空間は？|RFC6598の共有範囲。|10.0.0.0/8|10.0.0.0〜10.255.255.255。 この設問では100.64.0.0/10を選ぶ。|172.16.0.0/12|172.16.0.0〜172.31.255.255。 この設問では100.64.0.0/10を選ぶ。|192.0.2.0/24|ドキュメントの例示用アドレス。 この設問では100.64.0.0/10を選ぶ。
+192.0.2.0/24|技術文書用TEST-NET-1のIPv4範囲は？|ドキュメントの例示用アドレス。|10.0.0.0/8|10.0.0.0〜10.255.255.255。 この設問では192.0.2.0/24を選ぶ。|172.16.0.0/12|172.16.0.0〜172.31.255.255。 この設問では192.0.2.0/24を選ぶ。|100.64.0.0/10|RFC6598の共有範囲。 この設問では192.0.2.0/24を選ぶ。
+# 1.07 ネットワーク / 1.07.1 IPv6基礎
+2001:db8::/32|IPv6の技術文書の例示用プレフィックスは？|文書用のIPv6範囲。|fc00::/7|ULAのプレフィックス。 この設問では2001:db8::/32を選ぶ。|/64|通常64ビットのネットワークプレフィックス。 この設問では2001:db8::/32を選ぶ。|Neighbor Discovery|ICMPv6を使う隣接探索。 この設問では2001:db8::/32を選ぶ。
+fc00::/7|IPv6のUnique Local Addressの範囲は？|ULAのプレフィックス。|2001:db8::/32|文書用のIPv6範囲。 この設問ではfc00::/7を選ぶ。|/64|通常64ビットのネットワークプレフィックス。 この設問ではfc00::/7を選ぶ。|Neighbor Discovery|ICMPv6を使う隣接探索。 この設問ではfc00::/7を選ぶ。
+/64|通常のSLAACを用いるIPv6サブネットで一般的なプレフィックス長は？|通常64ビットのネットワークプレフィックス。|2001:db8::/32|文書用のIPv6範囲。 この設問では/64を選ぶ。|fc00::/7|ULAのプレフィックス。 この設問では/64を選ぶ。|Neighbor Discovery|ICMPv6を使う隣接探索。 この設問では/64を選ぶ。
+Neighbor Discovery|IPv6で同一リンクの隣接ノードやルーターを発見する仕組みは？|ICMPv6を使う隣接探索。|2001:db8::/32|文書用のIPv6範囲。 この設問ではNeighbor Discoveryを選ぶ。|fc00::/7|ULAのプレフィックス。 この設問ではNeighbor Discoveryを選ぶ。|/64|通常64ビットのネットワークプレフィックス。 この設問ではNeighbor Discoveryを選ぶ。
+# 1.07 ネットワーク / 1.07.1 ポート
+110/TCP|暗号化なしの標準POP3ポート番号は？|POP3によるメール受信。|143/TCP|IMAPによるメールボックス操作。 この設問では110/TCPを選ぶ。|587/TCP|SMTP submission。 この設問では110/TCPを選ぶ。|161/UDP|SNMPの通常問い合わせ。 この設問では110/TCPを選ぶ。
+143/TCP|暗号化なしの標準IMAPポート番号は？|IMAPによるメールボックス操作。|110/TCP|POP3によるメール受信。 この設問では143/TCPを選ぶ。|587/TCP|SMTP submission。 この設問では143/TCPを選ぶ。|161/UDP|SNMPの通常問い合わせ。 この設問では143/TCPを選ぶ。
+587/TCP|メールクライアントのメッセージ投稿submissionの標準ポートは？|SMTP submission。|110/TCP|POP3によるメール受信。 この設問では587/TCPを選ぶ。|143/TCP|IMAPによるメールボックス操作。 この設問では587/TCPを選ぶ。|161/UDP|SNMPの通常問い合わせ。 この設問では587/TCPを選ぶ。
+161/UDP|SNMPの一般的なエージェント問い合わせ先ポートは？|SNMPの通常問い合わせ。|110/TCP|POP3によるメール受信。 この設問では161/UDPを選ぶ。|143/TCP|IMAPによるメールボックス操作。 この設問では161/UDPを選ぶ。|587/TCP|SMTP submission。 この設問では161/UDPを選ぶ。
+# 1.07 ネットワーク / 1.07.2 経路と設定
+ip addr del 192.0.2.10/24 dev eth0|eth0に設定したIPv4アドレスを削除したい。|指定IP割り当てを削除。|ip link set eth0 down|リンクをadministratively downへ。 この設問ではip addr del 192.0.2.10/24 dev eth0を選ぶ。|ip route del default|デフォルトルートを取り除く。 この設問ではip addr del 192.0.2.10/24 dev eth0を選ぶ。|ip -6 route show|-6でIPv6に限定。 この設問ではip addr del 192.0.2.10/24 dev eth0を選ぶ。
+ip link set eth0 down|eth0の管理状態を停止にしたい。|リンクをadministratively downへ。|ip addr del 192.0.2.10/24 dev eth0|指定IP割り当てを削除。 この設問ではip link set eth0 downを選ぶ。|ip route del default|デフォルトルートを取り除く。 この設問ではip link set eth0 downを選ぶ。|ip -6 route show|-6でIPv6に限定。 この設問ではip link set eth0 downを選ぶ。
+ip route del default|現在のデフォルト経路を削除したい。|デフォルトルートを取り除く。|ip addr del 192.0.2.10/24 dev eth0|指定IP割り当てを削除。 この設問ではip route del defaultを選ぶ。|ip link set eth0 down|リンクをadministratively downへ。 この設問ではip route del defaultを選ぶ。|ip -6 route show|-6でIPv6に限定。 この設問ではip route del defaultを選ぶ。
+ip -6 route show|IPv6経路テーブルを確認したい。|-6でIPv6に限定。|ip addr del 192.0.2.10/24 dev eth0|指定IP割り当てを削除。 この設問ではip -6 route showを選ぶ。|ip link set eth0 down|リンクをadministratively downへ。 この設問ではip -6 route showを選ぶ。|ip route del default|デフォルトルートを取り除く。 この設問ではip -6 route showを選ぶ。
+# 1.07 ネットワーク / 1.07.2 NetworkManager
+nmcli device status|NetworkManagerが認識するデバイスの接続状態を一覧化したい。|デバイス状態を表示。|nmcli connection show|接続設定一覧。 この設問ではnmcli device statusを選ぶ。|nmcli connection up office|指定接続をアクティブ化。 この設問ではnmcli device statusを選ぶ。|nmcli connection down office|指定接続を停止。 この設問ではnmcli device statusを選ぶ。
+nmcli connection show|保存済みの接続プロファイルを確認したい。|接続設定一覧。|nmcli device status|デバイス状態を表示。 この設問ではnmcli connection showを選ぶ。|nmcli connection up office|指定接続をアクティブ化。 この設問ではnmcli connection showを選ぶ。|nmcli connection down office|指定接続を停止。 この設問ではnmcli connection showを選ぶ。
+nmcli connection up office|既存のofficeプロファイルを有効化したい。|指定接続をアクティブ化。|nmcli device status|デバイス状態を表示。 この設問ではnmcli connection up officeを選ぶ。|nmcli connection show|接続設定一覧。 この設問ではnmcli connection up officeを選ぶ。|nmcli connection down office|指定接続を停止。 この設問ではnmcli connection up officeを選ぶ。
+nmcli connection down office|officeプロファイルを非アクティブ化したい。|指定接続を停止。|nmcli device status|デバイス状態を表示。 この設問ではnmcli connection down officeを選ぶ。|nmcli connection show|接続設定一覧。 この設問ではnmcli connection down officeを選ぶ。|nmcli connection up office|指定接続をアクティブ化。 この設問ではnmcli connection down officeを選ぶ。
+# 1.07 ネットワーク / 1.07.3 接続診断
+ss -tan|TCPソケットを待受・非待受とも数値形式で表示する。|-t TCP、-a全て、-n数値表示。|ss -lun|-l待受、-u UDP、-n数値。 この設問ではss -tanを選ぶ。|ping -6 ::1|-6でIPv6。 この設問ではss -tanを選ぶ。|ip neigh show|近隣キャッシュ表示。 この設問ではss -tanを選ぶ。
+ss -lun|待受UDPソケットを数値形式で表示したい。|-l待受、-u UDP、-n数値。|ss -tan|-t TCP、-a全て、-n数値表示。 この設問ではss -lunを選ぶ。|ping -6 ::1|-6でIPv6。 この設問ではss -lunを選ぶ。|ip neigh show|近隣キャッシュ表示。 この設問ではss -lunを選ぶ。
+ping -6 ::1|IPv6ループバックアドレスへのICMPv6応答を確認したい。|-6でIPv6。|ss -tan|-t TCP、-a全て、-n数値表示。 この設問ではping -6 ::1を選ぶ。|ss -lun|-l待受、-u UDP、-n数値。 この設問ではping -6 ::1を選ぶ。|ip neigh show|近隣キャッシュ表示。 この設問ではping -6 ::1を選ぶ。
+ip neigh show|近隣ノードのIPとリンク層アドレスの対応を確認したい。|近隣キャッシュ表示。|ss -tan|-t TCP、-a全て、-n数値表示。 この設問ではip neigh showを選ぶ。|ss -lun|-l待受、-u UDP、-n数値。 この設問ではip neigh showを選ぶ。|ping -6 ::1|-6でIPv6。 この設問ではip neigh showを選ぶ。
+# 1.07 ネットワーク / 1.07.3 障害の切り分け
+デフォルトゲートウェイと経路表を確認|同じサブネットの端末には接続できるが、別ネットワークへ全く接続できない。最初に調べる設定は？|別ネットワークへの転送経路が必要。|DNSリゾルバー設定を確認|名前解決の設定と応答を確認。 この設問ではデフォルトゲートウェイと経路表を確認を選ぶ。|サーバーの待受ポートを確認|対象アプリが指定ポートをlistenしているか確認。 この設問ではデフォルトゲートウェイと経路表を確認を選ぶ。|MTUと経路MTUを調査|経路上の最大パケット長等を確認。 この設問ではデフォルトゲートウェイと経路表を確認を選ぶ。
+DNSリゾルバー設定を確認|外部サーバーへIP直接指定では接続できるが名前指定では失敗する。最初に調べるのは？|名前解決の設定と応答を確認。|デフォルトゲートウェイと経路表を確認|別ネットワークへの転送経路が必要。 この設問ではDNSリゾルバー設定を確認を選ぶ。|サーバーの待受ポートを確認|対象アプリが指定ポートをlistenしているか確認。 この設問ではDNSリゾルバー設定を確認を選ぶ。|MTUと経路MTUを調査|経路上の最大パケット長等を確認。 この設問ではDNSリゾルバー設定を確認を選ぶ。
+サーバーの待受ポートを確認|pingは成功するがTCP接続がConnection refusedになる。まずどの情報を確認する？|対象アプリが指定ポートをlistenしているか確認。|デフォルトゲートウェイと経路表を確認|別ネットワークへの転送経路が必要。 この設問ではサーバーの待受ポートを確認を選ぶ。|DNSリゾルバー設定を確認|名前解決の設定と応答を確認。 この設問ではサーバーの待受ポートを確認を選ぶ。|MTUと経路MTUを調査|経路上の最大パケット長等を確認。 この設問ではサーバーの待受ポートを確認を選ぶ。
+MTUと経路MTUを調査|小さいパケットは通るが大きなデータ転送だけが停止する。疑うべきネットワーク設定は？|経路上の最大パケット長等を確認。|デフォルトゲートウェイと経路表を確認|別ネットワークへの転送経路が必要。 この設問ではMTUと経路MTUを調査を選ぶ。|DNSリゾルバー設定を確認|名前解決の設定と応答を確認。 この設問ではMTUと経路MTUを調査を選ぶ。|サーバーの待受ポートを確認|対象アプリが指定ポートをlistenしているか確認。 この設問ではMTUと経路MTUを調査を選ぶ。
+# 1.07 ネットワーク / 1.07.4 DNS
+dig @192.0.2.53 example.com AAAA|指定DNSサーバーへIPv6アドレスレコードを問い合わせる。|サーバーとAAAAを明示。|dig example.com NS|NSを問い合わせ。 この設問ではdig @192.0.2.53 example.com AAAAを選ぶ。|dig example.com TXT|TXTを問い合わせ。 この設問ではdig @192.0.2.53 example.com AAAAを選ぶ。|resolvectl status|現在のリゾルバー設定表示。 この設問ではdig @192.0.2.53 example.com AAAAを選ぶ。
+dig example.com NS|ドメインの権威ネームサーバーレコードを確認する。|NSを問い合わせ。|dig @192.0.2.53 example.com AAAA|サーバーとAAAAを明示。 この設問ではdig example.com NSを選ぶ。|dig example.com TXT|TXTを問い合わせ。 この設問ではdig example.com NSを選ぶ。|resolvectl status|現在のリゾルバー設定表示。 この設問ではdig example.com NSを選ぶ。
+dig example.com TXT|ドメインのテキストレコードを確認する。|TXTを問い合わせ。|dig @192.0.2.53 example.com AAAA|サーバーとAAAAを明示。 この設問ではdig example.com TXTを選ぶ。|dig example.com NS|NSを問い合わせ。 この設問ではdig example.com TXTを選ぶ。|resolvectl status|現在のリゾルバー設定表示。 この設問ではdig example.com TXTを選ぶ。
+resolvectl status|systemd-resolvedのリンク別DNSサーバー等を確認する。|現在のリゾルバー設定表示。|dig @192.0.2.53 example.com AAAA|サーバーとAAAAを明示。 この設問ではresolvectl statusを選ぶ。|dig example.com NS|NSを問い合わせ。 この設問ではresolvectl statusを選ぶ。|dig example.com TXT|TXTを問い合わせ。 この設問ではresolvectl statusを選ぶ。
+# 1.08 システム管理 / 1.08.1 passwdのフィールド
+UID|passwdの第3フィールドの数値が表すものは？|ユーザーの数値識別子。|GID|プライマリグループの数値識別子。 この設問ではUIDを選ぶ。|GECOS|ユーザー説明情報。 この設問ではUIDを選ぶ。|ログインシェル|ログイン時に起動するシェル。 この設問ではUIDを選ぶ。
+GID|passwdの第4フィールドの数値が表すものは？|プライマリグループの数値識別子。|UID|ユーザーの数値識別子。 この設問ではGIDを選ぶ。|GECOS|ユーザー説明情報。 この設問ではGIDを選ぶ。|ログインシェル|ログイン時に起動するシェル。 この設問ではGIDを選ぶ。
+GECOS|passwdの第5フィールドで氏名等の説明を格納する項目は？|ユーザー説明情報。|UID|ユーザーの数値識別子。 この設問ではGECOSを選ぶ。|GID|プライマリグループの数値識別子。 この設問ではGECOSを選ぶ。|ログインシェル|ログイン時に起動するシェル。 この設問ではGECOSを選ぶ。
+ログインシェル|passwdの第7フィールドに/bin/bash等を格納する項目は？|ログイン時に起動するシェル。|UID|ユーザーの数値識別子。 この設問ではログインシェルを選ぶ。|GID|プライマリグループの数値識別子。 この設問ではログインシェルを選ぶ。|GECOS|ユーザー説明情報。 この設問ではログインシェルを選ぶ。
+# 1.08 システム管理 / 1.08.1 ユーザー設定
+usermod -s /bin/bash alice|aliceのログインシェルを変更したい。|-sでシェルを変更。|usermod -d /home/new -m alice|-dでパス、-mで内容移動。 この設問ではusermod -s /bin/bash aliceを選ぶ。|usermod -L alice|-Lでパスワードロック。 この設問ではusermod -s /bin/bash aliceを選ぶ。|usermod -U alice|-Uでパスワードロック解除。 この設問ではusermod -s /bin/bash aliceを選ぶ。
+usermod -d /home/new -m alice|aliceのホームを変更して既存内容も移動したい。|-dでパス、-mで内容移動。|usermod -s /bin/bash alice|-sでシェルを変更。 この設問ではusermod -d /home/new -m aliceを選ぶ。|usermod -L alice|-Lでパスワードロック。 この設問ではusermod -d /home/new -m aliceを選ぶ。|usermod -U alice|-Uでパスワードロック解除。 この設問ではusermod -d /home/new -m aliceを選ぶ。
+usermod -L alice|aliceのパスワード認証用ハッシュをロックしたい。|-Lでパスワードロック。|usermod -s /bin/bash alice|-sでシェルを変更。 この設問ではusermod -L aliceを選ぶ。|usermod -d /home/new -m alice|-dでパス、-mで内容移動。 この設問ではusermod -L aliceを選ぶ。|usermod -U alice|-Uでパスワードロック解除。 この設問ではusermod -L aliceを選ぶ。
+usermod -U alice|パスワードロック済みaliceを解除したい。|-Uでパスワードロック解除。|usermod -s /bin/bash alice|-sでシェルを変更。 この設問ではusermod -U aliceを選ぶ。|usermod -d /home/new -m alice|-dでパス、-mで内容移動。 この設問ではusermod -U aliceを選ぶ。|usermod -L alice|-Lでパスワードロック。 この設問ではusermod -U aliceを選ぶ。
+# 1.08 システム管理 / 1.08.1 アカウント確認
+getent passwd alice|NSSを通じてaliceのアカウント情報を取得したい。|設定されたユーザーデータベースを検索。|getent group dev|グループデータベースを検索。 この設問ではgetent passwd aliceを選ぶ。|groups alice|所属グループ名を表示。 この設問ではgetent passwd aliceを選ぶ。|passwd -S alice|パスワードのロック状態等を表示。 この設問ではgetent passwd aliceを選ぶ。
+getent group dev|NSSを通じてdevグループの情報を取得したい。|グループデータベースを検索。|getent passwd alice|設定されたユーザーデータベースを検索。 この設問ではgetent group devを選ぶ。|groups alice|所属グループ名を表示。 この設問ではgetent group devを選ぶ。|passwd -S alice|パスワードのロック状態等を表示。 この設問ではgetent group devを選ぶ。
+groups alice|aliceが所属するグループを確認したい。|所属グループ名を表示。|getent passwd alice|設定されたユーザーデータベースを検索。 この設問ではgroups aliceを選ぶ。|getent group dev|グループデータベースを検索。 この設問ではgroups aliceを選ぶ。|passwd -S alice|パスワードのロック状態等を表示。 この設問ではgroups aliceを選ぶ。
+passwd -S alice|aliceのパスワード状態を確認したい。|パスワードのロック状態等を表示。|getent passwd alice|設定されたユーザーデータベースを検索。 この設問ではpasswd -S aliceを選ぶ。|getent group dev|グループデータベースを検索。 この設問ではpasswd -S aliceを選ぶ。|groups alice|所属グループ名を表示。 この設問ではpasswd -S aliceを選ぶ。
+# 1.08 システム管理 / 1.08.2 cron
+15 2 * * *|毎日午前2時15分に実行したい。|分15、時2、日月曜日任意。|0 0 * * 0|曜日0は日曜。 この設問では15 2 * * *を選ぶ。|0 12 1 1 *|時12、日1、月1。 この設問では15 2 * * *を選ぶ。|*/15 9-17 * * 1-5|分の間隔、時間範囲、曜日範囲を指定。 この設問では15 2 * * *を選ぶ。
+0 0 * * 0|毎週日曜日の午前0時に実行したい。|曜日0は日曜。|15 2 * * *|分15、時2、日月曜日任意。 この設問では0 0 * * 0を選ぶ。|0 12 1 1 *|時12、日1、月1。 この設問では0 0 * * 0を選ぶ。|*/15 9-17 * * 1-5|分の間隔、時間範囲、曜日範囲を指定。 この設問では0 0 * * 0を選ぶ。
+0 12 1 1 *|毎年1月1日の正午に実行したい。|時12、日1、月1。|15 2 * * *|分15、時2、日月曜日任意。 この設問では0 12 1 1 *を選ぶ。|0 0 * * 0|曜日0は日曜。 この設問では0 12 1 1 *を選ぶ。|*/15 9-17 * * 1-5|分の間隔、時間範囲、曜日範囲を指定。 この設問では0 12 1 1 *を選ぶ。
+*/15 9-17 * * 1-5|平日9時台から17時台の15分ごとに実行したい。|分の間隔、時間範囲、曜日範囲を指定。|15 2 * * *|分15、時2、日月曜日任意。 この設問では*/15 9-17 * * 1-5を選ぶ。|0 0 * * 0|曜日0は日曜。 この設問では*/15 9-17 * * 1-5を選ぶ。|0 12 1 1 *|時12、日1、月1。 この設問では*/15 9-17 * * 1-5を選ぶ。
+# 1.08 システム管理 / 1.08.2 systemdタイマー
+OnCalendar=|systemd timerでカレンダー形式の実行日時を指定したい。|カレンダーイベントを設定。|OnBootSec=|起動からの経過時間を指定。 この設問ではOnCalendar=を選ぶ。|Persistent=true|停止中に逃した実行を補完できる。 この設問ではOnCalendar=を選ぶ。|systemctl list-timers --all|タイマーユニット情報を列挙。 この設問ではOnCalendar=を選ぶ。
+OnBootSec=|システム起動後の相対時間で実行するtimerを定義したい。|起動からの経過時間を指定。|OnCalendar=|カレンダーイベントを設定。 この設問ではOnBootSec=を選ぶ。|Persistent=true|停止中に逃した実行を補完できる。 この設問ではOnBootSec=を選ぶ。|systemctl list-timers --all|タイマーユニット情報を列挙。 この設問ではOnBootSec=を選ぶ。
+Persistent=true|カレンダータイマーの実行予定時刻に停止していた場合、次の有効化時に補完実行したい。|停止中に逃した実行を補完できる。|OnCalendar=|カレンダーイベントを設定。 この設問ではPersistent=trueを選ぶ。|OnBootSec=|起動からの経過時間を指定。 この設問ではPersistent=trueを選ぶ。|systemctl list-timers --all|タイマーユニット情報を列挙。 この設問ではPersistent=trueを選ぶ。
+systemctl list-timers --all|非アクティブも含むロード済みtimerの一覧を見たい。|タイマーユニット情報を列挙。|OnCalendar=|カレンダーイベントを設定。 この設問ではsystemctl list-timers --allを選ぶ。|OnBootSec=|起動からの経過時間を指定。 この設問ではsystemctl list-timers --allを選ぶ。|Persistent=true|停止中に逃した実行を補完できる。 この設問ではsystemctl list-timers --allを選ぶ。
+# 1.08 システム管理 / 1.08.3 ロケール
+LC_NUMERIC|小数点記号等の数値表記のロケールカテゴリは？|数値の書式を制御。|LC_MESSAGES|メッセージ表示のロケール。 この設問ではLC_NUMERICを選ぶ。|LC_CTYPE|文字種・エンコーディングの扱い。 この設問ではLC_NUMERICを選ぶ。|LC_MONETARY|金額のロケール表現。 この設問ではLC_NUMERICを選ぶ。
+LC_MESSAGES|プログラムのメッセージ言語に関わるカテゴリは？|メッセージ表示のロケール。|LC_NUMERIC|数値の書式を制御。 この設問ではLC_MESSAGESを選ぶ。|LC_CTYPE|文字種・エンコーディングの扱い。 この設問ではLC_MESSAGESを選ぶ。|LC_MONETARY|金額のロケール表現。 この設問ではLC_MESSAGESを選ぶ。
+LC_CTYPE|文字分類や文字コードの解釈に関わるカテゴリは？|文字種・エンコーディングの扱い。|LC_NUMERIC|数値の書式を制御。 この設問ではLC_CTYPEを選ぶ。|LC_MESSAGES|メッセージ表示のロケール。 この設問ではLC_CTYPEを選ぶ。|LC_MONETARY|金額のロケール表現。 この設問ではLC_CTYPEを選ぶ。
+LC_MONETARY|通貨表記の書式に関わるカテゴリは？|金額のロケール表現。|LC_NUMERIC|数値の書式を制御。 この設問ではLC_MONETARYを選ぶ。|LC_MESSAGES|メッセージ表示のロケール。 この設問ではLC_MONETARYを選ぶ。|LC_CTYPE|文字種・エンコーディングの扱い。 この設問ではLC_MONETARYを選ぶ。
+# 1.09 システムサービス / 1.09.1 時刻
+date -u|現在時刻をUTCで表示したい。|-uで協定世界時。|date +%s|%sでエポック秒。 この設問ではdate -uを選ぶ。|timedatectl set-ntp true|ネットワーク時刻同期を有効化。 この設問ではdate -uを選ぶ。|timedatectl list-timezones|設定可能なゾーンを表示。 この設問ではdate -uを選ぶ。
+date +%s|現在時刻をUnixエポックからの秒数で表示したい。|%sでエポック秒。|date -u|-uで協定世界時。 この設問ではdate +%sを選ぶ。|timedatectl set-ntp true|ネットワーク時刻同期を有効化。 この設問ではdate +%sを選ぶ。|timedatectl list-timezones|設定可能なゾーンを表示。 この設問ではdate +%sを選ぶ。
+timedatectl set-ntp true|対応する時刻同期サービスを有効化したい。|ネットワーク時刻同期を有効化。|date -u|-uで協定世界時。 この設問ではtimedatectl set-ntp trueを選ぶ。|date +%s|%sでエポック秒。 この設問ではtimedatectl set-ntp trueを選ぶ。|timedatectl list-timezones|設定可能なゾーンを表示。 この設問ではtimedatectl set-ntp trueを選ぶ。
+timedatectl list-timezones|利用可能なタイムゾーン名を一覧化する。|設定可能なゾーンを表示。|date -u|-uで協定世界時。 この設問ではtimedatectl list-timezonesを選ぶ。|date +%s|%sでエポック秒。 この設問ではtimedatectl list-timezonesを選ぶ。|timedatectl set-ntp true|ネットワーク時刻同期を有効化。 この設問ではtimedatectl list-timezonesを選ぶ。
+# 1.09 システムサービス / 1.09.2 journald
+journalctl -n 50|journalの直近50行を表示したい。|-nで末尾行数指定。|journalctl --disk-usage|アクティブ・アーカイブjournalの容量を表示。 この設問ではjournalctl -n 50を選ぶ。|journalctl --vacuum-time=7d|指定時間より古いアーカイブを整理。 この設問ではjournalctl -n 50を選ぶ。|journalctl --list-boots|ブートごとのIDと期間を列挙。 この設問ではjournalctl -n 50を選ぶ。
+journalctl --disk-usage|journalファイルが使用するディスク容量を調べたい。|アクティブ・アーカイブjournalの容量を表示。|journalctl -n 50|-nで末尾行数指定。 この設問ではjournalctl --disk-usageを選ぶ。|journalctl --vacuum-time=7d|指定時間より古いアーカイブを整理。 この設問ではjournalctl --disk-usageを選ぶ。|journalctl --list-boots|ブートごとのIDと期間を列挙。 この設問ではjournalctl --disk-usageを選ぶ。
+journalctl --vacuum-time=7d|アーカイブjournalの古いファイルを7日を目安に削除したい。|指定時間より古いアーカイブを整理。|journalctl -n 50|-nで末尾行数指定。 この設問ではjournalctl --vacuum-time=7dを選ぶ。|journalctl --disk-usage|アクティブ・アーカイブjournalの容量を表示。 この設問ではjournalctl --vacuum-time=7dを選ぶ。|journalctl --list-boots|ブートごとのIDと期間を列挙。 この設問ではjournalctl --vacuum-time=7dを選ぶ。
+journalctl --list-boots|保存されているブート識別子の一覧を確認したい。|ブートごとのIDと期間を列挙。|journalctl -n 50|-nで末尾行数指定。 この設問ではjournalctl --list-bootsを選ぶ。|journalctl --disk-usage|アクティブ・アーカイブjournalの容量を表示。 この設問ではjournalctl --list-bootsを選ぶ。|journalctl --vacuum-time=7d|指定時間より古いアーカイブを整理。 この設問ではjournalctl --list-bootsを選ぶ。
+# 1.09 システムサービス / 1.09.2 syslog
+authpriv|認証関連の機密性が高いメッセージに使うsyslog facilityは？|プライベート認証メッセージ用。|kern|カーネルログ用。 この設問ではauthprivを選ぶ。|mail|メールシステム用。 この設問ではauthprivを選ぶ。|daemon|システムデーモン用。 この設問ではauthprivを選ぶ。
+kern|カーネルが生成するメッセージのfacilityは？|カーネルログ用。|authpriv|プライベート認証メッセージ用。 この設問ではkernを選ぶ。|mail|メールシステム用。 この設問ではkernを選ぶ。|daemon|システムデーモン用。 この設問ではkernを選ぶ。
+mail|MTA等のメール処理に関するfacilityは？|メールシステム用。|authpriv|プライベート認証メッセージ用。 この設問ではmailを選ぶ。|kern|カーネルログ用。 この設問ではmailを選ぶ。|daemon|システムデーモン用。 この設問ではmailを選ぶ。
+daemon|一般的なシステムデーモン向けfacilityは？|システムデーモン用。|authpriv|プライベート認証メッセージ用。 この設問ではdaemonを選ぶ。|kern|カーネルログ用。 この設問ではdaemonを選ぶ。|mail|メールシステム用。 この設問ではdaemonを選ぶ。
+# 1.09 システムサービス / 1.09.3 メール
+newaliases|対応MTAで/etc/aliasesを変更した後にエイリアスDBを再構築したい。|エイリアスのデータベースを更新。|mail -s 'Report' alice|-sで件名。 この設問ではnewaliasesを選ぶ。|postqueue -p|キューの内容一覧。 この設問ではnewaliasesを選ぶ。|postqueue -f|キューのフラッシュを要求。 この設問ではnewaliasesを選ぶ。
+mail -s 'Report' alice|ローカル等の対応メール送信環境で件名Reportを指定したい。|-sで件名。|newaliases|エイリアスのデータベースを更新。 この設問ではmail -s 'Report' aliceを選ぶ。|postqueue -p|キューの内容一覧。 この設問ではmail -s 'Report' aliceを選ぶ。|postqueue -f|キューのフラッシュを要求。 この設問ではmail -s 'Report' aliceを選ぶ。
+postqueue -p|Postfixの配送待ちメールキューを表示したい。|キューの内容一覧。|newaliases|エイリアスのデータベースを更新。 この設問ではpostqueue -pを選ぶ。|mail -s 'Report' alice|-sで件名。 この設問ではpostqueue -pを選ぶ。|postqueue -f|キューのフラッシュを要求。 この設問ではpostqueue -pを選ぶ。
+postqueue -f|Postfixで配送待ちメールを再試行させたい。|キューのフラッシュを要求。|newaliases|エイリアスのデータベースを更新。 この設問ではpostqueue -fを選ぶ。|mail -s 'Report' alice|-sで件名。 この設問ではpostqueue -fを選ぶ。|postqueue -p|キューの内容一覧。 この設問ではpostqueue -fを選ぶ。
+# 1.10 セキュリティ / 1.10.1 利用者確認
+lastlog|対応システムで各利用者の最後のログイン記録を確認したい。|lastlogデータを表示。|who -b|-bで最終ブート時刻。 この設問ではlastlogを選ぶ。|id -u|-uでユーザーID。 この設問ではlastlogを選ぶ。|id -Gn|-G全グループ、-n名前。 この設問ではlastlogを選ぶ。
+who -b|システムの最後の起動時刻を確認したい。|-bで最終ブート時刻。|lastlog|lastlogデータを表示。 この設問ではwho -bを選ぶ。|id -u|-uでユーザーID。 この設問ではwho -bを選ぶ。|id -Gn|-G全グループ、-n名前。 この設問ではwho -bを選ぶ。
+id -u|現在の実効UIDだけ取得したい。|-uでユーザーID。|lastlog|lastlogデータを表示。 この設問ではid -uを選ぶ。|who -b|-bで最終ブート時刻。 この設問ではid -uを選ぶ。|id -Gn|-G全グループ、-n名前。 この設問ではid -uを選ぶ。
+id -Gn|現在の所属グループの名前一覧を取得したい。|-G全グループ、-n名前。|lastlog|lastlogデータを表示。 この設問ではid -Gnを選ぶ。|who -b|-bで最終ブート時刻。 この設問ではid -Gnを選ぶ。|id -u|-uでユーザーID。 この設問ではid -Gnを選ぶ。
+# 1.10 セキュリティ / 1.10.1 sudo
+sudo -k|キャッシュされたsudo認証を無効化したい。|sudoのタイムスタンプを無効化。|sudo -v|認証の有効性を検証・更新。 この設問ではsudo -kを選ぶ。|sudo -i|ログインシェルとして実行。 この設問ではsudo -kを選ぶ。|sudoedit /etc/app.conf|一時コピーを利用して編集し反映。 この設問ではsudo -kを選ぶ。
+sudo -v|コマンドを実行せずsudoの認証キャッシュを更新したい。|認証の有効性を検証・更新。|sudo -k|sudoのタイムスタンプを無効化。 この設問ではsudo -vを選ぶ。|sudo -i|ログインシェルとして実行。 この設問ではsudo -vを選ぶ。|sudoedit /etc/app.conf|一時コピーを利用して編集し反映。 この設問ではsudo -vを選ぶ。
+sudo -i|対象ユーザーのログインシェルに近い環境で対話シェルを開きたい。|ログインシェルとして実行。|sudo -k|sudoのタイムスタンプを無効化。 この設問ではsudo -iを選ぶ。|sudo -v|認証の有効性を検証・更新。 この設問ではsudo -iを選ぶ。|sudoedit /etc/app.conf|一時コピーを利用して編集し反映。 この設問ではsudo -iを選ぶ。
+sudoedit /etc/app.conf|指定ファイルをsudoの仕組みで安全に編集したい。|一時コピーを利用して編集し反映。|sudo -k|sudoのタイムスタンプを無効化。 この設問ではsudoedit /etc/app.confを選ぶ。|sudo -v|認証の有効性を検証・更新。 この設問ではsudoedit /etc/app.confを選ぶ。|sudo -i|ログインシェルとして実行。 この設問ではsudoedit /etc/app.confを選ぶ。
+# 1.10 セキュリティ / 1.10.2 ホストの強化
+不要な待受サービスを停止・無効化|使わないサーバー機能がlistenし続けている。攻撃面を減らしたい。|不要なネットワーク入口を削減。|OSとパッケージのセキュリティ更新|修正済みバージョンを適用。 この設問では不要な待受サービスを停止・無効化を選ぶ。|鍵認証を確認後にSSHパスワード認証を無効化|公開鍵認証への移行とパスワード方式停止。 この設問では不要な待受サービスを停止・無効化を選ぶ。|ネットワークファイアウォールで接続元を制限|送信元・宛先・ポート等で通信を制御。 この設問では不要な待受サービスを停止・無効化を選ぶ。
+OSとパッケージのセキュリティ更新|既知脆弱性が公表された導入済みソフトを対策済み版にしたい。|修正済みバージョンを適用。|不要な待受サービスを停止・無効化|不要なネットワーク入口を削減。 この設問ではOSとパッケージのセキュリティ更新を選ぶ。|鍵認証を確認後にSSHパスワード認証を無効化|公開鍵認証への移行とパスワード方式停止。 この設問ではOSとパッケージのセキュリティ更新を選ぶ。|ネットワークファイアウォールで接続元を制限|送信元・宛先・ポート等で通信を制御。 この設問ではOSとパッケージのセキュリティ更新を選ぶ。
+鍵認証を確認後にSSHパスワード認証を無効化|パスワード総当たりへの露出を減らすSSH認証構成は？|公開鍵認証への移行とパスワード方式停止。|不要な待受サービスを停止・無効化|不要なネットワーク入口を削減。 この設問では鍵認証を確認後にSSHパスワード認証を無効化を選ぶ。|OSとパッケージのセキュリティ更新|修正済みバージョンを適用。 この設問では鍵認証を確認後にSSHパスワード認証を無効化を選ぶ。|ネットワークファイアウォールで接続元を制限|送信元・宛先・ポート等で通信を制御。 この設問では鍵認証を確認後にSSHパスワード認証を無効化を選ぶ。
+ネットワークファイアウォールで接続元を制限|内部管理ポートへ許可端末以外からの接続を防ぎたい。|送信元・宛先・ポート等で通信を制御。|不要な待受サービスを停止・無効化|不要なネットワーク入口を削減。 この設問ではネットワークファイアウォールで接続元を制限を選ぶ。|OSとパッケージのセキュリティ更新|修正済みバージョンを適用。 この設問ではネットワークファイアウォールで接続元を制限を選ぶ。|鍵認証を確認後にSSHパスワード認証を無効化|公開鍵認証への移行とパスワード方式停止。 この設問ではネットワークファイアウォールで接続元を制限を選ぶ。
+# 1.10 セキュリティ / 1.10.3 GPG
+gpg --list-keys|GPGキーリングの公開鍵を一覧化する。|公開鍵一覧。|gpg --list-secret-keys|秘密鍵一覧。 この設問ではgpg --list-keysを選ぶ。|gpg --import pubkey.asc|鍵をインポート。 この設問ではgpg --list-keysを選ぶ。|gpg --armor --export alice|テキスト形式の公開鍵エクスポート。 この設問ではgpg --list-keysを選ぶ。
+gpg --list-secret-keys|ローカルGPGの秘密鍵を持つキーを確認する。|秘密鍵一覧。|gpg --list-keys|公開鍵一覧。 この設問ではgpg --list-secret-keysを選ぶ。|gpg --import pubkey.asc|鍵をインポート。 この設問ではgpg --list-secret-keysを選ぶ。|gpg --armor --export alice|テキスト形式の公開鍵エクスポート。 この設問ではgpg --list-secret-keysを選ぶ。
+gpg --import pubkey.asc|受け取った公開鍵ファイルをキーリングへ登録する。|鍵をインポート。|gpg --list-keys|公開鍵一覧。 この設問ではgpg --import pubkey.ascを選ぶ。|gpg --list-secret-keys|秘密鍵一覧。 この設問ではgpg --import pubkey.ascを選ぶ。|gpg --armor --export alice|テキスト形式の公開鍵エクスポート。 この設問ではgpg --import pubkey.ascを選ぶ。
+gpg --armor --export alice|aliceの公開鍵をASCIIアーマー形式で出力したい。|テキスト形式の公開鍵エクスポート。|gpg --list-keys|公開鍵一覧。 この設問ではgpg --armor --export aliceを選ぶ。|gpg --list-secret-keys|秘密鍵一覧。 この設問ではgpg --armor --export aliceを選ぶ。|gpg --import pubkey.asc|鍵をインポート。 この設問ではgpg --armor --export aliceを選ぶ。
+# 1.10 セキュリティ / 1.10.3 証明書
+証明書のSAN|HTTPS接続先のホスト名が証明書で許可される名前に含まれているか確認する主要項目は？|Subject Alternative Nameに名前等を記録。|証明書の有効期限|notBefore/notAfter等の有効期間。 この設問では証明書のSANを選ぶ。|信頼済みCAへの証明書チェーン|信頼アンカーまでの署名チェーンを検証。 この設問では証明書のSANを選ぶ。|証明書に対応する秘密鍵|対応する秘密鍵を用いて所有を証明。 この設問では証明書のSANを選ぶ。
+証明書の有効期限|TLS証明書が現在時刻において期限内か確認する項目は？|notBefore/notAfter等の有効期間。|証明書のSAN|Subject Alternative Nameに名前等を記録。 この設問では証明書の有効期限を選ぶ。|信頼済みCAへの証明書チェーン|信頼アンカーまでの署名チェーンを検証。 この設問では証明書の有効期限を選ぶ。|証明書に対応する秘密鍵|対応する秘密鍵を用いて所有を証明。 この設問では証明書の有効期限を選ぶ。
+信頼済みCAへの証明書チェーン|サーバー証明書の発行元をクライアントが信頼できるか確認する仕組みは？|信頼アンカーまでの署名チェーンを検証。|証明書のSAN|Subject Alternative Nameに名前等を記録。 この設問では信頼済みCAへの証明書チェーンを選ぶ。|証明書の有効期限|notBefore/notAfter等の有効期間。 この設問では信頼済みCAへの証明書チェーンを選ぶ。|証明書に対応する秘密鍵|対応する秘密鍵を用いて所有を証明。 この設問では信頼済みCAへの証明書チェーンを選ぶ。
+証明書に対応する秘密鍵|サーバーが証明書の公開鍵に対応する主体であることをTLSで証明するため保持するものは？|対応する秘密鍵を用いて所有を証明。|証明書のSAN|Subject Alternative Nameに名前等を記録。 この設問では証明書に対応する秘密鍵を選ぶ。|証明書の有効期限|notBefore/notAfter等の有効期間。 この設問では証明書に対応する秘密鍵を選ぶ。|信頼済みCAへの証明書チェーン|信頼アンカーまでの署名チェーンを検証。 この設問では証明書に対応する秘密鍵を選ぶ。
+# 1.10 セキュリティ / 1.10.4 クラウドの管理
+IAMロールによる一時資格情報|クラウドVMのアプリがオブジェクトストレージを呼び出す。固定アクセスキーを保存したくない。|実行主体に短期資格情報を提供。|保存時暗号化|永続データを暗号化。 この設問ではIAMロールによる一時資格情報を選ぶ。|通信時暗号化|TLS等で通信を保護。 この設問ではIAMロールによる一時資格情報を選ぶ。|監査ログの独立保管|操作記録を権限分離された保管先へ送る。 この設問ではIAMロールによる一時資格情報を選ぶ。
+保存時暗号化|クラウドストレージ上で保持されるデータの読み取りリスクを鍵管理とともに軽減したい。|永続データを暗号化。|IAMロールによる一時資格情報|実行主体に短期資格情報を提供。 この設問では保存時暗号化を選ぶ。|通信時暗号化|TLS等で通信を保護。 この設問では保存時暗号化を選ぶ。|監査ログの独立保管|操作記録を権限分離された保管先へ送る。 この設問では保存時暗号化を選ぶ。
+通信時暗号化|インターネット経由でAPI認証情報を送る際に盗聴を抑えたい。|TLS等で通信を保護。|IAMロールによる一時資格情報|実行主体に短期資格情報を提供。 この設問では通信時暗号化を選ぶ。|保存時暗号化|永続データを暗号化。 この設問では通信時暗号化を選ぶ。|監査ログの独立保管|操作記録を権限分離された保管先へ送る。 この設問では通信時暗号化を選ぶ。
+監査ログの独立保管|クラウド管理APIを誰が操作したか後から調べ、操作担当が記録を消さないようにしたい。|操作記録を権限分離された保管先へ送る。|IAMロールによる一時資格情報|実行主体に短期資格情報を提供。 この設問では監査ログの独立保管を選ぶ。|保存時暗号化|永続データを暗号化。 この設問では監査ログの独立保管を選ぶ。|通信時暗号化|TLS等で通信を保護。 この設問では監査ログの独立保管を選ぶ。
+# 1.11 OSS / 1.11.1 ライセンス
+コピーレフト|派生物の配布時に一定条件で同じ自由を引き継ぐことを求めるライセンスの性質は？|派生物の配布に継承条件を設ける。|パーミッシブライセンス|比較的制約の少ないOSSライセンス。 この設問ではコピーレフトを選ぶ。|デュアルライセンス|複数のライセンスを選択肢として提示。 この設問ではコピーレフトを選ぶ。|著作権表示の維持|著作権者の表示等を条件に従い残す。 この設問ではコピーレフトを選ぶ。
+パーミッシブライセンス|著作権表示等の条件を満たせば独自ライセンスの派生製品への組込みを広く許す分類は？|比較的制約の少ないOSSライセンス。|コピーレフト|派生物の配布に継承条件を設ける。 この設問ではパーミッシブライセンスを選ぶ。|デュアルライセンス|複数のライセンスを選択肢として提示。 この設問ではパーミッシブライセンスを選ぶ。|著作権表示の維持|著作権者の表示等を条件に従い残す。 この設問ではパーミッシブライセンスを選ぶ。
+デュアルライセンス|同じソフトをOSS条件と別の商用条件から選択して利用できる提供形態は？|複数のライセンスを選択肢として提示。|コピーレフト|派生物の配布に継承条件を設ける。 この設問ではデュアルライセンスを選ぶ。|パーミッシブライセンス|比較的制約の少ないOSSライセンス。 この設問ではデュアルライセンスを選ぶ。|著作権表示の維持|著作権者の表示等を条件に従い残す。 この設問ではデュアルライセンスを選ぶ。
+著作権表示の維持|MIT等のOSSを再配布する際、元のライセンス文とともに保持する情報は？|著作権者の表示等を条件に従い残す。|コピーレフト|派生物の配布に継承条件を設ける。 この設問では著作権表示の維持を選ぶ。|パーミッシブライセンス|比較的制約の少ないOSSライセンス。 この設問では著作権表示の維持を選ぶ。|デュアルライセンス|複数のライセンスを選択肢として提示。 この設問では著作権表示の維持を選ぶ。
+# 1.11 OSS / 1.11.2 開発コミュニティ
+CVE|公表された脆弱性に共通の識別子を付与する仕組みは？|脆弱性識別子の体系。|CHANGELOG|バージョンごとの変更履歴。 この設問ではCVEを選ぶ。|CONTRIBUTING.md|貢献方法を説明。 この設問ではCVEを選ぶ。|CODE_OF_CONDUCT.md|参加者の行動規範。 この設問ではCVEを選ぶ。
+CHANGELOG|リリースごとの変更内容をまとめる代表的ファイルは？|バージョンごとの変更履歴。|CVE|脆弱性識別子の体系。 この設問ではCHANGELOGを選ぶ。|CONTRIBUTING.md|貢献方法を説明。 この設問ではCHANGELOGを選ぶ。|CODE_OF_CONDUCT.md|参加者の行動規範。 この設問ではCHANGELOGを選ぶ。
+CONTRIBUTING.md|外部協力者が開発への参加手順やルールを確認する代表的文書は？|貢献方法を説明。|CVE|脆弱性識別子の体系。 この設問ではCONTRIBUTING.mdを選ぶ。|CHANGELOG|バージョンごとの変更履歴。 この設問ではCONTRIBUTING.mdを選ぶ。|CODE_OF_CONDUCT.md|参加者の行動規範。 この設問ではCONTRIBUTING.mdを選ぶ。
+CODE_OF_CONDUCT.md|コミュニティで参加者に期待する行動規範を記録する文書は？|参加者の行動規範。|CVE|脆弱性識別子の体系。 この設問ではCODE_OF_CONDUCT.mdを選ぶ。|CHANGELOG|バージョンごとの変更履歴。 この設問ではCODE_OF_CONDUCT.mdを選ぶ。|CONTRIBUTING.md|貢献方法を説明。 この設問ではCODE_OF_CONDUCT.mdを選ぶ。
