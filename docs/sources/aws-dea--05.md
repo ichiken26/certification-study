@@ -1,0 +1,21 @@
+# DEA-C01 追加演習 05 出典（2026-11-25）
+30問。全選択肢の根拠を記載。追加分の対応範囲は以下。
+- https://docs.aws.amazon.com/aws-certification/latest/data-engineer-associate-01/data-engineer-associate-01-domain1.html
+- https://docs.aws.amazon.com/aws-certification/latest/data-engineer-associate-01/data-engineer-associate-01-domain2.html
+- https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.Creating.html
+- https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.LOBSupport.html
+- https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Validating.html
+- https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.html
+- https://docs.aws.amazon.com/athena/latest/ug/ctas-considerations-limitations.html
+- https://docs.aws.amazon.com/athena/latest/ug/ctas-insert-into.html
+- https://docs.aws.amazon.com/athena/latest/ug/insert-into.html
+- https://docs.aws.amazon.com/athena/latest/ug/glue-best-practices-partition-index.html
+- https://docs.aws.amazon.com/athena/latest/ug/partition-projection.html
+- https://docs.aws.amazon.com/redshift/latest/dg/materialized-view-overview.html
+- https://docs.aws.amazon.com/redshift/latest/dg/materialized-view-refresh.html
+- https://docs.aws.amazon.com/redshift/latest/dg/datashare-overview.html
+- https://docs.aws.amazon.com/AmazonS3/latest/userguide/intro-lifecycle-rules.html
+- https://docs.aws.amazon.com/AmazonS3/latest/userguide/DeletingObjectVersions.html
+- https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-what-is-isnot-replicated.html
+- https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-inventory.html
+- https://docs.aws.amazon.com/redshift/latest/dg/c_SQL_reference.html
