@@ -19,3 +19,11 @@
 - SSE-KMS: https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html
 - Object Lock: https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-managing.html
 - Macie: https://docs.aws.amazon.com/macie/latest/user/monitoring-s3-how-it-works.html
+
+追加照合対象（重複問題の差し替え）:
+- https://docs.aws.amazon.com/streams/latest/dev/kcl.html
+- https://docs.aws.amazon.com/lake-formation/latest/dg/change-settings.html
+- https://docs.aws.amazon.com/macie/latest/user/custom-data-identifiers.html
+- https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-data-events-with-cloudtrail.html
+- https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html
+- https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies-vpc-endpoint.html
