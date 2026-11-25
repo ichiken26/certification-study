@@ -1,0 +1,140 @@
+# 2.01 起動とカーネル / カーネル診断
+dmesg -T|カーネルリングバッファの時刻を人が読める形式で表示したい。|カーネルメッセージを時刻付きで表示する。時刻変換はサスペンドなどでずれることがある。|journalctl -k -b|カーネルのメッセージと現在のブートを指定する。 設問の要求とは異なる。|cat /proc/interrupts|割込み番号やCPUごとのカウンタを表示する。 設問の要求とは異なる。|cat /proc/softirqs|NET_RX等のソフト割込みカウンタを表示する。 設問の要求とは異なる。
+journalctl -k -b|現在のブートのカーネルジャーナルだけを調査したい。|カーネルのメッセージと現在のブートを指定する。|dmesg -T|カーネルメッセージを時刻付きで表示する。時刻変換はサスペンドなどでずれることがある。 設問の要求とは異なる。|cat /proc/interrupts|割込み番号やCPUごとのカウンタを表示する。 設問の要求とは異なる。|cat /proc/softirqs|NET_RX等のソフト割込みカウンタを表示する。 設問の要求とは異なる。
+cat /proc/interrupts|各CPUが処理したハードウェア割込みの回数を調べたい。|割込み番号やCPUごとのカウンタを表示する。|dmesg -T|カーネルメッセージを時刻付きで表示する。時刻変換はサスペンドなどでずれることがある。 設問の要求とは異なる。|journalctl -k -b|カーネルのメッセージと現在のブートを指定する。 設問の要求とは異なる。|cat /proc/softirqs|NET_RX等のソフト割込みカウンタを表示する。 設問の要求とは異なる。
+cat /proc/softirqs|各CPUが処理したソフト割込みの種類別回数を調べたい。|NET_RX等のソフト割込みカウンタを表示する。|dmesg -T|カーネルメッセージを時刻付きで表示する。時刻変換はサスペンドなどでずれることがある。 設問の要求とは異なる。|journalctl -k -b|カーネルのメッセージと現在のブートを指定する。 設問の要求とは異なる。|cat /proc/interrupts|割込み番号やCPUごとのカウンタを表示する。 設問の要求とは異なる。
+# 2.01 起動とカーネル / モジュール永続設定
+/etc/modules-load.d/app.conf|起動時に特定モジュールを自動ロードする一覧をsystemd環境で管理したい。|モジュール名を行単位で記述する。|/etc/modprobe.d/app.conf|modprobeが読み取る設定ディレクトリである。 設問の要求とは異なる。|modprobe -r dummy|-rでモジュール削除を指示する。 設問の要求とは異なる。|modinfo -p dummy|-pでパラメータを表示する。 設問の要求とは異なる。
+/etc/modprobe.d/app.conf|モジュールのオプションやblacklistを永続的に指定したい。|modprobeが読み取る設定ディレクトリである。|/etc/modules-load.d/app.conf|モジュール名を行単位で記述する。 設問の要求とは異なる。|modprobe -r dummy|-rでモジュール削除を指示する。 設問の要求とは異なる。|modinfo -p dummy|-pでパラメータを表示する。 設問の要求とは異なる。
+modprobe -r dummy|利用中でないdummyモジュールを依存関係も考慮してアンロードするには？|-rでモジュール削除を指示する。|/etc/modules-load.d/app.conf|モジュール名を行単位で記述する。 設問の要求とは異なる。|/etc/modprobe.d/app.conf|modprobeが読み取る設定ディレクトリである。 設問の要求とは異なる。|modinfo -p dummy|-pでパラメータを表示する。 設問の要求とは異なる。
+modinfo -p dummy|dummyモジュールが受け付けるパラメータを調べたい。|-pでパラメータを表示する。|/etc/modules-load.d/app.conf|モジュール名を行単位で記述する。 設問の要求とは異なる。|/etc/modprobe.d/app.conf|modprobeが読み取る設定ディレクトリである。 設問の要求とは異なる。|modprobe -r dummy|-rでモジュール削除を指示する。 設問の要求とは異なる。
+# 2.01 起動とカーネル / カーネルパラメータ
+sysctl -a|現在参照できるカーネルのsysctlパラメータを一覧表示したい。|利用可能なパラメータと現在値を列挙する。|sysctl --system|システムのsysctl設定ファイルを読み込み適用する。 設問の要求とは異なる。|/proc/sys/net/ipv4/ip_forward|net.ipv4.ip_forwardのカーネルインターフェース。 設問の要求とは異なる。|/etc/sysctl.d/99-routing.conf|起動時に読み込まれる設定ファイルとして管理する。 設問の要求とは異なる。
+sysctl --system|sysctl.dやsysctl.conf等の永続設定を稼働中カーネルへまとめて適用したい。|システムのsysctl設定ファイルを読み込み適用する。|sysctl -a|利用可能なパラメータと現在値を列挙する。 設問の要求とは異なる。|/proc/sys/net/ipv4/ip_forward|net.ipv4.ip_forwardのカーネルインターフェース。 設問の要求とは異なる。|/etc/sysctl.d/99-routing.conf|起動時に読み込まれる設定ファイルとして管理する。 設問の要求とは異なる。
+/proc/sys/net/ipv4/ip_forward|IPv4転送の現在値に対応するprocfs上のファイルは？|net.ipv4.ip_forwardのカーネルインターフェース。|sysctl -a|利用可能なパラメータと現在値を列挙する。 設問の要求とは異なる。|sysctl --system|システムのsysctl設定ファイルを読み込み適用する。 設問の要求とは異なる。|/etc/sysctl.d/99-routing.conf|起動時に読み込まれる設定ファイルとして管理する。 設問の要求とは異なる。
+/etc/sysctl.d/99-routing.conf|再起動後もIPv4転送を有効にする独自sysctl設定の配置先は？|起動時に読み込まれる設定ファイルとして管理する。|sysctl -a|利用可能なパラメータと現在値を列挙する。 設問の要求とは異なる。|sysctl --system|システムのsysctl設定ファイルを読み込み適用する。 設問の要求とは異なる。|/proc/sys/net/ipv4/ip_forward|net.ipv4.ip_forwardのカーネルインターフェース。 設問の要求とは異なる。
+# 2.01 起動とカーネル / systemdサービス制御
+Restart=on-failure|サービスが異常終了した場合に自動再起動したいが正常終了は再起動しない設定は？|失敗終了やタイムアウト等に対して再起動する。|TimeoutStartSec=|起動処理が期限を超えると失敗として扱う。 設問の要求とは異なる。|User=|指定したユーザーの資格情報でプロセスを起動する。 設問の要求とは異なる。|WorkingDirectory=|プロセス起動前に指定ディレクトリへ移動する。 設問の要求とは異なる。
+TimeoutStartSec=|サービス起動処理の待機時間の上限を設定する項目は？|起動処理が期限を超えると失敗として扱う。|Restart=on-failure|失敗終了やタイムアウト等に対して再起動する。 設問の要求とは異なる。|User=|指定したユーザーの資格情報でプロセスを起動する。 設問の要求とは異なる。|WorkingDirectory=|プロセス起動前に指定ディレクトリへ移動する。 設問の要求とは異なる。
+User=|システムサービスのプロセスを特定の非rootユーザーとして実行する項目は？|指定したユーザーの資格情報でプロセスを起動する。|Restart=on-failure|失敗終了やタイムアウト等に対して再起動する。 設問の要求とは異なる。|TimeoutStartSec=|起動処理が期限を超えると失敗として扱う。 設問の要求とは異なる。|WorkingDirectory=|プロセス起動前に指定ディレクトリへ移動する。 設問の要求とは異なる。
+WorkingDirectory=|サービス実行時のカレントディレクトリを指定する項目は？|プロセス起動前に指定ディレクトリへ移動する。|Restart=on-failure|失敗終了やタイムアウト等に対して再起動する。 設問の要求とは異なる。|TimeoutStartSec=|起動処理が期限を超えると失敗として扱う。 設問の要求とは異なる。|User=|指定したユーザーの資格情報でプロセスを起動する。 設問の要求とは異なる。
+# 2.01 起動とカーネル / systemd実行方式
+Type=oneshot|処理が完了するまで起動完了とせず、その後常駐しない初期化サービスに適したタイプは？|コマンドの終了を待ち起動処理を完了する。|Type=notify|READY=1通知を用いる。 設問の要求とは異なる。|Type=forking|親プロセスの終了を起動完了判断に利用する。 設問の要求とは異なる。|Type=exec|実行ファイルが起動できない場合に起動失敗を検出できる。 設問の要求とは異なる。
+Type=notify|サービスがsd_notifyで準備完了を通知してから起動完了としたい。|READY=1通知を用いる。|Type=oneshot|コマンドの終了を待ち起動処理を完了する。 設問の要求とは異なる。|Type=forking|親プロセスの終了を起動完了判断に利用する。 設問の要求とは異なる。|Type=exec|実行ファイルが起動できない場合に起動失敗を検出できる。 設問の要求とは異なる。
+Type=forking|旧来のデーモンがforkし親プロセスが終了する方式を扱うタイプは？|親プロセスの終了を起動完了判断に利用する。|Type=oneshot|コマンドの終了を待ち起動処理を完了する。 設問の要求とは異なる。|Type=notify|READY=1通知を用いる。 設問の要求とは異なる。|Type=exec|実行ファイルが起動できない場合に起動失敗を検出できる。 設問の要求とは異なる。
+Type=exec|ExecStartの実行ファイルを起動するexecveの成功後に起動完了と判断するタイプは？|実行ファイルが起動できない場合に起動失敗を検出できる。|Type=oneshot|コマンドの終了を待ち起動処理を完了する。 設問の要求とは異なる。|Type=notify|READY=1通知を用いる。 設問の要求とは異なる。|Type=forking|親プロセスの終了を起動完了判断に利用する。 設問の要求とは異なる。
+# 2.02 ファイルシステム / RAID
+mdadm --detail /dev/md0|稼働中のソフトウェアRAIDの構成ディスクや同期状態を詳しく確認したい。|指定RAIDデバイスの詳細を表示する。|cat /proc/mdstat|MDデバイス一覧と同期進捗を表示する。 設問の要求とは異なる。|mdadm --examine /dev/sdb1|メンバー上のスーパーブロックを調べる。 設問の要求とは異なる。|mdadm --assemble --scan|設定と検出したメタデータを使い組み立てる。 設問の要求とは異なる。
+cat /proc/mdstat|システム内のMD RAID全体と再同期の概要を素早く確認したい。|MDデバイス一覧と同期進捗を表示する。|mdadm --detail /dev/md0|指定RAIDデバイスの詳細を表示する。 設問の要求とは異なる。|mdadm --examine /dev/sdb1|メンバー上のスーパーブロックを調べる。 設問の要求とは異なる。|mdadm --assemble --scan|設定と検出したメタデータを使い組み立てる。 設問の要求とは異なる。
+mdadm --examine /dev/sdb1|構成ディスクのRAIDメタデータを直接確認したい。|メンバー上のスーパーブロックを調べる。|mdadm --detail /dev/md0|指定RAIDデバイスの詳細を表示する。 設問の要求とは異なる。|cat /proc/mdstat|MDデバイス一覧と同期進捗を表示する。 設問の要求とは異なる。|mdadm --assemble --scan|設定と検出したメタデータを使い組み立てる。 設問の要求とは異なる。
+mdadm --assemble --scan|既存メタデータを基に未組立のRAIDアレイを認識・組み立てたい。|設定と検出したメタデータを使い組み立てる。|mdadm --detail /dev/md0|指定RAIDデバイスの詳細を表示する。 設問の要求とは異なる。|cat /proc/mdstat|MDデバイス一覧と同期進捗を表示する。 設問の要求とは異なる。|mdadm --examine /dev/sdb1|メンバー上のスーパーブロックを調べる。 設問の要求とは異なる。
+# 2.02 ファイルシステム / RAID設計
+RAID 0|冗長性が不要で複数ディスクの容量と並列I/Oを優先する構成は？|ストライピングのみで一台の故障でも全体に影響する。|RAID 1|複製により片方の故障に耐える。 設問の要求とは異なる。|RAID 5|一台分の容量相当をパリティに使う。 設問の要求とは異なる。|RAID 6|二重パリティを利用する。 設問の要求とは異なる。
+RAID 1|二台で同じ内容を保持する最も基本的なミラー構成は？|複製により片方の故障に耐える。|RAID 0|ストライピングのみで一台の故障でも全体に影響する。 設問の要求とは異なる。|RAID 5|一台分の容量相当をパリティに使う。 設問の要求とは異なる。|RAID 6|二重パリティを利用する。 設問の要求とは異なる。
+RAID 5|三台以上で分散パリティを用い一台の故障に耐える構成は？|一台分の容量相当をパリティに使う。|RAID 0|ストライピングのみで一台の故障でも全体に影響する。 設問の要求とは異なる。|RAID 1|複製により片方の故障に耐える。 設問の要求とは異なる。|RAID 6|二重パリティを利用する。 設問の要求とは異なる。
+RAID 6|四台以上で二台の故障に耐える分散パリティ構成は？|二重パリティを利用する。|RAID 0|ストライピングのみで一台の故障でも全体に影響する。 設問の要求とは異なる。|RAID 1|複製により片方の故障に耐える。 設問の要求とは異なる。|RAID 5|一台分の容量相当をパリティに使う。 設問の要求とは異なる。
+# 2.02 ファイルシステム / LVM診断
+pvs|物理ボリュームの容量・空き・所属VGを一覧確認したい。|PVの概要を表示する。|vgs|VGの総容量と空き領域等を表示する。 設問の要求とは異なる。|lvs -a -o +devices|LV情報にdevices列を追加する。 設問の要求とは異なる。|pvdisplay -m|-mでマッピングを表示する。 設問の要求とは異なる。
+vgs|ボリュームグループ単位で残りの割当可能領域を確認したい。|VGの総容量と空き領域等を表示する。|pvs|PVの概要を表示する。 設問の要求とは異なる。|lvs -a -o +devices|LV情報にdevices列を追加する。 設問の要求とは異なる。|pvdisplay -m|-mでマッピングを表示する。 設問の要求とは異なる。
+lvs -a -o +devices|論理ボリュームと対応する物理デバイスを内部LVも含めて確認したい。|LV情報にdevices列を追加する。|pvs|PVの概要を表示する。 設問の要求とは異なる。|vgs|VGの総容量と空き領域等を表示する。 設問の要求とは異なる。|pvdisplay -m|-mでマッピングを表示する。 設問の要求とは異なる。
+pvdisplay -m|特定PVの物理エクステントと論理エクステントの対応を詳細確認したい。|-mでマッピングを表示する。|pvs|PVの概要を表示する。 設問の要求とは異なる。|vgs|VGの総容量と空き領域等を表示する。 設問の要求とは異なる。|lvs -a -o +devices|LV情報にdevices列を追加する。 設問の要求とは異なる。
+# 2.02 ファイルシステム / LVM保守
+vgcfgbackup vg0|VGの設定メタデータをバックアップしたい。|LVMメタデータのコピーを保存する。LV内のユーザーデータは含まない。|vgcfgrestore vg0|保存されたLVM設定を復元する。実施前に対象と状態を確認する。 設問の要求とは異なる。|lvcreate -s|-sでスナップショットを作る。 設問の要求とは異なる。|lvchange -ay vg0/data|-ayでLVを有効にする。 設問の要求とは異なる。
+vgcfgrestore vg0|バックアップしたVGメタデータを復元する操作は？|保存されたLVM設定を復元する。実施前に対象と状態を確認する。|vgcfgbackup vg0|LVMメタデータのコピーを保存する。LV内のユーザーデータは含まない。 設問の要求とは異なる。|lvcreate -s|-sでスナップショットを作る。 設問の要求とは異なる。|lvchange -ay vg0/data|-ayでLVを有効にする。 設問の要求とは異なる。
+lvcreate -s|従来型LVMで既存LVのスナップショットを作成するオプションは？|-sでスナップショットを作る。|vgcfgbackup vg0|LVMメタデータのコピーを保存する。LV内のユーザーデータは含まない。 設問の要求とは異なる。|vgcfgrestore vg0|保存されたLVM設定を復元する。実施前に対象と状態を確認する。 設問の要求とは異なる。|lvchange -ay vg0/data|-ayでLVを有効にする。 設問の要求とは異なる。
+lvchange -ay vg0/data|停止中の論理ボリュームを利用できるようアクティブ化したい。|-ayでLVを有効にする。|vgcfgbackup vg0|LVMメタデータのコピーを保存する。LV内のユーザーデータは含まない。 設問の要求とは異なる。|vgcfgrestore vg0|保存されたLVM設定を復元する。実施前に対象と状態を確認する。 設問の要求とは異なる。|lvcreate -s|-sでスナップショットを作る。 設問の要求とは異なる。
+# 2.02 ファイルシステム / XFS・ext4
+xfs_info /mnt/data|マウント中のXFSのブロックサイズや割当グループを確認したい。|XFSファイルシステムのジオメトリを表示する。|xfs_admin -L DATA /dev/sdb1|-Lでラベルを設定する。 設問の要求とは異なる。|e2label /dev/sdb2 DATA|ext2/3/4のラベルを表示または変更する。 設問の要求とは異なる。|dumpe2fs -h /dev/sdb2|-hでヘッダ情報を表示する。 設問の要求とは異なる。
+xfs_admin -L DATA /dev/sdb1|アンマウント済みXFSにDATAラベルを設定したい。|-Lでラベルを設定する。|xfs_info /mnt/data|XFSファイルシステムのジオメトリを表示する。 設問の要求とは異なる。|e2label /dev/sdb2 DATA|ext2/3/4のラベルを表示または変更する。 設問の要求とは異なる。|dumpe2fs -h /dev/sdb2|-hでヘッダ情報を表示する。 設問の要求とは異なる。
+e2label /dev/sdb2 DATA|ext系ファイルシステムのラベルをDATAに変更したい。|ext2/3/4のラベルを表示または変更する。|xfs_info /mnt/data|XFSファイルシステムのジオメトリを表示する。 設問の要求とは異なる。|xfs_admin -L DATA /dev/sdb1|-Lでラベルを設定する。 設問の要求とは異なる。|dumpe2fs -h /dev/sdb2|-hでヘッダ情報を表示する。 設問の要求とは異なる。
+dumpe2fs -h /dev/sdb2|ext系ファイルシステムのスーパーブロック情報だけを詳しく確認したい。|-hでヘッダ情報を表示する。|xfs_info /mnt/data|XFSファイルシステムのジオメトリを表示する。 設問の要求とは異なる。|xfs_admin -L DATA /dev/sdb1|-Lでラベルを設定する。 設問の要求とは異なる。|e2label /dev/sdb2 DATA|ext2/3/4のラベルを表示または変更する。 設問の要求とは異なる。
+# 2.02 ファイルシステム / 容量の原因分析
+df -i|ブロック容量に余裕があるのに新規ファイル作成が失敗する。inode枯渇の確認は？|inodeの使用数と空き数を確認する。|lsof +L1|リンク数が1未満の開いたファイルを列挙する。 設問の要求とは異なる。|du -x -h --max-depth=1 /|-xで他FSへの走査を避ける。 設問の要求とは異なる。|findmnt -T /var/log/app.log|-Tで対象パスを含むファイルシステムを検索する。 設問の要求とは異なる。
+lsof +L1|削除済みログファイルがプロセスに開かれており容量が解放されない疑いがある。何で確認する？|リンク数が1未満の開いたファイルを列挙する。|df -i|inodeの使用数と空き数を確認する。 設問の要求とは異なる。|du -x -h --max-depth=1 /|-xで他FSへの走査を避ける。 設問の要求とは異なる。|findmnt -T /var/log/app.log|-Tで対象パスを含むファイルシステムを検索する。 設問の要求とは異なる。
+du -x -h --max-depth=1 /|ルートFSだけを対象に各直下ディレクトリの使用量を調べたい。|-xで他FSへの走査を避ける。|df -i|inodeの使用数と空き数を確認する。 設問の要求とは異なる。|lsof +L1|リンク数が1未満の開いたファイルを列挙する。 設問の要求とは異なる。|findmnt -T /var/log/app.log|-Tで対象パスを含むファイルシステムを検索する。 設問の要求とは異なる。
+findmnt -T /var/log/app.log|指定ファイルがどのマウントに属するか確認したい。|-Tで対象パスを含むファイルシステムを検索する。|df -i|inodeの使用数と空き数を確認する。 設問の要求とは異なる。|lsof +L1|リンク数が1未満の開いたファイルを列挙する。 設問の要求とは異なる。|du -x -h --max-depth=1 /|-xで他FSへの走査を避ける。 設問の要求とは異なる。
+# 2.02 ファイルシステム / クォータ
+quotaon -a|設定済みのクォータを対象ファイルシステムで有効にしたい。|クォータ機構を有効にする。|repquota -a|クォータ利用状況を報告する。 設問の要求とは異なる。|edquota alice|指定ユーザーのソフト・ハード制限を編集する。 設問の要求とは異なる。|quotaoff -a|クォータ機構を停止する。 設問の要求とは異なる。
+repquota -a|ユーザー等のディスク使用量とクォータ上限を一覧報告したい。|クォータ利用状況を報告する。|quotaon -a|クォータ機構を有効にする。 設問の要求とは異なる。|edquota alice|指定ユーザーのソフト・ハード制限を編集する。 設問の要求とは異なる。|quotaoff -a|クォータ機構を停止する。 設問の要求とは異なる。
+edquota alice|aliceのクォータ制限をエディタで変更したい。|指定ユーザーのソフト・ハード制限を編集する。|quotaon -a|クォータ機構を有効にする。 設問の要求とは異なる。|repquota -a|クォータ利用状況を報告する。 設問の要求とは異なる。|quotaoff -a|クォータ機構を停止する。 設問の要求とは異なる。
+quotaoff -a|対象ファイルシステムのクォータを無効にしたい。|クォータ機構を停止する。|quotaon -a|クォータ機構を有効にする。 設問の要求とは異なる。|repquota -a|クォータ利用状況を報告する。 設問の要求とは異なる。|edquota alice|指定ユーザーのソフト・ハード制限を編集する。 設問の要求とは異なる。
+# 2.03 ネットワーク構成 / TCP診断
+ss -s|ソケット全体の統計概要を確認したい。|TCP等の接続数の概要を表示する。|ss -tin|-iでTCP内部情報を追加する。 設問の要求とは異なる。|ss -ltnp|-lで待受、-pでプロセスを表示する。 設問の要求とは異なる。|nstat|カーネルのプロトコル統計を表示する。 設問の要求とは異なる。
+ss -tin|TCP接続の輻輳ウィンドウやRTT等の内部情報を確認したい。|-iでTCP内部情報を追加する。|ss -s|TCP等の接続数の概要を表示する。 設問の要求とは異なる。|ss -ltnp|-lで待受、-pでプロセスを表示する。 設問の要求とは異なる。|nstat|カーネルのプロトコル統計を表示する。 設問の要求とは異なる。
+ss -ltnp|TCPの待受ソケットと利用プロセスを名前解決せず確認したい。|-lで待受、-pでプロセスを表示する。|ss -s|TCP等の接続数の概要を表示する。 設問の要求とは異なる。|ss -tin|-iでTCP内部情報を追加する。 設問の要求とは異なる。|nstat|カーネルのプロトコル統計を表示する。 設問の要求とは異なる。
+nstat|LinuxのIP・TCP等のネットワーク統計カウンタを確認したい。|カーネルのプロトコル統計を表示する。|ss -s|TCP等の接続数の概要を表示する。 設問の要求とは異なる。|ss -tin|-iでTCP内部情報を追加する。 設問の要求とは異なる。|ss -ltnp|-lで待受、-pでプロセスを表示する。 設問の要求とは異なる。
+# 2.03 ネットワーク構成 / パケット解析
+tcpdump -ni eth0 -w capture.pcap|eth0で取得したパケットを後から解析できる形式で保存したい。|-wでpcap形式に書き出す。|tcpdump -nn -r capture.pcap|-rで保存ファイルを読み込む。 設問の要求とは異なる。|tcpdump -ni eth0 host 192.0.2.10|hostフィルタで送信元または宛先を絞る。 設問の要求とは異なる。|tcpdump -ni eth0 icmp|icmpフィルタを適用する。 設問の要求とは異なる。
+tcpdump -nn -r capture.pcap|保存済みpcapをアドレス・ポートの名前解決なしに読みたい。|-rで保存ファイルを読み込む。|tcpdump -ni eth0 -w capture.pcap|-wでpcap形式に書き出す。 設問の要求とは異なる。|tcpdump -ni eth0 host 192.0.2.10|hostフィルタで送信元または宛先を絞る。 設問の要求とは異なる。|tcpdump -ni eth0 icmp|icmpフィルタを適用する。 設問の要求とは異なる。
+tcpdump -ni eth0 host 192.0.2.10|特定ホストとの送受信パケットだけを取得したい。|hostフィルタで送信元または宛先を絞る。|tcpdump -ni eth0 -w capture.pcap|-wでpcap形式に書き出す。 設問の要求とは異なる。|tcpdump -nn -r capture.pcap|-rで保存ファイルを読み込む。 設問の要求とは異なる。|tcpdump -ni eth0 icmp|icmpフィルタを適用する。 設問の要求とは異なる。
+tcpdump -ni eth0 icmp|IPv4のICMPだけをキャプチャしたい。|icmpフィルタを適用する。|tcpdump -ni eth0 -w capture.pcap|-wでpcap形式に書き出す。 設問の要求とは異なる。|tcpdump -nn -r capture.pcap|-rで保存ファイルを読み込む。 設問の要求とは異なる。|tcpdump -ni eth0 host 192.0.2.10|hostフィルタで送信元または宛先を絞る。 設問の要求とは異なる。
+# 2.03 ネットワーク構成 / 経路診断
+ip route get 203.0.113.5 from 192.0.2.10|特定の送信元から宛先へ実際に選ばれる経路を調べたい。|送信元付きの経路ルックアップ結果を表示する。|ip rule show|RPDBのルール一覧を表示する。 設問の要求とは異なる。|ip route show table 100|指定ルーティングテーブルを表示する。 設問の要求とは異なる。|ip -6 neigh show|IPv6の近隣ノード情報を表示する。 設問の要求とは異なる。
+ip rule show|送信元やfwmark等によるルーティングポリシーの評価順を確認したい。|RPDBのルール一覧を表示する。|ip route get 203.0.113.5 from 192.0.2.10|送信元付きの経路ルックアップ結果を表示する。 設問の要求とは異なる。|ip route show table 100|指定ルーティングテーブルを表示する。 設問の要求とは異なる。|ip -6 neigh show|IPv6の近隣ノード情報を表示する。 設問の要求とは異なる。
+ip route show table 100|ポリシールーティングで使う番号100の経路表を確認したい。|指定ルーティングテーブルを表示する。|ip route get 203.0.113.5 from 192.0.2.10|送信元付きの経路ルックアップ結果を表示する。 設問の要求とは異なる。|ip rule show|RPDBのルール一覧を表示する。 設問の要求とは異なる。|ip -6 neigh show|IPv6の近隣ノード情報を表示する。 設問の要求とは異なる。
+ip -6 neigh show|IPv6の近隣キャッシュを確認したい。|IPv6の近隣ノード情報を表示する。|ip route get 203.0.113.5 from 192.0.2.10|送信元付きの経路ルックアップ結果を表示する。 設問の要求とは異なる。|ip rule show|RPDBのルール一覧を表示する。 設問の要求とは異なる。|ip route show table 100|指定ルーティングテーブルを表示する。 設問の要求とは異なる。
+# 2.03 ネットワーク構成 / リンク性能
+ethtool -S eth0|NICドライバが提供するエラーカウンタ等の詳細統計を取得したい。|-Sでドライバ統計を表示する。|ethtool -k eth0|-kでオフロード機能状態を表示する。 設問の要求とは異なる。|ip -s link show eth0|-sでリンク統計を表示する。 設問の要求とは異なる。|ethtool -i eth0|-iでドライバ情報を表示する。 設問の要求とは異なる。
+ethtool -k eth0|チェックサムやセグメンテーションのオフロード設定を確認したい。|-kでオフロード機能状態を表示する。|ethtool -S eth0|-Sでドライバ統計を表示する。 設問の要求とは異なる。|ip -s link show eth0|-sでリンク統計を表示する。 設問の要求とは異なる。|ethtool -i eth0|-iでドライバ情報を表示する。 設問の要求とは異なる。
+ip -s link show eth0|インターフェースの送受信バイト・ドロップ等を確認したい。|-sでリンク統計を表示する。|ethtool -S eth0|-Sでドライバ統計を表示する。 設問の要求とは異なる。|ethtool -k eth0|-kでオフロード機能状態を表示する。 設問の要求とは異なる。|ethtool -i eth0|-iでドライバ情報を表示する。 設問の要求とは異なる。
+ethtool -i eth0|NICに対応するドライバ名とファームウェアバージョンを確認したい。|-iでドライバ情報を表示する。|ethtool -S eth0|-Sでドライバ統計を表示する。 設問の要求とは異なる。|ethtool -k eth0|-kでオフロード機能状態を表示する。 設問の要求とは異なる。|ip -s link show eth0|-sでリンク統計を表示する。 設問の要求とは異なる。
+# 2.03 ネットワーク構成 / bondとbridge
+active-backup|bondの一方だけを使い故障時に別NICへ切り替えるモードは？|同時送信せず冗長化する。|802.3ad|動的なリンク集合を構成する。 設問の要求とは異なる。|bridge fdb show|フォワーディングデータベースを表示する。 設問の要求とは異なる。|bridge vlan show|bridgeのVLANフィルタリング設定を表示する。 設問の要求とは異なる。
+802.3ad|対応スイッチのLACPと連携するリンクアグリゲーションのbondモードは？|動的なリンク集合を構成する。|active-backup|同時送信せず冗長化する。 設問の要求とは異なる。|bridge fdb show|フォワーディングデータベースを表示する。 設問の要求とは異なる。|bridge vlan show|bridgeのVLANフィルタリング設定を表示する。 設問の要求とは異なる。
+bridge fdb show|Linux bridgeのMACアドレス学習テーブルを調査したい。|フォワーディングデータベースを表示する。|active-backup|同時送信せず冗長化する。 設問の要求とは異なる。|802.3ad|動的なリンク集合を構成する。 設問の要求とは異なる。|bridge vlan show|bridgeのVLANフィルタリング設定を表示する。 設問の要求とは異なる。
+bridge vlan show|各bridgeポートに設定されたVLANとPVIDを確認したい。|bridgeのVLANフィルタリング設定を表示する。|active-backup|同時送信せず冗長化する。 設問の要求とは異なる。|802.3ad|動的なリンク集合を構成する。 設問の要求とは異なる。|bridge fdb show|フォワーディングデータベースを表示する。 設問の要求とは異なる。
+# 2.04 保守・運用 / sarと性能
+sar -u 1 5|CPUの使用率を1秒間隔で5回採取したい。|-uでCPU統計を選択する。|sar -r 1 5|-rでメモリ統計を表示する。 設問の要求とは異なる。|sar -n DEV 1 5|-n DEVでデバイス別ネットワーク統計を取得する。 設問の要求とは異なる。|sar -q 1 5|-qで負荷とキュー統計を表示する。 設問の要求とは異なる。
+sar -r 1 5|メモリ使用統計を1秒間隔で5回採取したい。|-rでメモリ統計を表示する。|sar -u 1 5|-uでCPU統計を選択する。 設問の要求とは異なる。|sar -n DEV 1 5|-n DEVでデバイス別ネットワーク統計を取得する。 設問の要求とは異なる。|sar -q 1 5|-qで負荷とキュー統計を表示する。 設問の要求とは異なる。
+sar -n DEV 1 5|ネットワークインターフェースの転送量を1秒間隔で採取したい。|-n DEVでデバイス別ネットワーク統計を取得する。|sar -u 1 5|-uでCPU統計を選択する。 設問の要求とは異なる。|sar -r 1 5|-rでメモリ統計を表示する。 設問の要求とは異なる。|sar -q 1 5|-qで負荷とキュー統計を表示する。 設問の要求とは異なる。
+sar -q 1 5|実行待ちキューやロードアベレージの推移を取得したい。|-qで負荷とキュー統計を表示する。|sar -u 1 5|-uでCPU統計を選択する。 設問の要求とは異なる。|sar -r 1 5|-rでメモリ統計を表示する。 設問の要求とは異なる。|sar -n DEV 1 5|-n DEVでデバイス別ネットワーク統計を取得する。 設問の要求とは異なる。
+# 2.04 保守・運用 / プロセス負荷
+pidstat -u 1|プロセスごとのCPU使用率を継続観測したい。|-uでCPU統計を表示する。|pidstat -d 1|-dでプロセス別I/O統計を表示する。 設問の要求とは異なる。|pidstat -r 1|-rでメモリ統計を表示する。 設問の要求とは異なる。|pidstat -w 1|-wでタスク切替統計を表示する。 設問の要求とは異なる。
+pidstat -d 1|どのプロセスがディスクI/Oを発生させているか確認したい。|-dでプロセス別I/O統計を表示する。|pidstat -u 1|-uでCPU統計を表示する。 設問の要求とは異なる。|pidstat -r 1|-rでメモリ統計を表示する。 設問の要求とは異なる。|pidstat -w 1|-wでタスク切替統計を表示する。 設問の要求とは異なる。
+pidstat -r 1|プロセスごとのメモリ使用量やページフォールトを追跡したい。|-rでメモリ統計を表示する。|pidstat -u 1|-uでCPU統計を表示する。 設問の要求とは異なる。|pidstat -d 1|-dでプロセス別I/O統計を表示する。 設問の要求とは異なる。|pidstat -w 1|-wでタスク切替統計を表示する。 設問の要求とは異なる。
+pidstat -w 1|プロセスごとのコンテキストスイッチ回数を観測したい。|-wでタスク切替統計を表示する。|pidstat -u 1|-uでCPU統計を表示する。 設問の要求とは異なる。|pidstat -d 1|-dでプロセス別I/O統計を表示する。 設問の要求とは異なる。|pidstat -r 1|-rでメモリ統計を表示する。 設問の要求とは異なる。
+# 2.04 保守・運用 / バックアップ検証
+rsync -an --delete src/ backup/|削除同期を含むrsyncが何を変更するか実行前に確認したい。|-nでドライランする。|rsync -a --checksum src/ backup/|チェックサムで転送要否を判断する。 設問の要求とは異なる。|tar -tzf backup.tar.gz|-tで内容一覧を表示する。 設問の要求とは異なる。|sha256sum -c backup.sha256|-cで期待ハッシュ値と照合する。 設問の要求とは異なる。
+rsync -a --checksum src/ backup/|サイズと時刻が同じでも内容差を検出して同期したい。|チェックサムで転送要否を判断する。|rsync -an --delete src/ backup/|-nでドライランする。 設問の要求とは異なる。|tar -tzf backup.tar.gz|-tで内容一覧を表示する。 設問の要求とは異なる。|sha256sum -c backup.sha256|-cで期待ハッシュ値と照合する。 設問の要求とは異なる。
+tar -tzf backup.tar.gz|gzip圧縮tarの格納ファイル名を展開せず確認したい。|-tで内容一覧を表示する。|rsync -an --delete src/ backup/|-nでドライランする。 設問の要求とは異なる。|rsync -a --checksum src/ backup/|チェックサムで転送要否を判断する。 設問の要求とは異なる。|sha256sum -c backup.sha256|-cで期待ハッシュ値と照合する。 設問の要求とは異なる。
+sha256sum -c backup.sha256|バックアップが事前に保存したSHA-256と一致するか検証したい。|-cで期待ハッシュ値と照合する。|rsync -an --delete src/ backup/|-nでドライランする。 設問の要求とは異なる。|rsync -a --checksum src/ backup/|チェックサムで転送要否を判断する。 設問の要求とは異なる。|tar -tzf backup.tar.gz|-tで内容一覧を表示する。 設問の要求とは異なる。
+# 2.04 保守・運用 / Ansible
+ansible-inventory --list|対象インベントリを解釈したホスト・グループ情報を確認したい。|インベントリを機械可読形式で出力する。|ansible-playbook --syntax-check site.yml|構文チェックのみを行う。 設問の要求とは異なる。|ansible-playbook --check --diff site.yml|チェックモードと差分出力を併用する。 設問の要求とは異なる。|ansible-vault encrypt secrets.yml|Ansible Vault形式で暗号化する。 設問の要求とは異なる。
+ansible-playbook --syntax-check site.yml|Playbookを実行せず構文を検査したい。|構文チェックのみを行う。|ansible-inventory --list|インベントリを機械可読形式で出力する。 設問の要求とは異なる。|ansible-playbook --check --diff site.yml|チェックモードと差分出力を併用する。 設問の要求とは異なる。|ansible-vault encrypt secrets.yml|Ansible Vault形式で暗号化する。 設問の要求とは異なる。
+ansible-playbook --check --diff site.yml|対応モジュールで変更予測とファイル差分を確認したい。|チェックモードと差分出力を併用する。|ansible-inventory --list|インベントリを機械可読形式で出力する。 設問の要求とは異なる。|ansible-playbook --syntax-check site.yml|構文チェックのみを行う。 設問の要求とは異なる。|ansible-vault encrypt secrets.yml|Ansible Vault形式で暗号化する。 設問の要求とは異なる。
+ansible-vault encrypt secrets.yml|機密変数を含むAnsibleファイルを暗号化保存したい。|Ansible Vault形式で暗号化する。|ansible-inventory --list|インベントリを機械可読形式で出力する。 設問の要求とは異なる。|ansible-playbook --syntax-check site.yml|構文チェックのみを行う。 設問の要求とは異なる。|ansible-playbook --check --diff site.yml|チェックモードと差分出力を併用する。 設問の要求とは異なる。
+# 2.05 仮想化 / libvirt運用
+virsh dominfo vm1|仮想マシンのCPU数・メモリ・状態などの基本情報を確認したい。|ドメイン概要を表示する。|virsh dumpxml vm1|ドメインの定義をXMLで出力する。 設問の要求とは異なる。|virsh autostart vm1|libvirtのドメイン自動起動を設定する。 設問の要求とは異なる。|virsh domiflist vm1|ドメインのネットワークインターフェースを列挙する。 設問の要求とは異なる。
+virsh dumpxml vm1|VMの構成をXMLとして確認したい。|ドメインの定義をXMLで出力する。|virsh dominfo vm1|ドメイン概要を表示する。 設問の要求とは異なる。|virsh autostart vm1|libvirtのドメイン自動起動を設定する。 設問の要求とは異なる。|virsh domiflist vm1|ドメインのネットワークインターフェースを列挙する。 設問の要求とは異なる。
+virsh autostart vm1|ホスト起動後にVMを自動起動させたい。|libvirtのドメイン自動起動を設定する。|virsh dominfo vm1|ドメイン概要を表示する。 設問の要求とは異なる。|virsh dumpxml vm1|ドメインの定義をXMLで出力する。 設問の要求とは異なる。|virsh domiflist vm1|ドメインのネットワークインターフェースを列挙する。 設問の要求とは異なる。
+virsh domiflist vm1|VMに接続された仮想NICとMACアドレスを確認したい。|ドメインのネットワークインターフェースを列挙する。|virsh dominfo vm1|ドメイン概要を表示する。 設問の要求とは異なる。|virsh dumpxml vm1|ドメインの定義をXMLで出力する。 設問の要求とは異なる。|virsh autostart vm1|libvirtのドメイン自動起動を設定する。 設問の要求とは異なる。
+# 2.05 仮想化 / 仮想ディスク
+qemu-img info disk.qcow2|ディスクイメージのフォーマット・仮想容量・実容量を調べたい。|イメージのメタデータを表示する。|qemu-img convert -O qcow2 disk.raw disk.qcow2|出力形式を指定してディスクを変換する。 設問の要求とは異なる。|qemu-img check disk.qcow2|イメージ形式の整合性を調べる。 設問の要求とは異なる。|qemu-img resize disk.qcow2 +10G|イメージ容量を拡張する。ゲストのパーティションやFS拡張は別途必要。 設問の要求とは異なる。
+qemu-img convert -O qcow2 disk.raw disk.qcow2|停止中のrawイメージをqcow2へ変換したい。|出力形式を指定してディスクを変換する。|qemu-img info disk.qcow2|イメージのメタデータを表示する。 設問の要求とは異なる。|qemu-img check disk.qcow2|イメージ形式の整合性を調べる。 設問の要求とは異なる。|qemu-img resize disk.qcow2 +10G|イメージ容量を拡張する。ゲストのパーティションやFS拡張は別途必要。 設問の要求とは異なる。
+qemu-img check disk.qcow2|停止中の対応イメージについて内部整合性を検査したい。|イメージ形式の整合性を調べる。|qemu-img info disk.qcow2|イメージのメタデータを表示する。 設問の要求とは異なる。|qemu-img convert -O qcow2 disk.raw disk.qcow2|出力形式を指定してディスクを変換する。 設問の要求とは異なる。|qemu-img resize disk.qcow2 +10G|イメージ容量を拡張する。ゲストのパーティションやFS拡張は別途必要。 設問の要求とは異なる。
+qemu-img resize disk.qcow2 +10G|停止中の仮想ディスクの仮想容量を10GiB増やしたい。|イメージ容量を拡張する。ゲストのパーティションやFS拡張は別途必要。|qemu-img info disk.qcow2|イメージのメタデータを表示する。 設問の要求とは異なる。|qemu-img convert -O qcow2 disk.raw disk.qcow2|出力形式を指定してディスクを変換する。 設問の要求とは異なる。|qemu-img check disk.qcow2|イメージ形式の整合性を調べる。 設問の要求とは異なる。
+# 2.05 仮想化 / 仮想ネットワーク
+virsh net-list --all|停止中のものも含むlibvirt仮想ネットワークを一覧表示したい。|定義済みネットワークの状態を表示する。|virsh net-dumpxml default|ネットワーク定義XMLを出力する。 設問の要求とは異なる。|virsh net-start default|仮想ネットワークをアクティブ化する。 設問の要求とは異なる。|virsh net-autostart default|ネットワークの自動開始設定を有効にする。 設問の要求とは異なる。
+virsh net-dumpxml default|default仮想ネットワークのNAT・DHCP等の設定を確認したい。|ネットワーク定義XMLを出力する。|virsh net-list --all|定義済みネットワークの状態を表示する。 設問の要求とは異なる。|virsh net-start default|仮想ネットワークをアクティブ化する。 設問の要求とは異なる。|virsh net-autostart default|ネットワークの自動開始設定を有効にする。 設問の要求とは異なる。
+virsh net-start default|定義済みで停止しているdefaultネットワークを開始したい。|仮想ネットワークをアクティブ化する。|virsh net-list --all|定義済みネットワークの状態を表示する。 設問の要求とは異なる。|virsh net-dumpxml default|ネットワーク定義XMLを出力する。 設問の要求とは異なる。|virsh net-autostart default|ネットワークの自動開始設定を有効にする。 設問の要求とは異なる。
+virsh net-autostart default|ホスト起動時にdefault仮想ネットワークを自動開始したい。|ネットワークの自動開始設定を有効にする。|virsh net-list --all|定義済みネットワークの状態を表示する。 設問の要求とは異なる。|virsh net-dumpxml default|ネットワーク定義XMLを出力する。 設問の要求とは異なる。|virsh net-start default|仮想ネットワークをアクティブ化する。 設問の要求とは異なる。
+# 2.06 コンテナ / Docker調査
+docker inspect app|コンテナの詳細設定・ネットワーク・マウントをJSONで確認したい。|Dockerオブジェクトの詳細情報を出力する。|docker stats --no-stream|資源使用統計をスナップショットとして表示する。 設問の要求とは異なる。|docker top app|コンテナのプロセス一覧を表示する。 設問の要求とは異なる。|docker diff app|書込み層の追加・変更・削除を表示する。 設問の要求とは異なる。
+docker stats --no-stream|稼働中コンテナのCPU・メモリ等の使用量を一度だけ取得したい。|資源使用統計をスナップショットとして表示する。|docker inspect app|Dockerオブジェクトの詳細情報を出力する。 設問の要求とは異なる。|docker top app|コンテナのプロセス一覧を表示する。 設問の要求とは異なる。|docker diff app|書込み層の追加・変更・削除を表示する。 設問の要求とは異なる。
+docker top app|指定コンテナで実行されているプロセスをホスト側から確認したい。|コンテナのプロセス一覧を表示する。|docker inspect app|Dockerオブジェクトの詳細情報を出力する。 設問の要求とは異なる。|docker stats --no-stream|資源使用統計をスナップショットとして表示する。 設問の要求とは異なる。|docker diff app|書込み層の追加・変更・削除を表示する。 設問の要求とは異なる。
+docker diff app|イメージからコンテナを作った後のファイル変更箇所を調べたい。|書込み層の追加・変更・削除を表示する。|docker inspect app|Dockerオブジェクトの詳細情報を出力する。 設問の要求とは異なる。|docker stats --no-stream|資源使用統計をスナップショットとして表示する。 設問の要求とは異なる。|docker top app|コンテナのプロセス一覧を表示する。 設問の要求とは異なる。
+# 2.06 コンテナ / Dockerネットワーク
+docker network ls|Dockerが管理するネットワークを一覧表示したい。|ネットワーク名とドライバを列挙する。|docker network inspect appnet|ネットワークの詳細設定を出力する。 設問の要求とは異なる。|docker network connect appnet app|コンテナを指定ネットワークへ接続する。 設問の要求とは異なる。|docker network disconnect appnet app|ネットワーク接続を切断する。 設問の要求とは異なる。
+docker network inspect appnet|appnetのサブネットや接続コンテナを確認したい。|ネットワークの詳細設定を出力する。|docker network ls|ネットワーク名とドライバを列挙する。 設問の要求とは異なる。|docker network connect appnet app|コンテナを指定ネットワークへ接続する。 設問の要求とは異なる。|docker network disconnect appnet app|ネットワーク接続を切断する。 設問の要求とは異なる。
+docker network connect appnet app|稼働中のappコンテナを既存appnetへ追加接続したい。|コンテナを指定ネットワークへ接続する。|docker network ls|ネットワーク名とドライバを列挙する。 設問の要求とは異なる。|docker network inspect appnet|ネットワークの詳細設定を出力する。 設問の要求とは異なる。|docker network disconnect appnet app|ネットワーク接続を切断する。 設問の要求とは異なる。
+docker network disconnect appnet app|appコンテナのappnetへの接続を解除したい。|ネットワーク接続を切断する。|docker network ls|ネットワーク名とドライバを列挙する。 設問の要求とは異なる。|docker network inspect appnet|ネットワークの詳細設定を出力する。 設問の要求とは異なる。|docker network connect appnet app|コンテナを指定ネットワークへ接続する。 設問の要求とは異なる。
+# 2.06 コンテナ / Dockerfile
+ENTRYPOINT|コンテナが実行する固定の起動コマンドを指定するDockerfile命令は？|コンテナ起動時の実行エントリポイントを定義する。|CMD|既定のコマンドまたはENTRYPOINTへの引数を指定する。 設問の要求とは異なる。|WORKDIR|作業ディレクトリを設定する。 設問の要求とは異なる。|USER|実行ユーザーとグループを指定する。 設問の要求とは異なる。
+CMD|起動時の既定引数や既定コマンドを指定しdocker runで上書き可能にする命令は？|既定のコマンドまたはENTRYPOINTへの引数を指定する。|ENTRYPOINT|コンテナ起動時の実行エントリポイントを定義する。 設問の要求とは異なる。|WORKDIR|作業ディレクトリを設定する。 設問の要求とは異なる。|USER|実行ユーザーとグループを指定する。 設問の要求とは異なる。
+WORKDIR|後続のRUNやCOPY等に対する作業ディレクトリを指定する命令は？|作業ディレクトリを設定する。|ENTRYPOINT|コンテナ起動時の実行エントリポイントを定義する。 設問の要求とは異なる。|CMD|既定のコマンドまたはENTRYPOINTへの引数を指定する。 設問の要求とは異なる。|USER|実行ユーザーとグループを指定する。 設問の要求とは異なる。
+USER|後続命令およびコンテナ実行時の既定ユーザーを設定する命令は？|実行ユーザーとグループを指定する。|ENTRYPOINT|コンテナ起動時の実行エントリポイントを定義する。 設問の要求とは異なる。|CMD|既定のコマンドまたはENTRYPOINTへの引数を指定する。 設問の要求とは異なる。|WORKDIR|作業ディレクトリを設定する。 設問の要求とは異なる。
+# 2.06 コンテナ / コンテナ資源制御
+--memory=512m|コンテナのメモリ使用上限を512MiB相当に制限するdocker runオプションは？|メモリ上限をcgroup経由で指定する。|--cpus=1.5|CPUクォータにより実行時間を制限する。 設問の要求とは異なる。|--pids-limit=100|PIDs cgroupの上限を指定する。 設問の要求とは異なる。|--read-only|ルートFSへの通常の書込みを制限する。別途マウントは設定可能。 設問の要求とは異なる。
+--cpus=1.5|コンテナが使用できるCPU時間を1.5CPU相当に制限したい。|CPUクォータにより実行時間を制限する。|--memory=512m|メモリ上限をcgroup経由で指定する。 設問の要求とは異なる。|--pids-limit=100|PIDs cgroupの上限を指定する。 設問の要求とは異なる。|--read-only|ルートFSへの通常の書込みを制限する。別途マウントは設定可能。 設問の要求とは異なる。
+--pids-limit=100|コンテナ内で生成できるプロセス・スレッド数の上限を設定したい。|PIDs cgroupの上限を指定する。|--memory=512m|メモリ上限をcgroup経由で指定する。 設問の要求とは異なる。|--cpus=1.5|CPUクォータにより実行時間を制限する。 設問の要求とは異なる。|--read-only|ルートFSへの通常の書込みを制限する。別途マウントは設定可能。 設問の要求とは異なる。
+--read-only|コンテナのルートファイルシステムを読み取り専用にして実行したい。|ルートFSへの通常の書込みを制限する。別途マウントは設定可能。|--memory=512m|メモリ上限をcgroup経由で指定する。 設問の要求とは異なる。|--cpus=1.5|CPUクォータにより実行時間を制限する。 設問の要求とは異なる。|--pids-limit=100|PIDs cgroupの上限を指定する。 設問の要求とは異なる。
