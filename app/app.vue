@@ -50,7 +50,7 @@ onMounted(()=>{
       if(catalog.some(e=>e.id===data.examId)) examId.value=data.examId
       const s=data.session
       const bank=catalog.find(e=>e.id===s?.exam)?.questions
-      if(s && bank && Array.isArray(s.ids) && s.ids.length && Number.isInteger(s.index) && s.index>=0 && s.index<=s.ids.length && s.ids.every((id:string)=>bank.some(q=>q.id===id)) && Array.isArray(s.choices) && (s.choices.length===4||s.choices.length===0 && bank.find(q=>q.id===s.ids[s.index])?.kind==='written')) session.value={...s,selected:Array.isArray(s.selected)?s.selected.filter((n:number)=>Number.isInteger(n)&&n>=0&&n<4):Number.isInteger(s.selected)?[s.selected]:[]}
+      if(s && bank && Array.isArray(s.ids) && s.ids.length && Number.isInteger(s.index) && s.index>=0 && s.index<=s.ids.length && s.ids.every((id:string)=>bank.some(q=>q.id===id)) && Array.isArray(s.choices) && (s.index===s.ids.length || s.choices.length>=4&&s.choices.length<=6 || s.choices.length===0 && bank.find(q=>q.id===s.ids[s.index])?.kind==='written')) session.value={...s,selected:Array.isArray(s.selected)?s.selected.filter((n:number)=>Number.isInteger(n)&&n>=0&&n<s.choices.length):Number.isInteger(s.selected)?[s.selected]:[]}
     }
   } catch { storageError.value=true }
   ready.value=true
@@ -263,7 +263,7 @@ async function importProgress(event:Event){
               class="answer-button w-full flex items-center gap-3 border rounded-xl px-4 py-4 bg-default transition-colors"
               :class="session.answered ? (choice.correct?'border-success bg-success/10':session.selected.includes(i)?'border-error bg-error/10':'border-default') : session.selected.includes(i)?'border-primary ring-2 ring-primary/30 bg-primary/5':'border-default hover:bg-elevated'"
               @click="choose(i)">
-              <span class="shrink-0 text-sm font-bold rounded-full border border-default size-8 flex items-center justify-center">{{ ['A','B','C','D'][i] }}</span>
+              <span class="shrink-0 text-sm font-bold rounded-full border border-default size-8 flex items-center justify-center">{{ ['A','B','C','D','E','F'][i] }}</span>
               <span class="flex-1 text-sm leading-relaxed font-medium">{{ choice.label }}</span>
               <span v-if="session.answered && choice.correct" class="text-success font-bold">✓</span>
               <span v-else-if="session.answered && session.selected.includes(i)" class="text-error font-bold">×</span>

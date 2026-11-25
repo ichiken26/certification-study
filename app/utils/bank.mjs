@@ -14,20 +14,21 @@ export function parseBank(raw, exam) {
     const multi=rawAnswer==='@multi'
     const written=rawAnswer==='@written'
     const decode=s=>s.replace(/\\n/g,'\n')
-    if(!chapter || !rawAnswer || !stem || !explanation || (written ? extra.length!==1 || !extra[0] : multi ? extra.length!==9 : extra.length!==0 && extra.length!==6)) throw new Error('Invalid bank row: '+exam+' '+line)
+    if(!chapter || !rawAnswer || !stem || !explanation || (written ? extra.length!==1 || !extra[0] : multi ? extra.length<9 || extra.length>13 || extra.length%2!==1 : extra.length!==0 && extra.length!==6)) throw new Error('Invalid bank row: '+exam+' '+line)
     let answer=rawAnswer
     let explicit=null
     if(written){
       answer=decode(extra[0])
     }else if(multi){
       const keys=extra[0].split(',').map(Number)
-      if(new Set(keys).size!==keys.length || keys.length<2 || keys.length>3 || keys.some(n=>!Number.isInteger(n)||n<1||n>4)) throw new Error('Invalid multiple answers: '+stem)
-      explicit=Array.from({length:4},(_,i)=>({label:extra[i*2+1],explanation:extra[i*2+2],correct:keys.includes(i+1)}))
+      const optionCount=(extra.length-1)/2
+      if(new Set(keys).size!==keys.length || keys.length<2 || keys.length>=optionCount || keys.some(n=>!Number.isInteger(n)||n<1||n>optionCount)) throw new Error('Invalid multiple answers: '+stem)
+      explicit=Array.from({length:optionCount},(_,i)=>({label:extra[i*2+1],explanation:extra[i*2+2],correct:keys.includes(i+1)}))
       answer=explicit.filter(o=>o.correct).map(o=>o.label).join(' / ')
     }else if(extra.length){
       explicit=[{label:answer,explanation,correct:true},...Array.from({length:3},(_,i)=>({label:extra[i*2],explanation:extra[i*2+1],correct:false}))]
     }
-    if(explicit && (new Set(explicit.map(o=>o.label)).size!==4 || explicit.some(o=>!o.label||!o.explanation))) throw new Error('Invalid explicit options: '+stem)
+    if(explicit && (new Set(explicit.map(o=>o.label)).size!==explicit.length || explicit.some(o=>!o.label||!o.explanation))) throw new Error('Invalid explicit options: '+stem)
     let h=2166136261
     for(const c of chapter+'\n'+stem) h=Math.imul(h^c.charCodeAt(0),16777619)
     questions.push({id:exam+'-'+(h>>>0).toString(16),exam,chapter,topic,stem:decode(stem),answer,explanation:decode(explanation),explicit,kind:written?'written':'choice'})
