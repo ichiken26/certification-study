@@ -1,0 +1,4 @@
+# SAP-C03 追加演習02
+100問。公式現行ガイド https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-03/solutions-architect-professional-03.html を確認。5ドメインに対応する追加演習。既存の旧試験向け章は別途移行が必要。個々のサービス仕様の独立レビューは未完了。
+
+照合対象: https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html ; https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies.html ; https://docs.aws.amazon.com/vpc/latest/ipam/what-it-is-ipam.html ; https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html ; https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html ; https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html ; https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html
